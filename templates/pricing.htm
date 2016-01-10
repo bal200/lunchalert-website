@@ -1,0 +1,45 @@
+
+
+  <div class="ui main text container">
+    <h1 class="ui header">Pricing</h1>
+    <p>Our delivery van notification system is based on a monthly subscription.&nbsp;</p>
+    <p>Pricing is based on the number of van drivers and devices used for your daily delivery rounds. Unlimited stops and unlimited customer alerts are included in the fixed monthly price.</p>
+    <p><strong>&pound;40 pcm</strong></p>
+    <p>That&#39;s roughly <strong>only</strong> 4 extra sandwich sales per day.&nbsp; We are confident that using the app will increase sales much more than this, easily covering the price.&nbsp; Also making your round quicker and increasing customer satisfaction at the same time.</p>
+    <p>Payment is handled by a simple monthly Direct Debit.</p>
+
+    <h2 class="ui heading">Multiple van discounts</h2>
+    <p>If you would like to use LunchAlert on more than one delivery van, we can offer substantial discounts
+    for each van</p>
+    <div>
+      <div class="ui labeled input">
+        <a class="ui label" href="#">Name:</a>
+        <input type="text" ng-model="yourName" placeholder="Enter a name here">
+      </div>
+      
+      <hr/>
+
+      <select class="ui dropdown" ng-model="vans">
+        <option value="">Number of vans</option>
+        <option value="1">1 Van</option>
+        <option value="2">2 - 4 Vans</option>
+        <option value="3">5 - 10 Vans</option>
+        <option value="4">11 - 20 Vans</option>
+        <option value="5">21+ Vans</option>
+      </select>
+      
+      <hr>
+    </div>
+    
+    <p>
+      <a href="https://dashboard.gocardless.com/api/template_plans/12BFPZ1K8E/paylink">
+        <img height="43" src="https://s3-eu-west-1.amazonaws.com/gocardless/images/public/buttons/updated/pay-with-gc-large.png" width="242">
+      </a>
+    </p>
+    
+    <div>
+      <h1>Vans option {{vans}}</h1>
+    </div>
+  </div>
+  
+  
