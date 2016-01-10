@@ -2,19 +2,45 @@
 
   <div class="ui main text container">
     <h1 class="ui header">Contact</h1>
-    <p>This is a basic fixed menu template using fixed size containers.</p>
-    <p>A text container is used for the main container, which is useful for single column layouts</p>
-    <div>
-      <div class="ui labeled input">
-        <a class="ui label" href="#">Name:</a>
-        <input type="text" ng-model="yourName" placeholder="Enter a name here">
-      </div>
-      <hr>
-      <h1>Hello {{yourName}}!</h1>
+    
+    <div class="body-text">
+    <p>We'd love to answer all your question about how LunchAlert can helps you business. Send us your contact details and we'll be in touch.</p>
+    <h2>Send us a message</h2>
+    <form action="https://service.capsulecrm.com/service/newlead" method="post">
+    <fieldset>
+    <input type="hidden" name="FORM_ID" value="f202662b-1a5f-437e-8e8b-d9629a52e550">
+    <input type="hidden" name="TAG" value="Lead">
+    <input type="hidden" name="CUSTOMFIELD[Lead Source]" value="website">
+    <input type="hidden" name="COMPLETE_URL" value="http://lunchalert.me/contact/thanks">
+
+    <div class="ui labeled input">
+      <div class="ui label">First Name:</div>
+      <input id="firstNameId" type="text" name="FIRST_NAME">
     </div>
-    <div>
-      <h1>Test string is {{test}}!</h1>
+    <div class="ui labeled input">
+      <div class="ui label">Last Name:</div>
+      <input id="lastNameId" type="text" name="LAST_NAME">
     </div>
+    <div class="ui labeled input">
+      <div class="ui label">Your Company:</div>
+      <input id="organisationId" type="text" name="ORGANISATION_NAME">
+    </div>
+    <div class="ui labeled input">
+      <div class="ui label">Contact Phone:</div>
+      <input id="phoneId" type="text" name="PHONE[WORK]">
+    </div>
+    <div class="ui labeled input">
+      <div class="ui label">Email Address:</div>
+      <input id="emailId" type="text" name="EMAIL">
+    </div>
+    
+    <input class="ui button" type="submit" value="Submit">
+    </fieldset>
+    <!--<input type="hidden" name="DEVELOPER" value="TRUE"/>-->
+    </form>
+    </div>
+
+
   </div>
   
   
