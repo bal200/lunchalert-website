@@ -1,6 +1,7 @@
 <!doctype html>
 <html ng-app="lunchalert-website">
   <head>
+    <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     
     <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
@@ -44,29 +45,12 @@
       <a href="#/alert" class="item">Alert</a>
       <a href="#/notify" class="item">Notify</a>
       <a href="#/contact" class="item">Contact</a>
-      <div class="ui simple dropdown item">
-        Pricing <i class="dropdown icon"></i>
-        <div class="menu">
-          <a class="item" href="#/pricing">Pricing</a>
-          <a class="item" href="#/pricing">Pricing</a>
-          <div class="divider"></div>
-          <div class="header">Header Item</div>
-          <div class="item">
-            <i class="dropdown icon"></i>
-            Sub Menu
-            <div class="menu">
-              <a class="item" href="#">Link Item</a>
-              <a class="item" href="#">Link Item</a>
-            </div>
-          </div>
-          <a class="item" href="#">Link Item</a>
-        </div>
-      </div>
+      <a class="item" href="#/pricing">Pricing</a>
     </div>
   </div>
 
   
-<div ng-view></div>
+<div ng-view autoscroll="true"></div>
 
 
   <div class="ui inverted vertical footer segment">

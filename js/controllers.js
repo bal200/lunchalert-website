@@ -1,13 +1,11 @@
 angular.module('pageCtrl',[])
 .controller('pageCtrl', ['$scope', function($scope) {
-  
-  $scope.test = "testing";
-  
+ 
   $scope.selectChange = function() {
     switch ($scope.vans) {
       case "1":
         $scope.plan = "1 van";
-        $scope.cost = "£40 per month";
+        $scope.cost = '£40 per month';
         $scope.link="https://dashboard.gocardless.com/api/template_plans/12BFPZ1K8E/paylink";
         break;
       case "2":
