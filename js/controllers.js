@@ -5,27 +5,27 @@ angular.module('pageCtrl',[])
     switch ($scope.vans) {
       case "1":
         $scope.plan = "1 van";
-        $scope.cost = '£40 per month';
+        $scope.cost = 'Â£40 per month';
         $scope.link="https://dashboard.gocardless.com/api/template_plans/12BFPZ1K8E/paylink";
         break;
       case "2":
         $scope.plan = "2 - 4 vans";
-        $scope.cost = "£80 per month";
+        $scope.cost = "Â£80 per month";
         $scope.link="https://dashboard.gocardless.com/api/template_plans/12BFPZ1K8E/paylink";
         break;
       case "3":
         $scope.plan = "5 - 10 vans";
-        $scope.cost = "£150 per month";
+        $scope.cost = "Â£150 per month";
         $scope.link="https://dashboard.gocardless.com/api/template_plans/12BFPZ1K8E/paylink";
         break;
       case "4":
         $scope.plan = "11 - 20 vans";
-        $scope.cost = "£200 per month";
+        $scope.cost = "Â£200 per month";
         $scope.link="https://dashboard.gocardless.com/api/template_plans/12BFPZ1K8E/paylink";
         break;
       case "5":
         $scope.plan = "21+ vans";
-        $scope.cost = "£250 per month";
+        $scope.cost = "Â£250 per month";
         $scope.link="https://dashboard.gocardless.com/api/template_plans/12BFPZ1K8E/paylink";
         break;
       default:
