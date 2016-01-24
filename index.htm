@@ -33,16 +33,12 @@
     padding: 5em 0em;
   }
   .header.image {
-    background-position: 50% 50%;
+    background-image: url("images/title_banner.jpg");
+    background-size: auto 100%;
     background-repeat: no-repeat;
-    width:100%;
-    height:100%;
-    background-attachment: initial;
-    background-origin: initial;
-    background-clip: initial;
-    background-color: initial;
-    display:block;
-    background-size: cover;
+    background-position: center top;
+    height: 200px;
+    
   }
   </style>
 </head>
@@ -61,6 +57,9 @@
     </div>
   </div>
 
+  <div style="height:42px;"></div>
+  <div class="header image"></div>
+  
   
 <div ng-view autoscroll="true"></div>
 
