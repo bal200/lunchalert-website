@@ -26,8 +26,11 @@ angular.module('lunchalert-website', [
         templateUrl: 'templates/pricing.htm',
         controller: 'pageCtrl'
       })
+      .when('/install', {
+        templateUrl: 'templates/install.htm',
+        controller: 'pageCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
   }]);
-  
