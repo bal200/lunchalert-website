@@ -1,0 +1,30 @@
+
+  <div class="ui main text container">
+    <h2 class="ui header">Portal Login</h2>
+    <p>If your work place lunch delivery company is using LunchAlert you&#39;ll need to
+    grab our alerting app for your smartphone. <a href="#/alert">Find out more</a>.</p>
+    
+    <div class="list">
+        <label class="item item-input" focus-me>
+            <span class="input-label"><i class="icon ion-email"></i> Email</span>
+            <input type="email" ng-model="user.username" required>
+        </label>
+        <label class="item item-input">
+            <span class="input-label"><i class="icon ion-locked"></i> Password</span>
+            <input type="password" ng-model="user.password" required>
+        </label>
+    </div>
+    <div class="assertive" ng-show="error.message">{{error.message}}</div>
+    <button class="button button-block button-positive" ng-click="login()">
+        <i class="icon ion-person"></i> LOG IN
+    </button>
+    <button class="button button-block button-clear button-calm" ng-click="forgot()">
+        Forgot your password?
+    </button>
+
+    
+    <p>Find out more about the <a href="#/notify">Notify service</a> for your fleet of drivers.</p>
+    
+  </div>
+  
+  
