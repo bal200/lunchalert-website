@@ -1,5 +1,5 @@
 angular.module('pageCtrl',[])
-.controller('pageCtrl', ['$scope',
+.controller('pageCtrl', ['$scope', 'uiGmapgoogle-maps',
 function($scope) {
  
   $scope.selectChange = function() {
@@ -90,6 +90,36 @@ function( $scope, $location, $rootScope ) {
 
 .controller('portalCtrl', ['$scope', '$rootScope', '$location',
 function( $scope, $location, $rootScope ) {
+
+$scope.map = { center: { latitude: 53, longitude: -2.5 }, zoom: 8 };
+
+//makeMap();
+
+function checkMap(){
+//  if (mapReady){
+//    makeMap();
+//  }else{
+//    setTimeout(makeMap, 5000);
+//  }
+}
+$scope.markers=[];
+
+$scope.arrivalClick = function() {
+  if ($scope.arrivalTick==true) {
+    loadArrivals();
+  }else{
+    $scope.markers = [];
+  }
+}
+$scope.installClick = function() {
+  if ($scope.installTick==true) {
+    loadInstalls();
+  }else{
+    $scope.instMarkers = [];
+  }
+}
+
+function makeMap() {
 var beaches = [
   ['Bondi Beach', -33.890542, 151.274856, 4],
   ['Coogee Beach', -33.923036, 151.259052, 5],
@@ -97,44 +127,75 @@ var beaches = [
   ['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
   ['Maroubra Beach', -33.950198, 151.259302, 1]
 ];
-
-
-
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 10,
-    center: {lat: -33.9, lng: 151.2}
+  //var map = new google.maps.Map(document.getElementById('map'), {
+  //  zoom: 10,
+  //  center: {lat: -33.9, lng: 151.2}
+  //});
+  //for (var i = 0; i < beaches.length; i++) {
+  //  var beach = beaches[i];
+  //  var marker = {
+  //    id: beach[3],
+  //    coords: {latitude: beach[1],
+  //             longitude: beach[2]}
+  //  };
+  //  $scope.markers.push( marker );
+  //  
+  //}
+}
+function loadInstalls() {
+  // Get the Customer Installs data from the Parse server
+  var query = new Parse.Query(Parse.Installation);
+  var usr = Parse.User.current();
+  query.equalTo('vendor', usr);
+  //query.equalTo('vanId', vansid);
+  /* @Todo: Date range */
+  
+  query.find({
+    success: function(res) { 
+      //alert("Successfully retrieved " + res.length + " arrival records.");
+      for (var i = 0; i < res.length; i++) {
+        var object = res[i];
+        var loc = object.get('location');
+        var marker = {
+              id: i,
+              coords: {latitude: loc.latitude,
+                      longitude: loc.longitude}
+        };
+        $scope.markers.push( marker ); 
+      }
+      $scope.$apply();
+    },
+    error: function(err) { alert("get arrivals error: "+err.code+" "+err.message); }
   });
+}
 
-  for (var i = 0; i < beaches.length; i++) {
-    var beach = beaches[i];
-    var marker = new google.maps.Marker({
-      position: {lat: beach[1], lng: beach[2]},
-      map: map,
-      title: beach[0]
-      //zIndex: beach[3]
-    });
-  }
-
-
-
+function loadArrivals() {
   // Get the Arrivals data from the Parse server
   var Arrival = Parse.Object.extend("Arrival");
   var query = new Parse.Query(Arrival);
   var usr = Parse.User.current();
   query.equalTo('vendor', usr);
-  /* @Todo: Date range */ 
+  //query.equalTo('vanId', vansid);
+  /* @Todo: Date range */
+  
   query.find({
     success: function(res) { 
-      //alert("Successfully retrieved " + res.length + " scores.");
+      //alert("Successfully retrieved " + res.length + " arrival records.");
       for (var i = 0; i < res.length; i++) {
         var object = res[i];
-        //alert(object.id + ' - ' + object.get('location').latitude);
+        var loc = object.get('location');
+        var marker = {
+              id: i,
+              coords: {latitude: loc.latitude,
+                      longitude: loc.longitude}
+        };
+        $scope.markers.push( marker ); 
       }
-      
-      
+      $scope.$apply();
     },
     error: function(err) { alert("get arrivals error: "+err.code+" "+err.message); }
   });
+}
 
 
 

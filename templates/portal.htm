@@ -3,19 +3,30 @@
   <h2 class="ui header">Portal</h2>
 
   <div class="ui checkbox">
-    <input type="checkbox" name="installations" ng-model="installTick">
+    <input type="checkbox" name="installations" ng-model="installTick" ng-click="installClick()">
     <label>Show Customer Installations</label>
   </div>
   <div class="ui checkbox">
-    <input type="checkbox" name="arrival" ng-model="arrivalTick">
+    <input type="checkbox" name="arrival" ng-model="arrivalTick" ng-click="arrivalClick()">
     <label>Show Van Arrivals</label>
   </div>
+  
+  <ui-gmap-google-map center="map.center"
+                      zoom="map.zoom">
+    <ui-gmap-marker ng-repeat="marker in markers"
+                    idkey="marker.id"
+                    coords="marker.coords" >
+    </ui-gmap-marker>  
+  </ui-gmap-google-map> 
+  
+
    
   <p>Lorem Ipsum .... If your work place lunch delivery company is using LunchAlert you&#39;ll need to
   grab our alerting app for your smartphone. <a href="#/alert">Find out more</a>.</p>
+  
+  
 
   
-  <div id="map" style="height: 100%;"></div>
   
     
     

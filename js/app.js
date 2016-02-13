@@ -1,6 +1,7 @@
 angular.module('lunchalert-website', [
     'ngRoute' ,
-    'pageCtrl'
+    'pageCtrl',
+    'uiGmapgoogle-maps'
   ])
 
 .value('ParseConfiguration', {
@@ -64,9 +65,9 @@ angular.module('lunchalert-website', [
 			}
 });
 
-var mapInited=false;
+var mapReady=false;
 function initMap(){
-  mapInited=true;
+  mapReady=true;
 }
 
 
