@@ -13,10 +13,17 @@
   
   <ui-gmap-google-map center="map.center"
                       zoom="map.zoom">
+    
     <ui-gmap-marker ng-repeat="marker in markers"
                     idkey="marker.id"
                     coords="marker.coords" >
-    </ui-gmap-marker>  
+    </ui-gmap-marker>
+    
+    <ui-gmap-marker ng-repeat="imarker in instMarkers"
+                    idkey="imarker.id"
+                    coords="imarker.coords" >
+    </ui-gmap-marker>
+    
   </ui-gmap-google-map> 
   
 

@@ -1,5 +1,5 @@
 angular.module('pageCtrl',[])
-.controller('pageCtrl', ['$scope', 'uiGmapgoogle-maps',
+.controller('pageCtrl', ['$scope',
 function($scope) {
  
   $scope.selectChange = function() {
@@ -91,18 +91,9 @@ function( $scope, $location, $rootScope ) {
 .controller('portalCtrl', ['$scope', '$rootScope', '$location',
 function( $scope, $location, $rootScope ) {
 
-$scope.map = { center: { latitude: 53, longitude: -2.5 }, zoom: 8 };
-
-//makeMap();
-
-function checkMap(){
-//  if (mapReady){
-//    makeMap();
-//  }else{
-//    setTimeout(makeMap, 5000);
-//  }
-}
+$scope.map = { center: { latitude: 53.5, longitude: -2.5 }, zoom: 9 };
 $scope.markers=[];
+$scope.instMarkers=[];
 
 $scope.arrivalClick = function() {
   if ($scope.arrivalTick==true) {
@@ -118,30 +109,7 @@ $scope.installClick = function() {
     $scope.instMarkers = [];
   }
 }
-
-function makeMap() {
-var beaches = [
-  ['Bondi Beach', -33.890542, 151.274856, 4],
-  ['Coogee Beach', -33.923036, 151.259052, 5],
-  ['Cronulla Beach', -34.028249, 151.157507, 3],
-  ['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
-  ['Maroubra Beach', -33.950198, 151.259302, 1]
-];
-  //var map = new google.maps.Map(document.getElementById('map'), {
-  //  zoom: 10,
-  //  center: {lat: -33.9, lng: 151.2}
-  //});
-  //for (var i = 0; i < beaches.length; i++) {
-  //  var beach = beaches[i];
-  //  var marker = {
-  //    id: beach[3],
-  //    coords: {latitude: beach[1],
-  //             longitude: beach[2]}
-  //  };
-  //  $scope.markers.push( marker );
-  //  
-  //}
-}
+/********************************* load Installs() *********************************************/
 function loadInstalls() {
   // Get the Customer Installs data from the Parse server
   var query = new Parse.Query(Parse.Installation);
@@ -149,26 +117,38 @@ function loadInstalls() {
   query.equalTo('vendor', usr);
   //query.equalTo('vanId', vansid);
   /* @Todo: Date range */
-  
-  query.find({
-    success: function(res) { 
-      //alert("Successfully retrieved " + res.length + " arrival records.");
+  Parse.Cloud.run("getCustInstalls", {
+      userid: usr.id, /* The S is put on by the cloud code; can ignore here */
+      dateFrom: 0, //$scope.dateFrom,
+      dateTo: 0, //$scope.dateTo,
+      vanId: 0 //$scope.vanId
+  },{
+    success:function(res) {
       for (var i = 0; i < res.length; i++) {
-        var object = res[i];
-        var loc = object.get('location');
-        var marker = {
-              id: i,
-              coords: {latitude: loc.latitude,
-                      longitude: loc.longitude}
-        };
-        $scope.markers.push( marker ); 
+        var inst = res[i];
+        if (inst.coords && inst.coords.latitude) {
+          var marker = {
+                id: i,
+                coords: {latitude: inst.coords.latitude,
+                        longitude: inst.coords.longitude},
+                options: { label: "V" }
+          };
+          if (inst.comment) {
+            marker.options = {
+              labelContent: inst.comment
+            };
+          }
+          $scope.instMarkers.push( marker );
+        }
       }
       $scope.$apply();
     },
-    error: function(err) { alert("get arrivals error: "+err.code+" "+err.message); }
+    error: function(err) { alert("get installations error: "+err.code+" "+err.message); }
   });
+
 }
 
+/********************************* load Arrivals() *********************************************/
 function loadArrivals() {
   // Get the Arrivals data from the Parse server
   var Arrival = Parse.Object.extend("Arrival");
@@ -177,7 +157,7 @@ function loadArrivals() {
   query.equalTo('vendor', usr);
   //query.equalTo('vanId', vansid);
   /* @Todo: Date range */
-  
+
   query.find({
     success: function(res) { 
       //alert("Successfully retrieved " + res.length + " arrival records.");
