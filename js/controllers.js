@@ -60,10 +60,8 @@ function( $scope, $rootScope, $location ) {
       success: function(user) {
         $rootScope.user = user;
         $rootScope.isLoggedIn = true;
-        /* Move to Home screen, but change the back button to the home button */
-
-        $location.path("/portal");
         
+        $location.path("/portal");
       },
       error: function(user, err) {
         // The login failed. Check error to see why.
@@ -96,6 +94,10 @@ function( $scope, $rootScope, $location ) {
 
 .controller('portalCtrl', ['$scope', '$rootScope', '$location',
 function( $scope, $rootScope, $location ) {
+
+if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
+  $location.path('/login');
+}
 
 $scope.map = { center: { latitude: 53.5, longitude: -2.5 }, zoom: 9 };
 $scope.markers=[];
@@ -187,7 +189,7 @@ $scope.logout = function() {
   Parse.User.logOut();
   $rootScope.user = null;
   $rootScope.isLoggedIn = false;
-  $location.path('/');
+  $location.path('/login');
 };
 
 
