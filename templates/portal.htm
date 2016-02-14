@@ -16,12 +16,14 @@
     
     <ui-gmap-marker ng-repeat="marker in markers"
                     idkey="marker.id"
-                    coords="marker.coords" >
+                    coords="marker.coords"
+                    options="marker.options">
     </ui-gmap-marker>
     
     <ui-gmap-marker ng-repeat="imarker in instMarkers"
                     idkey="imarker.id"
-                    coords="imarker.coords" >
+                    coords="imarker.coords"
+                    options="imarker.options">
     </ui-gmap-marker>
     
   </ui-gmap-google-map> 
@@ -30,7 +32,9 @@
    
   <p>Lorem Ipsum .... If your work place lunch delivery company is using LunchAlert you&#39;ll need to
   grab our alerting app for your smartphone. <a href="#/alert">Find out more</a>.</p>
-  
+  <button class="button button-block button-clear button-calm" ng-click="logout()">
+      Logout
+  </button>
   
 
   

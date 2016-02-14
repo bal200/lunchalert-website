@@ -46,7 +46,7 @@ function($scope) {
 
 
 .controller('userCtrl', ['$scope', '$rootScope', '$location',
-function( $scope, $location, $rootScope ) {
+function( $scope, $rootScope, $location ) {
   $scope.user = {
     username: null,
     password: null
@@ -62,7 +62,7 @@ function( $scope, $location, $rootScope ) {
         $rootScope.isLoggedIn = true;
         /* Move to Home screen, but change the back button to the home button */
 
-        $location.path('/portal');
+        $location.path("/portal");
         
       },
       error: function(user, err) {
@@ -72,14 +72,20 @@ function( $scope, $location, $rootScope ) {
         } else if (err.code == 100) {
           alert('No internet connection');
         } else {
-          $scope.error.message = 'An unexpected error has ' +
-              'occurred. Code '+err.code + ' ' + err.message;
+          alert ( 'An unexpected error has ' +
+              'occurred. Code '+err.code + ' ' + err.message);
           console.log('Login failed: ' + err.message);
         }
         $scope.$apply();
       }
     });
     return false;
+  };
+  $scope.logout = function() {
+    Parse.User.logOut();
+    $rootScope.user = null;
+    $rootScope.isLoggedIn = false;
+    $location.path('/');
   };
 
   $scope.forgot = function() {
@@ -89,7 +95,7 @@ function( $scope, $location, $rootScope ) {
 
 
 .controller('portalCtrl', ['$scope', '$rootScope', '$location',
-function( $scope, $location, $rootScope ) {
+function( $scope, $rootScope, $location ) {
 
 $scope.map = { center: { latitude: 53.5, longitude: -2.5 }, zoom: 9 };
 $scope.markers=[];
@@ -109,6 +115,7 @@ $scope.installClick = function() {
     $scope.instMarkers = [];
   }
 }
+
 /********************************* load Installs() *********************************************/
 function loadInstalls() {
   // Get the Customer Installs data from the Parse server
@@ -124,6 +131,7 @@ function loadInstalls() {
       vanId: 0 //$scope.vanId
   },{
     success:function(res) {
+      console.log(res);
       for (var i = 0; i < res.length; i++) {
         var inst = res[i];
         if (inst.coords && inst.coords.latitude) {
@@ -134,9 +142,7 @@ function loadInstalls() {
                 options: { label: "V" }
           };
           if (inst.comment) {
-            marker.options = {
-              labelContent: inst.comment
-            };
+            marker.options.labelContent = inst.comment;
           }
           $scope.instMarkers.push( marker );
         }
@@ -177,6 +183,12 @@ function loadArrivals() {
   });
 }
 
+$scope.logout = function() {
+  Parse.User.logOut();
+  $rootScope.user = null;
+  $rootScope.isLoggedIn = false;
+  $location.path('/');
+};
 
 
 
