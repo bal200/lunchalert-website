@@ -141,7 +141,7 @@ function loadInstalls() {
                 id: i,
                 coords: {latitude: inst.coords.latitude,
                         longitude: inst.coords.longitude},
-                options: { label: "V" }
+                options: {  }
           };
           if (inst.comment) {
             marker.options.labelContent = inst.comment;
@@ -175,7 +175,8 @@ function loadArrivals() {
         var marker = {
               id: i,
               coords: {latitude: loc.latitude,
-                      longitude: loc.longitude}
+                      longitude: loc.longitude},
+              options: { label: "V" }
         };
         $scope.markers.push( marker ); 
       }
