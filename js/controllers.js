@@ -98,7 +98,7 @@ function( $scope, $rootScope, $location ) {
 if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
   $location.path('/login');
 }
-
+$scope.swm="";
 $scope.map = { center: { latitude: 53.5, longitude: -2.5 }, zoom: 9 };
 $scope.markers=[];
 $scope.instMarkers=[];
@@ -123,17 +123,21 @@ function loadInstalls() {
   // Get the Customer Installs data from the Parse server
   var query = new Parse.Query(Parse.Installation);
   var usr = Parse.User.current();
-  query.equalTo('vendor', usr);
+  if ($scope.swm=="") {
+    var swm = usr.id;
+  }else{
+    var swm = $scope.swm;
+  }
   //query.equalTo('vanId', vansid);
   /* @Todo: Date range */
   Parse.Cloud.run("getCustInstalls", {
-      userid: usr.id, /* The S is put on by the cloud code; can ignore here */
+      userid: swm, /* The S is put on by the cloud code; can ignore here */
       dateFrom: 0, //$scope.dateFrom,
       dateTo: 0, //$scope.dateTo,
       vanId: 0 //$scope.vanId
   },{
     success:function(res) {
-      console.log(res);
+      //console.log(res);
       for (var i = 0; i < res.length; i++) {
         var inst = res[i];
         if (inst.coords && inst.coords.latitude) {
@@ -161,7 +165,12 @@ function loadArrivals() {
   // Get the Arrivals data from the Parse server
   var Arrival = Parse.Object.extend("Arrival");
   var query = new Parse.Query(Arrival);
-  var usr = Parse.User.current();
+  if ($scope.swm=="") {
+    var usr = Parse.User.current();
+  }else{
+    var usr=new Parse.User();
+    usr.id = $scope.swm;
+  }
   query.equalTo('vendor', usr);
   //query.equalTo('vanId', vansid);
   /* @Todo: Date range */
