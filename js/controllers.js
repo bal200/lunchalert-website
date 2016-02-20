@@ -99,7 +99,9 @@ if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
   $location.path('/login');
 }
 $scope.swm="";
-$scope.map = { center: { latitude: 53.5, longitude: -2.5 }, zoom: 9 };
+$scope.map = { center: { latitude: 53.5, longitude: -2.5 },
+               zoom: 9,
+               options: { scaleControl:"true" } };
 $scope.markers=[];
 $scope.instMarkers=[];
 

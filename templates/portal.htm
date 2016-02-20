@@ -1,24 +1,32 @@
 
 <div class="ui main text container">
   <h2 class="ui header">Portal</h2>
-
+  
+  <p>Use the tick boxes at the top of the map to add your data onto the map.</p>
+  <p>Show Customers will add a Red marker for each time the app has been installed on a phone. The
+  location of each marker shows where this customer is registered to receive alerts.  They will
+  only receive an alert from you when the vendor app presses the send button within 50 meters of
+  this point</p>
+  <p>Show Van Arrivals puts a blue marker on the map for each time the vendor app pressed the
+  send button.  The location is where we recorded this press. </p>
+  
   <div class="ui checkbox">
-    <input type="checkbox" name="installations" ng-model="installTick" ng-click="installClick()">
+    <input type="checkbox" name="installations" ng-model="installTick" ng-click="installClick()"/>
     <label>Show Customers (C)</label>
   </div>
   <div class="ui checkbox">
-    <input type="checkbox" name="arrival" ng-model="arrivalTick" ng-click="arrivalClick()">
+    <input type="checkbox" name="arrival" ng-model="arrivalTick" ng-click="arrivalClick()"/>
     <label>Show Van Arrivals (V)</label>
   </div>
   <div class="ui fitted labeled input">
     <div class="ui label">Swm to act as </div>
-    <input type="text" name="swm" ng-model="swm">
+    <input type="text" name="swm" ng-model="swm"/>
   </div>
-
 
   
   <ui-gmap-google-map center="map.center"
-                      zoom="map.zoom">
+                      zoom="map.zoom"
+                      options="map.options">
     
     <ui-gmap-marker ng-repeat="marker in markers"
                     idkey="marker.id"
@@ -36,8 +44,7 @@
   
 
    
-  <p>Lorem Ipsum .... If your work place lunch delivery company is using LunchAlert you&#39;ll need to
-  grab our alerting app for your smartphone. <a href="#/alert">Find out more</a>.</p>
+  <br/>
   <button class="button button-block button-clear button-calm" ng-click="logout()">
       Logout
   </button>
