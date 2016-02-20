@@ -145,7 +145,9 @@ function loadInstalls() {
                 id: i,
                 coords: {latitude: inst.coords.latitude,
                         longitude: inst.coords.longitude},
-                options: {  }
+                options: {
+                  icon: "markers/red_MarkerC.png"
+                }
           };
           if (inst.comment) {
             marker.options.labelContent = inst.comment;
@@ -185,7 +187,10 @@ function loadArrivals() {
               id: i,
               coords: {latitude: loc.latitude,
                       longitude: loc.longitude},
-              options: { label: "V" }
+              options: {
+                /* label: "V", */
+                icon: "markers/blue_MarkerV.png"
+              }
         };
         $scope.markers.push( marker ); 
       }
