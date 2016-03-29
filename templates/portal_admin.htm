@@ -1,0 +1,84 @@
+
+<div class="ui main text container">
+  <h2 class="ui header">Portal (admin)</h2>
+  
+  <p>You can view geographical information about customers and the van rounds here. Use the tick
+  boxes at the top of the map to add your data onto the map.</p>
+  <p>Show Customers will add a Red marker for each time the app has been installed on a phone. The
+  location of each marker shows where this customer is registered to receive alerts.  They will
+  only receive an alert from you when the vendor app presses the send button within 50 meters of
+  this point.</p>
+  <p>Show Van Arrivals puts a blue marker on the map for each time the send button has been pressed
+  in the vendor app.  The location is where we recorded this press. </p>
+  
+  <div class="ui checkbox">
+    <input type="checkbox" name="installations" ng-model="installTick" ng-click="installClick()"/>
+    <label>Show Customers (C)</label>
+  </div>
+  <div class="ui checkbox">
+    <input type="checkbox" name="arrival" ng-model="arrivalTick" ng-click="arrivalClick()"/>
+    <label>Show Van Arrivals (V)</label>
+  </div>
+  <div class="ui fitted labeled input">
+    <div class="ui label">Swm to act as </div>
+    <input type="text" name="swm" ng-model="swm"/>
+  </div>
+
+
+<div class="ui form">
+      <div class="field">
+      <label>Date range</label>
+    </div>
+  <div class="two fields">
+    <div class="field">
+      <div class="ui calendar" id="rangestart">
+        <div class="ui input left icon">
+          <i class="calendar icon"></i>
+          <input type="text" value="{{fromdate}}" placeholder="From date"/>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui calendar" id="rangeend">
+        <div class="ui input left icon">
+          <i class="calendar icon"></i>
+          <input type="text" ng-model="todate" placeholder="To Date"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+  <ui-gmap-google-map center="map.center" zoom="map.zoom"
+                      options="map.options">
+    
+    <ui-gmap-marker ng-repeat="marker in markers" idkey="marker.id"
+                    coords="marker.coords" options="marker.options">
+    </ui-gmap-marker>
+    
+    <ui-gmap-marker ng-repeat="imarker in instMarkers" idkey="imarker.id"
+                    coords="imarker.coords" options="imarker.options" events="imarker.events">
+    </ui-gmap-marker>
+    
+  </ui-gmap-google-map> 
+  
+  <div class="ui checkbox">
+    <input type="checkbox" name="editMode" ng-model="editMode" ng-click="editModeClick()"/>
+    <label>Edit Mode</label>
+  </div>
+   
+  <br/>
+  <button class="button button-block button-clear button-calm" ng-click="logout()">
+      Logout
+  </button>
+  
+
+  
+  
+    
+    
+</div>
+  
+  

@@ -1,5 +1,5 @@
 /*!
- * # Semantic UI 2.1.8 - Site
+ * # Semantic UI 2.1.4 - Site
  * http://github.com/semantic-org/semantic-ui/
  *
  *
@@ -439,6 +439,7 @@ $.site.settings = {
   modules: [
     'accordion',
     'api',
+    'calendar',
     'checkbox',
     'dimmer',
     'dropdown',
@@ -484,4 +485,4 @@ $.extend($.expr[ ":" ], {
 });
 
 
-})( jQuery, window, document );
+})( jQuery, window , document );

@@ -661,8 +661,7 @@ Floated Menu / Item
 }
 
 /* Coupling with segment for attachment */
-.ui.tabular.menu + .attached:not(.top).segment,
-.ui.tabular.menu + .attached:not(.top).segment + .attached:not(.top).segment {
+.ui.tabular.menu + .bottom.attached.segment {
   border-top: none;
   margin: 0px;
   width: 100%;

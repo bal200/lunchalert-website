@@ -40,7 +40,6 @@ $.fn.dropdown = function(parameters) {
         className       = settings.className,
         message         = settings.message,
         fields          = settings.fields,
-        keys            = settings.keys,
         metadata        = settings.metadata,
         namespace       = settings.namespace,
         regExp          = settings.regExp,
@@ -281,7 +280,6 @@ $.fn.dropdown = function(parameters) {
               module.verbose('Adding search input');
               $search = $('<input />')
                 .addClass(className.search)
-                .prop('autocomplete', 'off')
                 .insertBefore($text)
               ;
             }
@@ -413,7 +411,7 @@ $.fn.dropdown = function(parameters) {
             if(module.is.multiple() && !module.has.search() && module.is.allFiltered()) {
               return true;
             }
-            if(module.has.message() && !(module.has.maxSelections() || module.has.allResultsFiltered()) ) {
+            if(module.has.message() && !module.has.maxSelections()) {
               module.remove.message();
             }
             if(settings.onShow.call(element) !== false) {
@@ -668,7 +666,7 @@ $.fn.dropdown = function(parameters) {
               onSuccess : function(response) {
                 module.remove.message();
                 module.setup.menu({
-                  values: response[fields.remoteValues]
+                  values: response.results
                 });
                 callback();
               }
@@ -689,7 +687,7 @@ $.fn.dropdown = function(parameters) {
             searchTerm = (query !== undefined)
               ? query
               : module.get.query(),
-            results          =  null,
+            results         =  null,
             escapedTerm      = module.escape.regExp(searchTerm),
             beginsWithRegExp = new RegExp('^' + escapedTerm, 'igm')
           ;
@@ -733,7 +731,7 @@ $.fn.dropdown = function(parameters) {
           }
           module.debug('Showing only matched items', searchTerm);
           module.remove.filteredItem();
-          if(results) {
+          if(results){
             $item
               .not(results)
               .addClass(className.filtered)
@@ -791,17 +789,13 @@ $.fn.dropdown = function(parameters) {
               : $activeItem,
             hasSelected = ($selectedItem.size() > 0)
           ;
-          if( module.has.query() ) {
-            if(hasSelected) {
-              module.debug('Forcing partial selection to selected item', $selectedItem);
-              module.event.item.click.call($selectedItem);
-              return;
-            }
-            else {
-              module.remove.searchTerm();
-            }
+          if( hasSelected && module.has.query() ) {
+            module.debug('Forcing partial selection to selected item', $selectedItem);
+            module.event.item.click.call($selectedItem);
           }
-          module.hide();
+          else {
+            module.hide();
+          }
         },
 
         event: {
@@ -846,7 +840,6 @@ $.fn.dropdown = function(parameters) {
                 module.remove.activeLabel();
               }
               if(settings.showOnFocus) {
-                module.search();
                 module.show();
               }
             },
@@ -1027,6 +1020,7 @@ $.fn.dropdown = function(parameters) {
             keydown: function(event) {
               var
                 pressedKey    = event.which,
+                keys          = module.get.shortcutKeys(),
                 isShortcutKey = module.is.inObject(pressedKey, keys)
               ;
               if(isShortcutKey) {
@@ -1140,6 +1134,7 @@ $.fn.dropdown = function(parameters) {
           keydown: function(event) {
             var
               pressedKey    = event.which,
+              keys          = module.get.shortcutKeys(),
               isShortcutKey = module.is.inObject(pressedKey, keys)
             ;
             if(isShortcutKey) {
@@ -1163,6 +1158,7 @@ $.fn.dropdown = function(parameters) {
                 isSubMenuItem,
                 newIndex
               ;
+
               // visible menu keyboard shortcuts
               if( module.is.visible() ) {
 
@@ -1299,20 +1295,6 @@ $.fn.dropdown = function(parameters) {
               if( module.is.selection() && !module.is.search() ) {
                 module.set.selectedLetter( String.fromCharCode(pressedKey) );
               }
-            }
-          }
-        },
-
-        trigger: {
-          change: function() {
-            var
-              events       = document.createEvent('HTMLEvents'),
-              inputElement = $input[0]
-            ;
-            if(inputElement) {
-              module.verbose('Triggering native change event');
-              events.initEvent('change', true, false);
-              inputElement.dispatchEvent(events);
             }
           }
         },
@@ -1497,6 +1479,21 @@ $.fn.dropdown = function(parameters) {
               range.moveStart('character', -input.value.length);
               return range.text.length - rangeLength;
             }
+          },
+          shortcutKeys: function() {
+            return {
+              backspace  : 8,
+              delimiter  : 188, // comma
+              deleteKey  : 46,
+              enter      : 13,
+              escape     : 27,
+              pageUp     : 33,
+              pageDown   : 34,
+              leftArrow  : 37,
+              upArrow    : 38,
+              rightArrow : 39,
+              downArrow  : 40
+            };
           },
           value: function() {
             var
@@ -2015,7 +2012,7 @@ $.fn.dropdown = function(parameters) {
             }
             else {
               module.debug('Added tabindex to dropdown');
-              if( $module.attr('tabindex') === undefined) {
+              if(!$module.attr('tabindex') ) {
                 $module
                   .attr('tabindex', 0)
                 ;
@@ -2188,7 +2185,7 @@ $.fn.dropdown = function(parameters) {
                 module.debug('Input native change event ignored on initial load');
               }
               else {
-                module.trigger.change();
+                $input.trigger('change');
               }
               internalChange = false;
             }
@@ -2646,17 +2643,12 @@ $.fn.dropdown = function(parameters) {
             $labels
               .each(function(){
                 var
-                  $label      = $(this),
-                  value       = $label.data(metadata.value),
+                  value       = $(this).data(metadata.value),
                   stringValue = (value !== undefined)
                     ? String(value)
                     : value,
                   isUserValue = module.is.userValue(stringValue)
                 ;
-                if(settings.onLabelRemove.call($label, value) === false) {
-                  module.debug('Label remove callback cancelled removal');
-                  return;
-                }
                 if(isUserValue) {
                   module.remove.value(stringValue);
                   module.remove.label(stringValue);
@@ -2672,19 +2664,19 @@ $.fn.dropdown = function(parameters) {
             if( module.has.search() ) {
               module.debug('Searchable dropdown initialized');
               $search
-                .removeAttr('tabindex')
+                .attr('tabindex', '-1')
               ;
               $menu
-                .removeAttr('tabindex')
+                .attr('tabindex', '-1')
               ;
             }
             else {
               module.debug('Simple selection dropdown initialized');
               $module
-                .removeAttr('tabindex')
+                .attr('tabindex', '-1')
               ;
               $menu
-                .removeAttr('tabindex')
+                .attr('tabindex', '-1')
               ;
             }
           }
@@ -3278,7 +3270,6 @@ $.fn.dropdown.settings = {
 
   onLabelSelect : function($selectedLabels){},
   onLabelCreate : function(value, text) { return $(this); },
-  onLabelRemove : function(value) { return true; },
   onNoResults   : function(searchTerm) { return true; },
   onShow        : function(){},
   onHide        : function(){},
@@ -3320,24 +3311,9 @@ $.fn.dropdown.settings = {
 
   // property names for remote query
   fields: {
-    remoteValues : 'results', // grouping for api results
-    values       : 'values', // grouping for all dropdown values
-    name         : 'name',   // displayed dropdown text
-    value        : 'value'   // actual dropdown value
-  },
-
-  keys : {
-    backspace  : 8,
-    delimiter  : 188, // comma
-    deleteKey  : 46,
-    enter      : 13,
-    escape     : 27,
-    pageUp     : 33,
-    pageDown   : 34,
-    leftArrow  : 37,
-    upArrow    : 38,
-    rightArrow : 39,
-    downArrow  : 40
+    values : 'values', // grouping for all dropdown values
+    name   : 'name',   // displayed dropdown text
+    value  : 'value'   // actual dropdown value
   },
 
   selector : {
@@ -3412,10 +3388,10 @@ $.fn.dropdown.settings.templates = {
   // generates just menu from select
   menu: function(response, fields) {
     var
-      values = response[fields.values] || {},
+      values = response.values || {},
       html   = ''
     ;
-    $.each(values, function(index, option) {
+    $.each(response[fields.values], function(index, option) {
       html += '<div class="item" data-value="' + option[fields.value] + '">' + option[fields.name] + '</div>';
     });
     return html;
@@ -3439,4 +3415,4 @@ $.fn.dropdown.settings.templates = {
 
 };
 
-})( jQuery, window, document );
+})( jQuery, window , document );

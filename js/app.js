@@ -49,6 +49,10 @@ angular.module('lunchalert-website', [
         templateUrl: 'templates/portal.htm',
         controller: 'portalCtrl'
       })
+      .when('/portal_admin', {
+        templateUrl: 'templates/portal_admin.htm',
+        controller: 'portalCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

@@ -1,5 +1,5 @@
 /*!
- * # Semantic UI 2.1.8 - Dimmer
+ * # Semantic UI 2.1.4 - Dimmer
  * http://github.com/semantic-org/semantic-ui/
  *
  *
@@ -690,4 +690,4 @@ $.fn.dimmer.settings = {
 
 };
 
-})( jQuery, window, document );
+})( jQuery, window , document );

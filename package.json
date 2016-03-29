@@ -35,7 +35,7 @@
     "map-stream": "0.0.6",
     "require-dot-file": "^0.4.0",
     "run-sequence": "^1.1.5",
-    "semantic-ui": "^2.1.8",
+    "semantic-ui": "git://github.com/mdehoog/Semantic-UI.git#49178d6",
     "yamljs": "^0.2.4"
   },
   "devDependencies": {}

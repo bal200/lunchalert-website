@@ -268,7 +268,7 @@ $.fn.checkbox = function(parameters) {
           }
           module.debug('Enabling checkbox');
           module.set.enabled();
-          settings.onEnabled.call(input);
+          settings.onEnable.call(input);
         },
 
         disable: function() {
@@ -278,7 +278,7 @@ $.fn.checkbox = function(parameters) {
           }
           module.debug('Disabling checkbox');
           module.set.disabled();
-          settings.onDisabled.call(input);
+          settings.onDisable.call(input);
         },
 
         get: {
@@ -502,15 +502,10 @@ $.fn.checkbox = function(parameters) {
 
         trigger: {
           change: function() {
-            var
-              events       = document.createEvent('HTMLEvents'),
-              inputElement = $input[0]
+            module.verbose('Triggering change event from programmatic change');
+            $input
+              .trigger('change')
             ;
-            if(inputElement) {
-              module.verbose('Triggering native change event');
-              events.initEvent('change', true, false);
-              inputElement.dispatchEvent(events);
-            }
           }
         },
 
@@ -781,8 +776,8 @@ $.fn.checkbox.settings = {
   onDeterminate       : function() {},
   onIndeterminate     : function() {},
 
-  onEnable            : function(){},
-  onDisable           : function(){},
+  onEnabled           : function(){},
+  onDisabled          : function(){},
 
   className       : {
     checked       : 'checked',
@@ -806,4 +801,4 @@ $.fn.checkbox.settings = {
 
 };
 
-})( jQuery, window, document );
+})( jQuery, window , document );

@@ -1,5 +1,5 @@
 /*!
- * # Semantic UI 2.1.8 - API
+ * # Semantic UI 2.1.4 - API
  * http://github.com/semantic-org/semantic-ui/
  *
  *
@@ -213,12 +213,12 @@ $.api = $.fn.api = function(parameters) {
 
           // replace variables
           url = module.add.urlData( url );
+
           // missing url parameters
           if( !url && !module.is.mocked()) {
             return;
           }
 
-          requestSettings.url = settings.base + url;
 
           // look for jQuery ajax parameters in settings
           ajaxSettings = $.extend(true, {}, settings, {
@@ -280,7 +280,7 @@ $.api = $.fn.api = function(parameters) {
             return $module.is('form') || $context.is('form');
           },
           mocked: function() {
-            return (settings.mockResponse || settings.mockResponseAsync || settings.response || settings.responseAsync);
+            return (settings.mockResponse || settings.mockResponseAsync);
           },
           input: function() {
             return $module.is('input');
@@ -592,11 +592,9 @@ $.api = $.fn.api = function(parameters) {
           mockedXHR: function () {
             var
               // xhr does not simulate these properties of xhr but must return them
-              textStatus     = false,
-              status         = false,
-              httpMessage    = false,
-              responder      = settings.mockResponse      || settings.response,
-              asyncResponder = settings.mockResponseAsync || settings.responseAsync,
+              textStatus  = false,
+              status      = false,
+              httpMessage = false,
               asyncCallback,
               response,
               mockedXHR
@@ -608,19 +606,19 @@ $.api = $.fn.api = function(parameters) {
               .fail(module.event.xhr.fail)
             ;
 
-            if(responder) {
-              if( $.isFunction(responder) ) {
-                module.debug('Using specified synchronous callback', responder);
-                response = responder.call(context, requestSettings);
+            if(settings.mockResponse) {
+              if( $.isFunction(settings.mockResponse) ) {
+                module.debug('Using mocked callback returning response', settings.mockResponse);
+                response = settings.mockResponse.call(context, settings);
               }
               else {
-                module.debug('Using settings specified response', responder);
-                response = responder;
+                module.debug('Using specified response', settings.mockResponse);
+                response = settings.mockResponse;
               }
               // simulating response
               mockedXHR.resolveWith(context, [ response, textStatus, { responseText: response }]);
             }
-            else if( $.isFunction(asyncResponder) ) {
+            else if( $.isFunction(settings.mockResponseAsync) ) {
               asyncCallback = function(response) {
                 module.debug('Async callback returned response', response);
 
@@ -631,8 +629,8 @@ $.api = $.fn.api = function(parameters) {
                   mockedXHR.rejectWith(context, [{ responseText: response }, status, httpMessage]);
                 }
               };
-              module.debug('Using specified async response callback', asyncResponder);
-              asyncResponder.call(context, requestSettings, asyncCallback);
+              module.debug('Using async mocked response', settings.mockResponseAsync);
+              settings.mockResponseAsync.call(context, settings, asyncCallback);
             }
             return mockedXHR;
           },
@@ -724,8 +722,8 @@ $.api = $.fn.api = function(parameters) {
               module.error(error.noReturnedValue);
             }
             return (runSettings !== undefined)
-              ? $.extend(true, {}, runSettings)
-              : $.extend(true, {}, settings)
+              ? runSettings
+              : settings
             ;
           },
           urlEncodedValue: function(value) {
@@ -1068,10 +1066,6 @@ $.api.settings = {
   mockResponse      : false,
   mockResponseAsync : false,
 
-  // aliases for mock
-  response          : false,
-  responseAsync     : false,
-
   // callbacks before request
   beforeSend  : function(settings) { return settings; },
   beforeXHR   : function(xhr) {},
@@ -1139,4 +1133,4 @@ $.api.settings = {
 
 
 
-})( jQuery, window, document );
+})( jQuery, window , document );

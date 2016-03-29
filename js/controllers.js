@@ -98,6 +98,8 @@ function( $scope, $rootScope, $location ) {
 if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
   $location.path('/login');
 }
+$scope.fromdate="10/3/2016";
+$scope.todate="5/3/2016";
 $scope.swm="";
 $scope.map = { center: { latitude: 53.5, longitude: -2.5 },
                zoom: 9,
@@ -120,7 +122,16 @@ $scope.installClick = function() {
   }
 }
 
-/********************************* load Installs() *********************************************/
+$('#rangestart').calendar({
+  type: 'date',
+  endCalendar: $('#rangeend')
+});
+$('#rangeend').calendar({
+  type: 'date',
+  startCalendar: $('#rangestart')
+});
+
+/***************************** load Installs(), Customers Markers **************************************/
 function loadInstalls() {
   // Get the Customer Installs data from the Parse server
   var query = new Parse.Query(Parse.Installation);
@@ -139,17 +150,38 @@ function loadInstalls() {
       vanId: 0 //$scope.vanId
   },{
     success:function(res) {
-      //console.log(res);
       for (var i = 0; i < res.length; i++) {
         var inst = res[i];
         if (inst.coords && inst.coords.latitude) {
           var marker = {
-                id: i,
-                coords: {latitude: inst.coords.latitude,
-                        longitude: inst.coords.longitude},
-                options: {
-                  icon: "markers/red_MarkerC.png"
-                }
+            id: i,
+            objectId: inst.objectId,
+            coords: {latitude: inst.coords.latitude,
+                    longitude: inst.coords.longitude},
+            options: {
+              draggable: $scope.editMode,
+              icon: "markers/red_MarkerC.png"
+            },
+            events: {
+              dragend: function (marker, eventName, args) {
+                //console.log(marker);
+                var objectId = marker.model.$parent.imarker.objectId; /* convoluted way, but it works */
+                Parse.Cloud.run("setInstallLocation", {
+                  userid: swm,
+                  objectId: objectId,
+                  lat: marker.getPosition().lat(),
+                  lon: marker.getPosition().lng()
+                },{
+                  success: function(res){
+                    console.log("successfully saved "+res)
+                  },
+                  error: function(err) {
+                    console.log("not able to save change to location: "+err.code+" "+err.message);
+                    alert("not able to save change to location: "+err.code+" "+err.message);
+                  }
+                });
+              }
+            }
           };
           if (inst.comment) {
             marker.options.labelContent = inst.comment;
@@ -158,13 +190,14 @@ function loadInstalls() {
         }
       }
       $scope.$apply();
+
     },
     error: function(err) { alert("get installations error: "+err.code+" "+err.message); }
   });
 
 }
 
-/********************************* load Arrivals() *********************************************/
+/*************************** load Arrivals(), Vendor Markers *****************************************/
 function loadArrivals() {
   // Get the Arrivals data from the Parse server
   var Arrival = Parse.Object.extend("Arrival");
@@ -175,22 +208,30 @@ function loadArrivals() {
     var usr=new Parse.User();
     usr.id = $scope.swm;
   }
+
   query.equalTo('vendor', usr);
   //query.equalTo('vanId', vansid);
-  /* @Todo: Date range */
-
+  /* @Todo: Date range */ 
+  //query.greaterThan("createdAt", new Date(2016,2,24));  //$scope.fromDate));
+  //alert ("from date "+$scope.fromdate);
+  
+  //query.lessThan("createdAt", new Date($scope.toDate));
+  //query.greaterThan("createdAt", new Date($scope.fromDate));
+  //query.lessThan("createdAt", new Date($scope.toDate));
   query.find({
     success: function(res) { 
       //alert("Successfully retrieved " + res.length + " arrival records.");
       for (var i = 0; i < res.length; i++) {
         var object = res[i];
         var loc = object.get('location');
+        //alert("at: "+dateFormat(date(object.createdAt), "dd-mmm-yy hh:MM"));
         var marker = {
               id: i,
               coords: {latitude: loc.latitude,
                       longitude: loc.longitude},
               options: {
                 /* label: "V", */
+                //labelContent: formatDate(new Date(object.createdAt)),
                 icon: "markers/blue_MarkerV.png"
               }
         };
@@ -209,7 +250,13 @@ $scope.logout = function() {
   $location.path('/login');
 };
 
+function formatDate( date ) {
+  var day = date.getDate();
+  var month = date.getMonth();
+  var year = ""+date.getFullYear();
+  return day+"-"+month+"-"+year.substr(-2);
 
+}
 
 
 }]);

@@ -1,5 +1,5 @@
 /*!
- * # Semantic UI 2.1.8 - Grid
+ * # Semantic UI 2.1.4 - Grid
  * http://github.com/semantic-org/semantic-ui/
  *
  *
@@ -148,8 +148,8 @@
 }
 
 /* Segment inside Aligned Grid */
-.ui.grid .aligned.row > .column > .segment:not(.compact):not(.attached),
-.ui.aligned.grid .column > .segment:not(.compact):not(.attached) {
+.ui.grid .aligned.row > .column > .segment:not(.compact),
+.ui.aligned.grid .column > .segment:not(.compact) {
   width: 100%;
 }
 
