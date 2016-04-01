@@ -92,14 +92,13 @@ function( $scope, $rootScope, $location ) {
 }])
 
 
+/******************************** PORTAL CONTROLLER ************************************************/
 .controller('portalCtrl', ['$scope', '$rootScope', '$location',
 function( $scope, $rootScope, $location ) {
 
 if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
   $location.path('/login');
 }
-$scope.fromdate="10/3/2016";
-$scope.todate="5/3/2016";
 $scope.swm="";
 $scope.map = { center: { latitude: 53.5, longitude: -2.5 },
                zoom: 9,
@@ -121,6 +120,23 @@ $scope.installClick = function() {
     $scope.instMarkers = [];
   }
 }
+$scope.editModeClick = function() {
+  $scope.installChange();
+}
+
+$scope.arrivalChange = function() {
+  if ($scope.arrivalTick==true) {
+    $scope.markers = [];
+    loadArrivals();
+  }
+}
+$scope.installChange = function() {
+  if ($scope.installTick==true) {
+    $scope.instMarkers = [];
+    loadInstalls();
+  }
+}
+//$('#todate').onchange = calchange;
 
 $('#rangestart').calendar({
   type: 'date',
@@ -128,7 +144,15 @@ $('#rangestart').calendar({
 });
 $('#rangeend').calendar({
   type: 'date',
-  startCalendar: $('#rangestart')
+  startCalendar: $('#rangestart'),
+  onChange: function() {
+    $scope.arrivalChange();
+    return true;
+  },
+  onHide: function() {
+    //alert("hither");
+    return true;
+  }
 });
 
 /***************************** load Installs(), Customers Markers **************************************/
@@ -210,14 +234,20 @@ function loadArrivals() {
   }
 
   query.equalTo('vendor', usr);
+  /* @Todo: filter by van id? */ 
   //query.equalTo('vanId', vansid);
-  /* @Todo: Date range */ 
-  //query.greaterThan("createdAt", new Date(2016,2,24));  //$scope.fromDate));
-  //alert ("from date "+$scope.fromdate);
+  /* Set a Date range */ 
+  if (document.getElementById('fromdate').value != "") {
+    query.greaterThan("createdAt", new Date(document.getElementById('fromdate').value)); 
+  }
+  if (document.getElementById('todate').value != "") {
+    var d=new Date(document.getElementById('todate').value);
+    d.setHours(23); d.setMinutes(59); d.setSeconds(59); /* needs to be the end of this day to be inclusive */
+    query.lessThan("createdAt", d);
+  }
+  //var d = new Date(document.getElementById('fromdate').value)
+  //alert ("from date "+ d.getDate()+" "+ d.getMonth()+" "+ d.getFullYear() );
   
-  //query.lessThan("createdAt", new Date($scope.toDate));
-  //query.greaterThan("createdAt", new Date($scope.fromDate));
-  //query.lessThan("createdAt", new Date($scope.toDate));
   query.find({
     success: function(res) { 
       //alert("Successfully retrieved " + res.length + " arrival records.");

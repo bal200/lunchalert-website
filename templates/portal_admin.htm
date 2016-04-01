@@ -11,6 +11,8 @@
   <p>Show Van Arrivals puts a blue marker on the map for each time the send button has been pressed
   in the vendor app.  The location is where we recorded this press. </p>
   
+  <p>The date range is just for the Van Arrivals data.  The dates are inclusive.</p>
+  
   <div class="ui checkbox">
     <input type="checkbox" name="installations" ng-model="installTick" ng-click="installClick()"/>
     <label>Show Customers (C)</label>
@@ -34,7 +36,7 @@
       <div class="ui calendar" id="rangestart">
         <div class="ui input left icon">
           <i class="calendar icon"></i>
-          <input type="text" value="{{fromdate}}" placeholder="From date"/>
+          <input type="text" id="fromdate" placeholder="From date"/>
         </div>
       </div>
     </div>
@@ -42,7 +44,7 @@
       <div class="ui calendar" id="rangeend">
         <div class="ui input left icon">
           <i class="calendar icon"></i>
-          <input type="text" ng-model="todate" placeholder="To Date"/>
+          <input type="text" id="todate"  placeholder="To Date"/>
         </div>
       </div>
     </div>
