@@ -1,6 +1,6 @@
 angular.module('pageCtrl',[])
-.controller('pageCtrl', ['$scope',
-function($scope) {
+.controller('pageCtrl', ['$scope', '$location',
+function($scope, $location) {
  
   $scope.selectChange = function() {
     switch ($scope.vans) {
@@ -39,8 +39,9 @@ function($scope) {
     }else{
       $scope.summary="";
     }
-    
   }
+  
+  $location.path('/login');
   
 }])
 
@@ -127,6 +128,7 @@ $scope.editModeClick = function() {
 $scope.arrivalChange = function() {
   if ($scope.arrivalTick==true) {
     $scope.markers = [];
+    //$scope.$apply();
     loadArrivals();
   }
 }
@@ -146,7 +148,11 @@ $('#rangeend').calendar({
   type: 'date',
   startCalendar: $('#rangestart'),
   onChange: function() {
+    
+   $scope.$apply(function() {
     $scope.arrivalChange();
+    $scope.installChange();
+   });
     return true;
   },
   onHide: function() {
@@ -167,10 +173,19 @@ function loadInstalls() {
   }
   //query.equalTo('vanId', vansid);
   /* @Todo: Date range */
+  var fromDate=null, toDate=null;
+  if (document.getElementById('fromdate').value != "") {
+    fromDate=new Date(document.getElementById('fromdate').value); 
+  }
+  if (document.getElementById('todate').value != "") {
+    toDate=new Date(document.getElementById('todate').value);
+    toDate.setHours(23); toDate.setMinutes(59); toDate.setSeconds(59); /* needs to be the end of this day to be inclusive */
+  }
+  
   Parse.Cloud.run("getCustInstalls", {
       userid: swm, /* The S is put on by the cloud code; can ignore here */
-      dateFrom: 0, //$scope.dateFrom,
-      dateTo: 0, //$scope.dateTo,
+      dateFrom: fromDate, //$scope.dateFrom,
+      dateTo: toDate, //$scope.dateTo,
       vanId: 0 //$scope.vanId
   },{
     success:function(res) {
@@ -267,7 +282,7 @@ function loadArrivals() {
         };
         $scope.markers.push( marker ); 
       }
-      $scope.$apply();
+      //$scope.$apply();
     },
     error: function(err) { alert("get arrivals error: "+err.code+" "+err.message); }
   });
