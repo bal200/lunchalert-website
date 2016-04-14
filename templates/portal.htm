@@ -13,39 +13,40 @@
   
   <p>The date range will filter the Van Arrivals to a certain period, and also filter the Customers
   by their install date.  The dates are inclusive.</p>
-  
-  <div class="ui checkbox">
-    <input type="checkbox" name="installations" ng-model="installTick" ng-click="installClick()"/>
-    <label>Show Customers (C)</label>
-  </div>
-  <div class="ui checkbox">
-    <input type="checkbox" name="arrival" ng-model="arrivalTick" ng-click="arrivalClick()"/>
-    <label>Show Van Arrivals (V)</label>
-  </div>
-  
+
   <div class="ui form">
+    <div class="two fields">
       <div class="field">
-      <label>Date range</label>
-    </div>
-  <div class="two fields">
-    <div class="field">
-      <div class="ui calendar" id="rangestart">
-        <div class="ui input left icon">
-          <i class="calendar icon"></i>
-          <input type="text" id="fromdate" placeholder="From date"/>
-        </div>
+      <div class="ui checkbox">
+        <input type="checkbox" name="installations" ng-model="installTick" ng-click="installClick()"/>
+        <label>Show Customers (C)</label>
+      </div>
+      </div>
+      <div class="field">
+      <div class="ui checkbox">
+        <input type="checkbox" name="arrival" ng-model="arrivalTick" ng-click="arrivalClick()"/>
+        <label>Show Van Arrivals (V)</label>
+      </div>
       </div>
     </div>
+  
     <div class="field">
-      <div class="ui calendar" id="rangeend">
-        <div class="ui input left icon">
-          <i class="calendar icon"></i>
-          <input type="text" id="todate"  placeholder="To Date"/>
-        </div>
+      <label><i class="calendar icon"></i> Date range</label>
+    </div>
+    <div class="two fields">
+      <div class="field">
+            <ng-datepicker ng-model="fromDate" ng-change="dateChange()" placeholder="Date From">
+            </ng-datepicker>
+            <!--       <input type="text" id="fromdate" placeholder="From date"/>   -->
+      </div>
+      <div class="field">
+            <ng-datepicker ng-model="toDate" ng-change="dateChange()" placeholder="Date To">
+            </ng-datepicker>
       </div>
     </div>
+  
+    <span style="display: block; margin-top: 4px;"></span>
   </div>
-</div>
 
   
   <ui-gmap-google-map center="map.center" zoom="map.zoom"
@@ -66,8 +67,6 @@
   <button class="button button-block button-clear button-calm" ng-click="logout()">
       Logout
   </button>
-  
-
   
   
     

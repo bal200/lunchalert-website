@@ -1,4 +1,4 @@
-angular.module('pageCtrl',[])
+angular.module('pageCtrl',['jkuri.datepicker'])
 .controller('pageCtrl', ['$scope', '$location',
 function($scope, $location) {
  
@@ -138,28 +138,33 @@ $scope.installChange = function() {
     loadInstalls();
   }
 }
-//$('#todate').onchange = calchange;
-
-$('#rangestart').calendar({
-  type: 'date',
-  endCalendar: $('#rangeend')
-});
-$('#rangeend').calendar({
-  type: 'date',
-  startCalendar: $('#rangestart'),
-  onChange: function() {
-    
-   $scope.$apply(function() {
+$scope.dateChange = function() {
     $scope.arrivalChange();
     $scope.installChange();
-   });
-    return true;
-  },
-  onHide: function() {
-    //alert("hither");
-    return true;
-  }
-});
+}
+
+//$('#todate').onchange = calchange;
+
+//$('#rangestart').calendar({
+//  type: 'date',
+//  endCalendar: $('#rangeend')
+//});
+//$('#rangeend').calendar({
+//  type: 'date',
+//  startCalendar: $('#rangestart'),
+//  onChange: function() {
+//    
+//   $scope.$apply(function() {
+//    $scope.arrivalChange();
+//    $scope.installChange();
+//   });
+//    return true;
+//  },
+//  onHide: function() {
+//    //alert("hither");
+//    return true;
+//  }
+//});
 
 /***************************** load Installs(), Customers Markers **************************************/
 function loadInstalls() {
@@ -174,11 +179,12 @@ function loadInstalls() {
   //query.equalTo('vanId', vansid);
   /* @Todo: Date range */
   var fromDate=null, toDate=null;
-  if (document.getElementById('fromdate').value != "") {
-    fromDate=new Date(document.getElementById('fromdate').value); 
+  if ($scope.fromDate!=null & $scope.fromDate!="") {
+    //alert("scope.fromDate "+$scope.fromDate);
+    fromDate=new Date($scope.fromDate); 
   }
-  if (document.getElementById('todate').value != "") {
-    toDate=new Date(document.getElementById('todate').value);
+  if ($scope.toDate!=null & $scope.toDate!="") {
+    toDate=new Date($scope.toDate);
     toDate.setHours(23); toDate.setMinutes(59); toDate.setSeconds(59); /* needs to be the end of this day to be inclusive */
   }
   
@@ -252,11 +258,11 @@ function loadArrivals() {
   /* @Todo: filter by van id? */ 
   //query.equalTo('vanId', vansid);
   /* Set a Date range */ 
-  if (document.getElementById('fromdate').value != "") {
-    query.greaterThan("createdAt", new Date(document.getElementById('fromdate').value)); 
+  if ($scope.fromDate!=null & $scope.fromDate!="") {
+    query.greaterThan("createdAt", new Date($scope.fromDate)); 
   }
-  if (document.getElementById('todate').value != "") {
-    var d=new Date(document.getElementById('todate').value);
+  if ($scope.toDate!=null & $scope.toDate!="") {
+    var d=new Date($scope.toDate);
     d.setHours(23); d.setMinutes(59); d.setSeconds(59); /* needs to be the end of this day to be inclusive */
     query.lessThan("createdAt", d);
   }
