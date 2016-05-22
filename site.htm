@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-    
+
     <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
     <script src="semantic/dist/semantic.min.js"></script>
 
     <link rel="shortcut icon" href="images/icon.png">
-    
+
   <style type="text/css">
   body {
     background-color: #FFFFFF;
@@ -32,22 +32,26 @@
     background-repeat: no-repeat;
     background-position: center top;
     height: 200px;
-    
+
   }
   h2 {
-    line-height: 1.5;
-    margin-bottom: 2em;
+    margin-top: 2em;
   }
   p {
-    line-height: 1.8;
     margin-bottom: 2em;
   }
   h3 {
-    line-height: 1.8;
-    margin-bottom: 1.2em;
+    margin-top: 1.2em;
   }
   .telno {
     font-size: 140%;
+  }
+
+  .contact label {
+    display: block;
+  }
+  .contact input {
+    width: 100%;
   }
   </style>
 </head>
@@ -85,13 +89,33 @@ outside their work place.</p>
 <p>The customer app is available on the App store and Goole Play store, and is free to download and use.</p>
 <h3>Send Offers</h3>
 <p>You can send messages to all your LunchAlert using customers through the app, if you are running an offer or other marketing campaign.  Please speak to us if you have a message you’d like to send, and we can push a notification out at a time of your choice directly to all your customers.</p>
-<h3>Contact</h3>
-<p>We'd love to answer all your questions about how LunchAlert can help your business. Fill in your contact details and we'll be in touch shortly.</p>
-<p>Or alternatively give Ashley a ring on: 07999 797165</p>
 
 
-  </div>
-  
+
+<div class="contact">
+  <h2>Contact</h2>
+  <p>We'd love to answer all your questions about how LunchAlert can help your business. Fill in your contact details and we'll be in touch shortly.</p>
+  <p>Or alternatively give Ashley a ring on: 07999 797165</p>
+                                               <form action="https://service.capsulecrm.com/service/newlead" method="post">
+<fieldset>
+<input type="hidden" name="FORM_ID" value="f202662b-1a5f-437e-8e8b-d9629a52e550">
+<input type="hidden" name="TAG" value="Lead">
+<input type="hidden" name="CUSTOMFIELD[Lead Source]" value="website">
+<input type="hidden" name="COMPLETE_URL" value="http://lunchalert.me/contact/thanks">
+<p><label for="firstNameId">First name:</label> <input id="firstNameId" type="text" name="FIRST_NAME"></p>
+<p><label for="lastNameId">Last name:</label> <input id="lastNameId" type="text" name="LAST_NAME"></p>
+<p><label for="organisationId">Your Company:</label> <input id="organisationId" type="text" name="ORGANISATION_NAME"></p>
+<p><label for="phoneId">Contact Phone:</label> <input id="phoneId" type="text" name="PHONE[WORK]"></p>
+<p><label for="emailId">Email Address:</label> <input id="emailId" type="text" name="EMAIL"></p>
+<p><label for="noteId">Message:</label><br/><textarea id="noteId" name="NOTE" rows="4" cols="90"></textarea></p>
+<input type="submit" value="Submit"/>
+</fieldset>
+
+<!--<input type="hidden" name="DEVELOPER" value="TRUE"/>-->
+</form>
+</div>
+
+</div>
   <div class="ui inverted vertical footer segment">
     <div class="ui center aligned container">
       <div class="ui stackable inverted divided grid">
@@ -111,9 +135,7 @@ outside their work place.</p>
       <div class="ui inverted section divider"></div>
       <img src="images/lunchalerticon.png" class="ui centered mini image">
       <div class="ui horizontal inverted small divided link list">
-        <a class="item" href="http://lunchalert.me/">Main Website</a>
         <a class="item" href="#/portal">Portal</a>
-        <a class="item" href="#/portal">Maps</a>
       </div>
     </div>
   </div>
