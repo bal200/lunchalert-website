@@ -63,18 +63,12 @@ function( $scope, $rootScope, $location ) {
         $rootScope.isLoggedIn = true;
         
         $location.path("/portal");
+        $scope.$apply();
       },
       error: function(user, err) {
         // The login failed. Check error to see why.
-        if (err.code == 101) {
-          alert('Login failed');
-        } else if (err.code == 100) {
-          alert('No internet connection');
-        } else {
-          alert ( 'An unexpected error has ' +
-              'occurred. Code '+err.code + ' ' + err.message);
-          console.log('Login failed: ' + err.message);
-        }
+        $scope.error.message = err.message;
+        console.log('Login failed: '+err.code +" "+ err.message);
         $scope.$apply();
       }
     });
