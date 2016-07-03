@@ -67,7 +67,7 @@
     padding: 10px 20px;
   }
 
-
+  /******** Benefits list *********/
   .benefits-list h3 {
     text-align: center;
   }
@@ -76,14 +76,25 @@
     margin-bottom: 15px;
     background-color: #f8f8f9;
   }
+    
   
-  .benefits-list p.icon-square colour1 {
+  /*********** Testimonials ************/
+  .testimonial p.quote {
+    font-style: italic;
+    margin-bottom: 40px;
+  }
 
-  }   
-  
-  
+  .testimonial span {
+    font-size: 70%;
+    color: #050505;
+    font-style:normal;
+  }
   
   .clearfix {
     overflow: auto;
   }
-   
+
+
+
+
+
