@@ -49,6 +49,7 @@
   .contact input {
     width: 100%;
   }
+  
   .float-box {
     /* float: right; */
     /* border: solid 2px;
@@ -61,17 +62,25 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   margin-bottom: 35px;
   }
-div.polaroid {
-  width: 80%;
-  background-color: white;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  margin-bottom: 25px;
-}
+  .float-box-text {
+    text-align: center;
+    padding: 10px 20px;
+  }
 
-.float-box-text {
-  text-align: center;
-  padding: 10px 20px;
-}
+
+  .benefits-list h3 {
+    text-align: center;
+  }
+  .benefits-list p.icon-square {
+    text-align: center;
+    margin-bottom: 15px;
+    background-color: #f8f8f9;
+  }
+  
+  .benefits-list p.icon-square colour1 {
+
+  }   
+  
   
   
   .clearfix {
