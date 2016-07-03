@@ -76,9 +76,12 @@
     margin-bottom: 15px;
     background-color: #f8f8f9;
   }
-    
+  
   
   /*********** Testimonials ************/
+  .testimonial {
+    overflow:auto;
+  }
   .testimonial p.quote {
     font-style: italic;
     margin-bottom: 40px;
