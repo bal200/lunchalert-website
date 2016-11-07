@@ -228,6 +228,7 @@ function loadInstalls() {
           $scope.instMarkers.push( marker );
         }
       }
+      console.log("Got "+res.length+" Installs results.");
       $scope.$apply();
 
     },
@@ -263,6 +264,8 @@ function loadArrivals() {
   //var d = new Date(document.getElementById('fromdate').value)
   //alert ("from date "+ d.getDate()+" "+ d.getMonth()+" "+ d.getFullYear() );
   
+  query.limit(1000);  /* default is 100, but we need as many results as we can */
+
   query.find({
     success: function(res) { 
       //alert("Successfully retrieved " + res.length + " arrival records.");
@@ -282,6 +285,7 @@ function loadArrivals() {
         };
         $scope.markers.push( marker ); 
       }
+      console.log("Got "+res.length+" arrivals results.");
       //$scope.$apply();
     },
     error: function(err) { alert("get arrivals error: "+err.code+" "+err.message); }
