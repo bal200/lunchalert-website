@@ -11,9 +11,9 @@ angular.module('lunchalert-website', [
     /* LIVE */
     applicationId: "MSfWHKif25kvcuMPxAhGBjfd7Aie1xyDe7WN6Myt",
     javascriptKey: "j1RTaGUP0kdj5c8iidSfrXeB7omaODiEijrDdzuC"
-    
+
 })
-    
+
 .config(['$routeProvider',
   function($routeProvider) {
     $routeProvider
@@ -53,6 +53,10 @@ angular.module('lunchalert-website', [
         templateUrl: 'templates/portal_admin.htm',
         controller: 'portalCtrl'
       })
+      .when('/portal_edit', {
+        templateUrl: 'templates/portal_edit.htm',
+        controller: 'portalCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
@@ -60,7 +64,7 @@ angular.module('lunchalert-website', [
 ])
 
 .run(function ($rootScope, ParseConfiguration) {
-			
+
       Parse.initialize(ParseConfiguration.applicationId, ParseConfiguration.javascriptKey);
 			var currentUser = Parse.User.current();
 			$rootScope.user = null;
@@ -77,5 +81,3 @@ var mapReady=false;
 function initMap(){
   mapReady=true;
 }
-
-

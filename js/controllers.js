@@ -1,7 +1,7 @@
 angular.module('pageCtrl',['jkuri.datepicker'])
 .controller('pageCtrl', ['$scope', '$location',
 function($scope, $location) {
- 
+
   $scope.selectChange = function() {
     switch ($scope.vans) {
       case "1":
@@ -40,9 +40,9 @@ function($scope, $location) {
       $scope.summary="";
     }
   }
-  
+
   $location.path('/login');
-  
+
 }])
 
 
@@ -61,8 +61,12 @@ function( $scope, $rootScope, $location ) {
       success: function(user) {
         $rootScope.user = user;
         $rootScope.isLoggedIn = true;
-        
-        $location.path("/portal");
+
+        if (user.id == 'oQYkaXWmop'){
+          $location.path("/portal_edit");
+        }else{
+          $location.path("/portal");
+        }
         $scope.$apply();
       },
       error: function(user, err) {
@@ -147,7 +151,7 @@ $scope.dateChange = function() {
 //  type: 'date',
 //  startCalendar: $('#rangestart'),
 //  onChange: function() {
-//    
+//
 //   $scope.$apply(function() {
 //    $scope.arrivalChange();
 //    $scope.installChange();
@@ -175,13 +179,13 @@ function loadInstalls() {
   var fromDate=null, toDate=null;
   if ($scope.fromDate!=null & $scope.fromDate!="") {
     //alert("scope.fromDate "+$scope.fromDate);
-    fromDate=new Date($scope.fromDate); 
+    fromDate=new Date($scope.fromDate);
   }
   if ($scope.toDate!=null & $scope.toDate!="") {
     toDate=new Date($scope.toDate);
     toDate.setHours(23); toDate.setMinutes(59); toDate.setSeconds(59); /* needs to be the end of this day to be inclusive */
   }
-  
+
   Parse.Cloud.run("getCustInstalls", {
       userid: swm, /* The S is put on by the cloud code; can ignore here */
       dateFrom: fromDate, //$scope.dateFrom,
@@ -250,11 +254,11 @@ function loadArrivals() {
   }
 
   query.equalTo('vendor', usr);
-  /* @Todo: filter by van id? */ 
+  /* @Todo: filter by van id? */
   //query.equalTo('vanId', vansid);
-  /* Set a Date range */ 
+  /* Set a Date range */
   if ($scope.fromDate!=null & $scope.fromDate!="") {
-    query.greaterThan("createdAt", new Date($scope.fromDate)); 
+    query.greaterThan("createdAt", new Date($scope.fromDate));
   }
   if ($scope.toDate!=null & $scope.toDate!="") {
     var d=new Date($scope.toDate);
@@ -263,11 +267,11 @@ function loadArrivals() {
   }
   //var d = new Date(document.getElementById('fromdate').value)
   //alert ("from date "+ d.getDate()+" "+ d.getMonth()+" "+ d.getFullYear() );
-  
+
   query.limit(1000);  /* default is 100, but we need as many results as we can */
 
   query.find({
-    success: function(res) { 
+    success: function(res) {
       //alert("Successfully retrieved " + res.length + " arrival records.");
       for (var i = 0; i < res.length; i++) {
         var object = res[i];
@@ -283,7 +287,7 @@ function loadArrivals() {
                 icon: "markers/blue_MarkerV.png"
               }
         };
-        $scope.markers.push( marker ); 
+        $scope.markers.push( marker );
       }
       console.log("Got "+res.length+" arrivals results.");
       //$scope.$apply();
@@ -309,11 +313,3 @@ function formatDate( date ) {
 
 
 }]);
-
-
-
-
-
-
-
-
