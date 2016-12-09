@@ -15,7 +15,7 @@
   by their install date.  The dates are inclusive.</p>
 
   <div class="ui form">
-    <div class="two fields">
+    <div class="three fields">
       <div class="field">
       <div class="ui checkbox">
         <input type="checkbox" name="installations" ng-model="installTick" ng-click="installClick()"/>
@@ -28,7 +28,14 @@
         <label>Show Van Arrivals (V)</label>
       </div>
       </div>
+      <div class="field">
+        <select class="ui dropdown" ng-model="vanId" ng-change="vanChange()">
+          <option value="">All Vans</option>
+          <option ng-repeat="van in vanList" value="{{van.vanId}}">{{van.name}} - vanId {{van.vanIdCrop}}</option>
+        </select>
+      </div>
     </div>
+
 
     <div class="field">
       <label><i class="calendar icon"></i> Date range</label>

@@ -1,7 +1,7 @@
 
 <div class="ui main text container">
   <h2 class="ui header">Portal Maps (admin)</h2>
-  
+
   <p>You can view geographical information about customers and the van rounds here. Use the tick
   boxes at the top of the map to add your data onto the map.</p>
   <p>Show Customers will add a Red marker for each time the app has been installed on a phone. The
@@ -10,24 +10,35 @@
   this point.</p>
   <p>Show Van Arrivals puts a blue marker on the map for each time the send button has been pressed
   in the vendor app.  The location is where we recorded this press. </p>
-  
-  <p>The date range is just for the Van Arrivals data.  The dates are inclusive.</p>
-  
-  <div class="ui checkbox">
-    <input type="checkbox" name="installations" ng-model="installTick" ng-click="installClick()"/>
-    <label>Show Customers (C)</label>
-  </div>
-  <div class="ui checkbox">
-    <input type="checkbox" name="arrival" ng-model="arrivalTick" ng-click="arrivalClick()"/>
-    <label>Show Van Arrivals (V)</label>
-  </div>
-  <div class="ui fitted labeled input">
-    <div class="ui label">Swm to act as </div>
-    <input type="text" name="swm" ng-model="swm"/>
-  </div>
 
-
+  <p>The date range will filter the Van Arrivals to a certain period, and also filter the Customers
+  by their install date.  The dates are inclusive.</p>
   <div class="ui form">
+    <div class="ui fitted labeled input">
+      <div class="ui label">Swm to act as </div>
+      <input type="text" name="swm" ng-model="swm" ng-keyup="$event.keyCode == 13 && populateVanList()"/>
+    </div>
+    <br/>
+    <div class="three fields">
+      <div class="field">
+      <div class="ui checkbox">
+        <input type="checkbox" name="installations" ng-model="installTick" ng-click="installClick()"/>
+        <label>Show Customers (C)</label>
+      </div></div>
+      <div class="field">
+      <div class="ui checkbox">
+        <input type="checkbox" name="arrival" ng-model="arrivalTick" ng-click="arrivalClick()"/>
+        <label>Show Van Arrivals (V)</label>
+      </div></div>
+      <div class="field">
+        <select class="ui dropdown" ng-model="vanId" ng-change="vanChange()">
+          <option value="">All Vans</option>
+          <option ng-repeat="van in vanList" value="{{van.vanId}}">{{van.name}} - vanId {{van.vanIdCrop}}</option>
+        </select>
+      </div>
+    </div>
+
+
     <div class="field">
       <label><i class="calendar icon"></i> Date range</label>
     </div>
@@ -42,39 +53,37 @@
             </ng-datepicker>
       </div>
     </div>
-  
+
   <span style="display: block; margin-top: 4px;"></span>
   </div>
 
 
-  
+
   <ui-gmap-google-map center="map.center" zoom="map.zoom"
                       options="map.options">
-    
+
     <ui-gmap-marker ng-repeat="marker in markers" idkey="marker.id"
                     coords="marker.coords" options="marker.options">
     </ui-gmap-marker>
-    
+
     <ui-gmap-marker ng-repeat="imarker in instMarkers" idkey="imarker.id"
                     coords="imarker.coords" options="imarker.options" events="imarker.events">
     </ui-gmap-marker>
-    
-  </ui-gmap-google-map> 
-  
+
+  </ui-gmap-google-map>
+
   <div class="ui checkbox">
     <input type="checkbox" name="editMode" ng-model="editMode" ng-click="editModeClick()"/>
     <label>Edit Mode</label>
   </div>
-   
-   
+
+
   <br/>
   <br/>
   <button class="ui button" ng-click="logout()">
     Logout
   </button>
-  
-  
+
+
 
 </div>
-  
-  

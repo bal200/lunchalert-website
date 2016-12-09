@@ -140,29 +140,34 @@ $scope.dateChange = function() {
     $scope.arrivalChange();
     $scope.installChange();
 }
+$scope.vanChange = function() {
+    $scope.arrivalChange();
+}
 
-//$('#todate').onchange = calchange;
+/* Call to populate the Van list */
+$scope.populateVanList = function() {
+  var usrObj = Parse.User.current();
+  if ($scope.swm=="") {
+    var swm = usrObj.id;
+  }else{
+    var swm = $scope.swm;
+  }
+  Parse.Cloud.run("getVanList", {
+      userid: swm /* */
+      //vanId: 0 //$scope.vanId
+  },{
+    success:function(res) {
+      $scope.$apply(function () {
+        $scope.vanList=res;
 
-//$('#rangestart').calendar({
-//  type: 'date',
-//  endCalendar: $('#rangeend')
-//});
-//$('#rangeend').calendar({
-//  type: 'date',
-//  startCalendar: $('#rangestart'),
-//  onChange: function() {
-//
-//   $scope.$apply(function() {
-//    $scope.arrivalChange();
-//    $scope.installChange();
-//   });
-//    return true;
-//  },
-//  onHide: function() {
-//    //alert("hither");
-//    return true;
-//  }
-//});
+        console.log("Got the Van list, "+res.length+" results.");
+      });
+    },
+    error: function(err) { alert("get Vans error: "+err.code+" "+err.message); }
+  });
+}
+
+$scope.populateVanList();
 
 /***************************** load Installs(), Customers Markers **************************************/
 function loadInstalls() {
@@ -254,8 +259,7 @@ function loadArrivals() {
   }
 
   query.equalTo('vendor', usr);
-  /* @Todo: filter by van id? */
-  //query.equalTo('vanId', vansid);
+
   /* Set a Date range */
   if ($scope.fromDate!=null & $scope.fromDate!="") {
     query.greaterThan("createdAt", new Date($scope.fromDate));
@@ -264,6 +268,9 @@ function loadArrivals() {
     var d=new Date($scope.toDate);
     d.setHours(23); d.setMinutes(59); d.setSeconds(59); /* needs to be the end of this day to be inclusive */
     query.lessThan("createdAt", d);
+  }
+  if ($scope.vanId!=null & $scope.vanId!="") {
+    query.equalTo('vanId', $scope.vanId);
   }
   //var d = new Date(document.getElementById('fromdate').value)
   //alert ("from date "+ d.getDate()+" "+ d.getMonth()+" "+ d.getFullYear() );
