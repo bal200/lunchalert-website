@@ -294,6 +294,10 @@ function loadArrivals() {
                 icon: "markers/blue_MarkerV.png"
               }
         };
+        if ($scope.showArrivalTimes == true) {
+          var d=new Date(object.createdAt)
+          marker.options.labelContent = ""+d.getHours()+":"+d.getMinutes();
+        }
         $scope.markers.push( marker );
       }
       console.log("Got "+res.length+" arrivals results.");
