@@ -1,6 +1,6 @@
 {
   "name": "parse",
-  "version": "1.3.4",
+  "version": "1.6.14",
   "main": [
     "parse.min.js"
   ],
@@ -10,7 +10,8 @@
     "api",
     "js"
   ],
-  "ignore":[
-    "download_latest.sh"
+  "ignore": [
+    "download_latest.sh",
+    "download_npm.sh"
   ]
 }

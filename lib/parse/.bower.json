@@ -1,6 +1,6 @@
 {
   "name": "parse",
-  "version": "1.3.4",
+  "version": "1.6.14",
   "main": [
     "parse.min.js"
   ],
@@ -11,17 +11,17 @@
     "js"
   ],
   "ignore": [
-    "download_latest.sh"
+    "download_latest.sh",
+    "download_npm.sh"
   ],
   "homepage": "https://github.com/rabidaudio/bower-parse",
-  "_release": "1.3.4",
+  "_release": "1.6.14",
   "_resolution": {
     "type": "version",
-    "tag": "v1.3.4",
-    "commit": "644568fbbe0a62c2ceaab74ff93386b4616c77e4"
+    "tag": "v1.6.14",
+    "commit": "93b56bf884d0967b22bd016b049d0509ebbed2db"
   },
-  "_source": "git://github.com/rabidaudio/bower-parse.git",
-  "_target": "~1.3.4",
-  "_originalSource": "parse",
-  "_direct": true
+  "_source": "https://github.com/rabidaudio/bower-parse.git",
+  "_target": "~1.6.14",
+  "_originalSource": "parse"
 }

@@ -10,8 +10,8 @@ angular.module('lunchalert-website', [
     //javascriptKey: "gXgY9Kf8wafGGU3WghwqrEWMfbrl7oi7e27om7J6"
     /* LIVE */
     applicationId: "MSfWHKif25kvcuMPxAhGBjfd7Aie1xyDe7WN6Myt",
-    javascriptKey: "j1RTaGUP0kdj5c8iidSfrXeB7omaODiEijrDdzuC"
-
+    javascriptKey: "j1RTaGUP0kdj5c8iidSfrXeB7omaODiEijrDdzuC",
+		serverURL:     "https://parseapi.back4app.com/"  /* parse server to connect to */
 })
 
 .config(['$routeProvider',
@@ -66,7 +66,8 @@ angular.module('lunchalert-website', [
 .run(function ($rootScope, ParseConfiguration) {
 
       Parse.initialize(ParseConfiguration.applicationId, ParseConfiguration.javascriptKey);
-			var currentUser = Parse.User.current();
+      Parse.serverURL = ParseConfiguration.serverURL;
+      var currentUser = Parse.User.current();
 			$rootScope.user = null;
 			$rootScope.isLoggedIn = false;
 

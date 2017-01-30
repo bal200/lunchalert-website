@@ -95,232 +95,232 @@ function( $scope, $rootScope, $location ) {
 .controller('portalCtrl', ['$scope', '$rootScope', '$location',
 function( $scope, $rootScope, $location ) {
 
-if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
-  $location.path('/login');
-}
-$scope.swm="";
-$scope.map = { center: { latitude: 53.5, longitude: -2.5 },
-               zoom: 9,
-               options: { scaleControl:"true" } };
-$scope.markers=[];
-$scope.instMarkers=[];
+  if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
+    $location.path('/login');
+  }
+  $scope.swm="";
+  $scope.map = { center: { latitude: 53.5, longitude: -2.5 },
+                 zoom: 9,
+                 options: { scaleControl:"true" } };
+  $scope.markers=[];
+  $scope.instMarkers=[];
 
-$scope.arrivalClick = function() {
-  if ($scope.arrivalTick==true) {
-    loadArrivals();
-  }else{
-    $scope.markers = [];
+  $scope.arrivalClick = function() {
+    if ($scope.arrivalTick==true) {
+      loadArrivals();
+    }else{
+      $scope.markers = [];
+    }
   }
-}
-$scope.installClick = function() {
-  if ($scope.installTick==true) {
-    loadInstalls();
-  }else{
-    $scope.instMarkers = [];
+  $scope.installClick = function() {
+    if ($scope.installTick==true) {
+      loadInstalls();
+    }else{
+      $scope.instMarkers = [];
+    }
   }
-}
-$scope.editModeClick = function() {
-  $scope.installChange();
-}
-
-$scope.arrivalChange = function() {
-  if ($scope.arrivalTick==true) {
-    $scope.markers = [];
-    //$scope.$apply();
-    loadArrivals();
-  }
-}
-$scope.installChange = function() {
-  if ($scope.installTick==true) {
-    $scope.instMarkers = [];
-    loadInstalls();
-  }
-}
-$scope.dateChange = function() {
-    $scope.arrivalChange();
+  $scope.editModeClick = function() {
     $scope.installChange();
-}
-$scope.vanChange = function() {
-    $scope.arrivalChange();
-}
-
-/* Call to populate the Van list */
-$scope.populateVanList = function() {
-  var usrObj = Parse.User.current();
-  if ($scope.swm=="") {
-    var swm = usrObj.id;
-  }else{
-    var swm = $scope.swm;
-  }
-  Parse.Cloud.run("getVanList", {
-      userid: swm /* */
-      //vanId: 0 //$scope.vanId
-  },{
-    success:function(res) {
-      $scope.$apply(function () {
-        $scope.vanList=res;
-
-        console.log("Got the Van list, "+res.length+" results.");
-      });
-    },
-    error: function(err) { alert("get Vans error: "+err.code+" "+err.message); }
-  });
-}
-
-$scope.populateVanList();
-
-/***************************** load Installs(), Customers Markers **************************************/
-function loadInstalls() {
-  // Get the Customer Installs data from the Parse server
-  var query = new Parse.Query(Parse.Installation);
-  var usr = Parse.User.current();
-  if ($scope.swm=="") {
-    var swm = usr.id;
-  }else{
-    var swm = $scope.swm;
-  }
-  //query.equalTo('vanId', vansid);
-  /* @Todo: Date range */
-  var fromDate=null, toDate=null;
-  if ($scope.fromDate!=null & $scope.fromDate!="") {
-    //alert("scope.fromDate "+$scope.fromDate);
-    fromDate=new Date($scope.fromDate);
-  }
-  if ($scope.toDate!=null & $scope.toDate!="") {
-    toDate=new Date($scope.toDate);
-    toDate.setHours(23); toDate.setMinutes(59); toDate.setSeconds(59); /* needs to be the end of this day to be inclusive */
   }
 
-  Parse.Cloud.run("getCustInstalls", {
-      userid: swm, /* The S is put on by the cloud code; can ignore here */
-      dateFrom: fromDate, //$scope.dateFrom,
-      dateTo: toDate, //$scope.dateTo,
-      vanId: 0 //$scope.vanId
-  },{
-    success:function(res) {
-      for (var i = 0; i < res.length; i++) {
-        var inst = res[i];
-        if (inst.coords && inst.coords.latitude) {
-          var marker = {
-            id: i,
-            objectId: inst.objectId,
-            coords: {latitude: inst.coords.latitude,
-                    longitude: inst.coords.longitude},
-            options: {
-              draggable: $scope.editMode,
-              icon: "markers/red_MarkerC.png"
-            },
-            events: {
-              dragend: function (marker, eventName, args) {
-                //console.log(marker);
-                var objectId = marker.model.$parent.imarker.objectId; /* convoluted way, but it works */
-                Parse.Cloud.run("setInstallLocation", {
-                  userid: swm,
-                  objectId: objectId,
-                  lat: marker.getPosition().lat(),
-                  lon: marker.getPosition().lng()
-                },{
-                  success: function(res){
-                    console.log("successfully saved "+res)
-                  },
-                  error: function(err) {
-                    console.log("not able to save change to location: "+err.code+" "+err.message);
-                    alert("not able to save change to location: "+err.code+" "+err.message);
-                  }
-                });
-              }
-            }
-          };
-          if (inst.comment) {
-            marker.options.labelContent = inst.comment;
-          }
-          $scope.instMarkers.push( marker );
-        }
-      }
-      console.log("Got "+res.length+" Installs results.");
-      $scope.$apply();
-
-    },
-    error: function(err) { alert("get installations error: "+err.code+" "+err.message); }
-  });
-
-}
-
-/*************************** load Arrivals(), Vendor Markers *****************************************/
-function loadArrivals() {
-  // Get the Arrivals data from the Parse server
-  var Arrival = Parse.Object.extend("Arrival");
-  var query = new Parse.Query(Arrival);
-  if ($scope.swm=="") {
-    var usr = Parse.User.current();
-  }else{
-    var usr=new Parse.User();
-    usr.id = $scope.swm;
-  }
-
-  query.equalTo('vendor', usr);
-
-  /* Set a Date range */
-  if ($scope.fromDate!=null & $scope.fromDate!="") {
-    query.greaterThan("createdAt", new Date($scope.fromDate));
-  }
-  if ($scope.toDate!=null & $scope.toDate!="") {
-    var d=new Date($scope.toDate);
-    d.setHours(23); d.setMinutes(59); d.setSeconds(59); /* needs to be the end of this day to be inclusive */
-    query.lessThan("createdAt", d);
-  }
-  if ($scope.vanId!=null & $scope.vanId!="") {
-    query.equalTo('vanId', $scope.vanId);
-  }
-  //var d = new Date(document.getElementById('fromdate').value)
-  //alert ("from date "+ d.getDate()+" "+ d.getMonth()+" "+ d.getFullYear() );
-
-  query.limit(1000);  /* default is 100, but we need as many results as we can */
-
-  query.find({
-    success: function(res) {
-      //alert("Successfully retrieved " + res.length + " arrival records.");
-      for (var i = 0; i < res.length; i++) {
-        var object = res[i];
-        var loc = object.get('location');
-        //alert("at: "+dateFormat(date(object.createdAt), "dd-mmm-yy hh:MM"));
-        var marker = {
-              id: i,
-              coords: {latitude: loc.latitude,
-                      longitude: loc.longitude},
-              options: {
-                /* label: "V", */
-                //labelContent: formatDate(new Date(object.createdAt)),
-                icon: "markers/blue_MarkerV.png"
-              }
-        };
-        if ($scope.showArrivalTimes == true) {
-          var d=new Date(object.createdAt)
-          marker.options.labelContent = ""+d.getHours()+":"+d.getMinutes();
-        }
-        $scope.markers.push( marker );
-      }
-      console.log("Got "+res.length+" arrivals results.");
+  $scope.arrivalChange = function() {
+    if ($scope.arrivalTick==true) {
+      $scope.markers = [];
       //$scope.$apply();
-    },
-    error: function(err) { alert("get arrivals error: "+err.code+" "+err.message); }
-  });
-}
+      loadArrivals();
+    }
+  }
+  $scope.installChange = function() {
+    if ($scope.installTick==true) {
+      $scope.instMarkers = [];
+      loadInstalls();
+    }
+  }
+  $scope.dateChange = function() {
+      $scope.arrivalChange();
+      $scope.installChange();
+  }
+  $scope.vanChange = function() {
+      $scope.arrivalChange();
+  }
 
-$scope.logout = function() {
-  Parse.User.logOut();
-  $rootScope.user = null;
-  $rootScope.isLoggedIn = false;
-  $location.path('/login');
-};
+  /* Call to populate the Van list */
+  $scope.populateVanList = function() {
+    var usrObj = Parse.User.current();
+    if ($scope.swm=="") {
+      var swm = usrObj.id;
+    }else{
+      var swm = $scope.swm;
+    }
+    Parse.Cloud.run("getVanList", {
+        userid: swm /* */
+        //vanId: 0 //$scope.vanId
+    },{
+      success:function(res) {
+        $scope.$apply(function () {
+          $scope.vanList=res;
 
-function formatDate( date ) {
-  var day = date.getDate();
-  var month = date.getMonth();
-  var year = ""+date.getFullYear();
-  return day+"-"+month+"-"+year.substr(-2);
+          console.log("Got the Van list, "+res.length+" results.");
+        });
+      },
+      error: function(err) { alert("get Vans error: "+err.code+" "+err.message); }
+    });
+  }
 
-}
+  $scope.populateVanList();
+
+  /***************************** load Installs(), Customers Markers **************************************/
+  function loadInstalls() {
+    // Get the Customer Installs data from the Parse server
+    var query = new Parse.Query(Parse.Installation);
+    var usr = Parse.User.current();
+    if ($scope.swm=="") {
+      var swm = usr.id;
+    }else{
+      var swm = $scope.swm;
+    }
+    //query.equalTo('vanId', vansid);
+    /* @Todo: Date range */
+    var fromDate=null, toDate=null;
+    if ($scope.fromDate!=null & $scope.fromDate!="") {
+      //alert("scope.fromDate "+$scope.fromDate);
+      fromDate=new Date($scope.fromDate);
+    }
+    if ($scope.toDate!=null & $scope.toDate!="") {
+      toDate=new Date($scope.toDate);
+      toDate.setHours(23); toDate.setMinutes(59); toDate.setSeconds(59); /* needs to be the end of this day to be inclusive */
+    }
+
+    Parse.Cloud.run("getCustInstalls", {
+        userid: swm, /* The S is put on by the cloud code; can ignore here */
+        dateFrom: fromDate, //$scope.dateFrom,
+        dateTo: toDate, //$scope.dateTo,
+        vanId: 0 //$scope.vanId
+    },{
+      success:function(res) {
+        for (var i = 0; i < res.length; i++) {
+          var inst = res[i];
+          if (inst.coords && inst.coords.latitude) {
+            var marker = {
+              id: i,
+              objectId: inst.objectId,
+              coords: {latitude: inst.coords.latitude,
+                      longitude: inst.coords.longitude},
+              options: {
+                draggable: $scope.editMode,
+                icon: "markers/red_MarkerC.png"
+              },
+              events: {
+                dragend: function (marker, eventName, args) {
+                  //console.log(marker);
+                  var objectId = marker.model.$parent.imarker.objectId; /* convoluted way, but it works */
+                  Parse.Cloud.run("setInstallLocation", {
+                    userid: swm,
+                    objectId: objectId,
+                    lat: marker.getPosition().lat(),
+                    lon: marker.getPosition().lng()
+                  },{
+                    success: function(res){
+                      console.log("successfully saved "+res)
+                    },
+                    error: function(err) {
+                      console.log("not able to save change to location: "+err.code+" "+err.message);
+                      alert("not able to save change to location: "+err.code+" "+err.message);
+                    }
+                  });
+                }
+              }
+            };
+            if (inst.comment) {
+              marker.options.labelContent = inst.comment;
+            }
+            $scope.instMarkers.push( marker );
+          }
+        }
+        console.log("Got "+res.length+" Installs results.");
+        $scope.$apply();
+
+      },
+      error: function(err) { alert("get installations error: "+err.code+" "+err.message); }
+    });
+
+  }
+
+  /*************************** load Arrivals(), Vendor Markers *****************************************/
+  function loadArrivals() {
+    // Get the Arrivals data from the Parse server
+    var Arrival = Parse.Object.extend("Arrival");
+    var query = new Parse.Query(Arrival);
+    if ($scope.swm=="") {
+      var usr = Parse.User.current();
+    }else{
+      var usr=new Parse.User();
+      usr.id = $scope.swm;
+    }
+
+    query.equalTo('vendor', usr);
+
+    /* Set a Date range */
+    if ($scope.fromDate!=null & $scope.fromDate!="") {
+      query.greaterThan("createdAt", new Date($scope.fromDate));
+    }
+    if ($scope.toDate!=null & $scope.toDate!="") {
+      var d=new Date($scope.toDate);
+      d.setHours(23); d.setMinutes(59); d.setSeconds(59); /* needs to be the end of this day to be inclusive */
+      query.lessThan("createdAt", d);
+    }
+    if ($scope.vanId!=null & $scope.vanId!="") {
+      query.equalTo('vanId', $scope.vanId);
+    }
+    //var d = new Date(document.getElementById('fromdate').value)
+    //alert ("from date "+ d.getDate()+" "+ d.getMonth()+" "+ d.getFullYear() );
+
+    query.limit(1000);  /* default is 100, but we need as many results as we can */
+
+    query.find({
+      success: function(res) {
+        //alert("Successfully retrieved " + res.length + " arrival records.");
+        for (var i = 0; i < res.length; i++) {
+          var object = res[i];
+          var loc = object.get('location');
+          //alert("at: "+dateFormat(date(object.createdAt), "dd-mmm-yy hh:MM"));
+          var marker = {
+                id: i,
+                coords: {latitude: loc.latitude,
+                        longitude: loc.longitude},
+                options: {
+                  /* label: "V", */
+                  //labelContent: formatDate(new Date(object.createdAt)),
+                  icon: "markers/blue_MarkerV.png"
+                }
+          };
+          if ($scope.showArrivalTimes == true) {
+            var d=new Date(object.createdAt)
+            marker.options.labelContent = ""+d.getHours()+":"+d.getMinutes();
+          }
+          $scope.markers.push( marker );
+        }
+        console.log("Got "+res.length+" arrivals results.");
+        //$scope.$apply();
+      },
+      error: function(err) { alert("get arrivals error: "+err.code+" "+err.message); }
+    });
+  }
+
+  $scope.logout = function() {
+    Parse.User.logOut();
+    $rootScope.user = null;
+    $rootScope.isLoggedIn = false;
+    $location.path('/login');
+  };
+
+  function formatDate( date ) {
+    var day = date.getDate();
+    var month = date.getMonth();
+    var year = ""+date.getFullYear();
+    return day+"-"+month+"-"+year.substr(-2);
+
+  }
 
 
 }]);
