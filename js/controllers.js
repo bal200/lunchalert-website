@@ -231,8 +231,11 @@ function( $scope, $rootScope, $location ) {
                 }
               }
             };
-            if (inst.comment) {
-              marker.options.labelContent = inst.comment;
+            if ($scope.showCustObjectIds == true) {
+              marker.options.labelContent = inst.objectId;
+              if (inst.comment)  marker.options.labelContent += " - "+inst.comment;
+            }else{
+              if (inst.comment)  marker.options.labelContent = inst.comment;
             }
             $scope.instMarkers.push( marker );
           }
