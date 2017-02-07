@@ -98,6 +98,10 @@ function( $scope, $rootScope, $location ) {
   if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
     $location.path('/login');
   }
+  $scope.gotoRegisterPage = function() {
+    $location.path('/portal_register');
+  }
+
   $scope.swm="";
   $scope.map = { center: { latitude: 53.5, longitude: -2.5 },
                  zoom: 9,
@@ -326,4 +330,76 @@ function( $scope, $rootScope, $location ) {
   }
 
 
+}])
+
+
+.controller('registerCtrl', ['$scope', '$location', '$rootScope',
+function ($scope, $location, $rootScope) {
+  $scope.user = {};
+  $scope.message = {};
+
+  /* The Register button presssed */
+  $scope.register = function() {
+    $scope.message.error = '';
+    $scope.message.good = '';
+    // $scope.loading = $ionicLoading.show({
+    //     content: 'Sending',    animation: 'fade-in',
+    //     showBackdrop: true,    maxWidth: 200,
+    //     showDelay: 0
+    // });
+
+      /* Sanity checks */
+      if (!$scope.user.email) {
+        $scope.message.error = 'Please enter a valid email address'; return;
+      }else if (!$scope.user.password) {
+        $scope.message.error = 'Please create a password'; return;
+      }else if (!$scope.user.businessName) {
+        $scope.message.error = 'Enter your business name as it will appear to customers using the app'; return;
+      }
+      // if ($scope.error.message) {
+      //   $ionicLoading.hide();
+      //   $scope.$apply();
+      //   return;
+      // }
+      var point = new Parse.GeoPoint({
+        latitude: 53.47, /* making something up */
+        longitude: -2.24
+      });
+      var user = new Parse.User();
+      user.set("username", $scope.user.email.toLowerCase());
+      user.set("password", $scope.user.password);
+      user.set("email", $scope.user.email);
+      user.set("businessName", $scope.user.businessName);
+      user.set("businessNameSearch", $scope.user.businessName.toLowerCase());
+      user.set("location", point);
+
+      user.signUp(null, {
+        success: function(user) {
+          //$ionicLoading.hide();
+          //$rootScope.user = user;
+          //$rootScope.isLoggedIn = true;
+          /* Move to Home screen, but change the back button to the home button */
+          //$ionicHistory.nextViewOptions( {disableBack: true} );
+          $scope.message.good = 'User account successfully created.';
+          $scope.message.good2 ='The objectId is '+user.id;
+          //$location.path('/portal');
+          $scope.$apply();
+        },error: function(user, err) { /* Sign-up error */
+          //$ionicLoading.hide();
+          console.log('Error signing-up\n'+'code: '+err.code+' message: '+err.message +'\n');
+          if (err.code === 125) {
+            $scope.message.error = 'Please specify a valid email address';
+          }else if (err.code === 202) {
+            $scope.message.error = 'The email address is already registered';
+          }else if (err.code === 100) {
+            $scope.message.error = 'Cannot connect to the internet';
+            //$ionicLoading.show({template: '<i class="icon ion-close-circled"></i> Cannot connect to the internet', duration: 3000});
+          }else{
+            $scope.message.error = 'Error signing-up\n'+' code: '+err.code+' message: '+err.message +'\n';
+          }
+          $scope.$apply();
+        }
+      });
+
+  }
 }]);
