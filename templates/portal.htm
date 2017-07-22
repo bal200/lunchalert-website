@@ -23,16 +23,39 @@
       </div>
       </div>
       <div class="field">
-      <div class="ui checkbox">
-        <input type="checkbox" name="arrival" ng-model="arrivalTick" ng-click="arrivalClick()"/>
-        <label>Show Van Arrivals (V)</label>
-      </div>
+
       </div>
       <div class="field">
-        <select class="ui dropdown" ng-model="vanId" ng-change="vanChange()">
+
+
+      </div>
+    </div>
+
+
+    <div class="three fields">
+      <div class="field">
+        <div class="ui checkbox">
+          <input type="checkbox" name="arrival" ng-model="arrivalTick" ng-click="arrivalClick()"/>
+          <label>Show Van Arrivals (V)</label>
+        </div>
+      </div>
+      <div class="field">
+        <select class="ui dropdown" ng-model="selectedVan" ng-change="vanChange()">
           <option value="">All Vans</option>
-          <option ng-repeat="van in vanList" value="{{van.vanId}}">{{van.name}} - vanId {{van.vanIdCrop}}</option>
+          <option ng-repeat="van in vanList" value="{{van.id}}">{{van.name}} - ({{van.vanIdCrop}})</option>
         </select>
+      </div>
+      <div class="field">
+        <button class="ui basic icon button popup-activator {{editButtonDisabled}}">
+          <i class="edit icon"></i>
+        </button>
+        <div class="ui popup bottom center transition hidden"  >
+          <div class="text">Change this Vans Name:</div>
+          <div class="ui action input">
+            <input class="ui input" ng-model="vanName">
+            <button class="ui button" ng-click="changeVanName()">Save</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -56,7 +79,7 @@
     <span style="display: block; margin-top: 4px;"></span>
   </div>
 
-</div>
+
 
   <ui-gmap-google-map center="map.center" zoom="map.zoom"
                       options="map.options">

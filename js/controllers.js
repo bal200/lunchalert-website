@@ -95,13 +95,20 @@ function( $scope, $rootScope, $location ) {
 .controller('portalCtrl', ['$scope', '$rootScope', '$location',
 function( $scope, $rootScope, $location ) {
 
+  $('.button.popup-activator')
+    .popup({
+      inline: true,
+      on: 'click'
+    });
+
   if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
     $location.path('/login');
   }
   $scope.gotoRegisterPage = function() {
     $location.path('/portal_register');
   }
-
+  $scope.showPopup = false;
+  $scope.editButtonDisabled = "disabled"; /* Class to add to edit button to turn it off */
   $scope.swm="";
   $scope.map = { center: { latitude: 53.5, longitude: -2.5 },
                  zoom: 9,
@@ -115,17 +122,17 @@ function( $scope, $rootScope, $location ) {
     }else{
       $scope.markers = [];
     }
-  }
+  };
   $scope.installClick = function() {
     if ($scope.installTick==true) {
       loadInstalls();
     }else{
       $scope.instMarkers = [];
     }
-  }
+  };
   $scope.editModeClick = function() {
     $scope.installChange();
-  }
+  };
 
   $scope.arrivalChange = function() {
     if ($scope.arrivalTick==true) {
@@ -133,20 +140,48 @@ function( $scope, $rootScope, $location ) {
       //$scope.$apply();
       loadArrivals();
     }
-  }
+  };
   $scope.installChange = function() {
     if ($scope.installTick==true) {
       $scope.instMarkers = [];
       loadInstalls();
     }
-  }
+  };
   $scope.dateChange = function() {
       $scope.arrivalChange();
       $scope.installChange();
-  }
+  };
   $scope.vanChange = function() {
-      $scope.arrivalChange();
-  }
+    if ($scope.selectedVan == "") { /* All Vans selected */
+      $scope.vanName = "";
+      $scope.editButtonDisabled = "disabled";
+    }else{
+      $scope.vanName = $scope.vanList[$scope.selectedVan].name;
+      $scope.editButtonDisabled = ""; /*On*/ }
+    $scope.arrivalChange();
+  };
+
+  $scope.changeVanName = function () {
+    var usrObj = Parse.User.current();
+    var swm = $scope.swm;
+    if ($scope.swm=="") {
+      var swm = usrObj.id;
+    }
+    Parse.Cloud.run("editVanName", {
+        userid: swm,
+        van: $scope.vanList[$scope.selectedVan].objId,
+        name: $scope.vanName
+    },{
+      success: function(res) {
+        $scope.$apply(function(){
+          console.log("Saved new Van name "+$scope.vanName);
+          $scope.vanList[$scope.selectedVan].name = $scope.vanName;
+        });
+        $('.button.popup-activator').popup('hide');
+      },
+      error: function(err) { console.log("Error saving new Van name ("+err.code+") "+err.message); }
+    });
+  };
 
   /* Call to populate the Van list */
   $scope.populateVanList = function() {
@@ -162,8 +197,18 @@ function( $scope, $rootScope, $location ) {
     },{
       success:function(res) {
         $scope.$apply(function () {
-          $scope.vanList=res;
-
+          $scope.vanList=[];
+          for (var i = 0; i < res.length; i++) {
+            van = {
+                id: i,
+                objId: res[i].id,
+                vanId: res[i].get("vanId"),
+                vanIdCrop: res[i].get("vanId").substr(0,5),
+                name: res[i].get("name"),
+                vendor: res[i].get("vendor")
+            };
+            $scope.vanList.push( van );
+          }
           console.log("Got the Van list, "+res.length+" results.");
         });
       },
@@ -276,8 +321,9 @@ function( $scope, $rootScope, $location ) {
       d.setHours(23); d.setMinutes(59); d.setSeconds(59); /* needs to be the end of this day to be inclusive */
       query.lessThan("createdAt", d);
     }
-    if ($scope.vanId!=null & $scope.vanId!="") {
-      query.equalTo('vanId', $scope.vanId);
+
+    if ($scope.selectedVan!=null & $scope.selectedVan!="") {
+      query.equalTo('vanId', $scope.vanList[$scope.selectedVan].vanId );
     }
     //var d = new Date(document.getElementById('fromdate').value)
     //alert ("from date "+ d.getDate()+" "+ d.getMonth()+" "+ d.getFullYear() );
@@ -287,32 +333,36 @@ function( $scope, $rootScope, $location ) {
     query.find({
       success: function(res) {
         //alert("Successfully retrieved " + res.length + " arrival records.");
-        for (var i = 0; i < res.length; i++) {
-          var object = res[i];
-          var loc = object.get('location');
-          //alert("at: "+dateFormat(date(object.createdAt), "dd-mmm-yy hh:MM"));
-          var marker = {
-                id: i,
-                coords: {latitude: loc.latitude,
-                        longitude: loc.longitude},
-                options: {
-                  /* label: "V", */
-                  //labelContent: formatDate(new Date(object.createdAt)),
-                  icon: "markers/blue_MarkerV.png"
-                }
-          };
-          if ($scope.showArrivalTimes == true) {
-            var d=new Date(object.createdAt)
-            marker.options.labelContent = ""+d.getHours()+":"+d.getMinutes();
+        $scope.$apply(function () {
+          for (var i = 0; i < res.length; i++) {
+            var object = res[i];
+            var loc = object.get('location');
+            //alert("at: "+dateFormat(date(object.createdAt), "dd-mmm-yy hh:MM"));
+            var marker = {
+                  id: i,
+                  coords: {latitude: loc.latitude,
+                          longitude: loc.longitude},
+                  options: {
+                    /* label: "V", */
+                    //labelContent: formatDate(new Date(object.createdAt)),
+                    icon: "markers/blue_MarkerV.png"
+                  }
+            };
+            if ($scope.showArrivalTimes == true) {
+              var d=new Date(object.createdAt);
+              marker.options.labelContent = ""+digit2(d.getHours())+":"+digit2(d.getMinutes());
+            }
+            $scope.markers.push( marker );
           }
-          $scope.markers.push( marker );
-        }
+        });
         console.log("Got "+res.length+" arrivals results.");
         //$scope.$apply();
       },
       error: function(err) { alert("get arrivals error: "+err.code+" "+err.message); }
     });
   }
+
+  function digit2(n){ return n > 9 ? ""+n : "0"+n }
 
   $scope.logout = function() {
     Parse.User.logOut();
