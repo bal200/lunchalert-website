@@ -21,26 +21,6 @@ angular.module('lunchalert-website', [
         templateUrl: 'templates/home.htm',
         controller: 'pageCtrl'
       })
-      .when('/alert', {
-        templateUrl: 'templates/alert.htm',
-        controller: 'pageCtrl'
-      })
-      .when('/notify', {
-        templateUrl: 'templates/notify.htm',
-        controller: 'pageCtrl'
-      })
-      .when('/contact', {
-        templateUrl: 'templates/contact.htm',
-        controller: 'pageCtrl'
-      })
-      .when('/pricing', {
-        templateUrl: 'templates/pricing.htm',
-        controller: 'pageCtrl'
-      })
-      .when('/install', {
-        templateUrl: 'templates/install.htm',
-        controller: 'pageCtrl'
-      })
       .when('/login', {
         templateUrl: 'templates/login.htm',
         controller: 'userCtrl'
@@ -54,8 +34,7 @@ angular.module('lunchalert-website', [
         controller: 'portalCtrl'
       })
       .when('/portal_edit', {
-        templateUrl: 'templates/portal.htm',
-        controller: 'portalCtrl'
+        redirectTo: '/portal'
       })
       .when('/portal_register', {
         templateUrl: 'templates/portal_register.htm',

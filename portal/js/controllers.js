@@ -1,47 +1,14 @@
 angular.module('pageCtrl',['jkuri.datepicker'])
-.controller('pageCtrl', ['$scope', '$location',
-function($scope, $location) {
+.controller('pageCtrl', ['$scope', '$location', '$rootScope',
+function($scope, $location, $rootScope) {
 
-  $scope.selectChange = function() {
-    switch ($scope.vans) {
-      case "1":
-        $scope.plan = "1 van";
-        $scope.cost = '£40 per month';
-        $scope.link="https://dashboard.gocardless.com/api/template_plans/12BFPZ1K8E/paylink";
-        break;
-      case "2":
-        $scope.plan = "2 - 4 vans";
-        $scope.cost = "£80 per month";
-        $scope.link="https://dashboard.gocardless.com/api/template_plans/12BFPZ1K8E/paylink";
-        break;
-      case "3":
-        $scope.plan = "5 - 10 vans";
-        $scope.cost = "£150 per month";
-        $scope.link="https://dashboard.gocardless.com/api/template_plans/12BFPZ1K8E/paylink";
-        break;
-      case "4":
-        $scope.plan = "11 - 20 vans";
-        $scope.cost = "£200 per month";
-        $scope.link="https://dashboard.gocardless.com/api/template_plans/12BFPZ1K8E/paylink";
-        break;
-      case "5":
-        $scope.plan = "21+ vans";
-        $scope.cost = "£250 per month";
-        $scope.link="https://dashboard.gocardless.com/api/template_plans/12BFPZ1K8E/paylink";
-        break;
-      default:
-        $scope.plan = "";
-        $scope.cost = "";
-        $scope.link = "";
-    }
-    if($scope.plan != "") {
-      $scope.summary = "You have selected the "+$scope.plan+" plan for "+$scope.cost+".  ";
-    }else{
-      $scope.summary="";
-    }
-  }
+  /* Put a fancy menu page here */
 
   $location.path('/login');
+
+  if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
+    $location.path('/login');
+  }
 
 }])
 
@@ -61,12 +28,7 @@ function( $scope, $rootScope, $location ) {
       success: function(user) {
         $rootScope.user = user;
         $rootScope.isLoggedIn = true;
-
-        if (user.id == 'oQYkaXWmop'){
-          $location.path("/portal_edit");
-        }else{
-          $location.path("/portal");
-        }
+        $location.path("/portal");
         $scope.$apply();
       },
       error: function(user, err) {
@@ -257,7 +219,7 @@ function( $scope, $rootScope, $location ) {
                       longitude: inst.coords.longitude},
               options: {
                 draggable: $scope.editMode,
-                icon: "markers/red_MarkerC.png"
+                icon: "../markers/red_MarkerC.png"
               },
               events: {
                 dragend: function (marker, eventName, args) {
@@ -345,7 +307,7 @@ function( $scope, $rootScope, $location ) {
                   options: {
                     /* label: "V", */
                     //labelContent: formatDate(new Date(object.createdAt)),
-                    icon: "markers/blue_MarkerV.png"
+                    icon: "../markers/blue_MarkerV.png"
                   }
             };
             if ($scope.showArrivalTimes == true) {
