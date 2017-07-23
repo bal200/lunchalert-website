@@ -15,22 +15,19 @@
   by their install date.  The dates are inclusive.</p>
 
   <div class="ui form">
+
     <div class="three fields">
       <div class="field">
-      <div class="ui checkbox">
-        <input type="checkbox" name="installations" ng-model="installTick" ng-click="installClick()"/>
-        <label>Show Customers (C)</label>
-      </div>
-      </div>
-      <div class="field">
-
+        <div class="ui checkbox">
+          <input type="checkbox" name="installations" ng-model="installTick" ng-click="installClick()"/>
+          <label>Show Customers (C)</label>
+        </div>
       </div>
       <div class="field">
-
-
+      </div>
+      <div class="field">
       </div>
     </div>
-
 
     <div class="three fields">
       <div class="field">
@@ -49,7 +46,7 @@
         <button class="ui basic icon button popup-activator {{editButtonDisabled}}">
           <i class="edit icon"></i>
         </button>
-        <div class="ui popup bottom center transition hidden"  >
+        <div class="ui fluid popup bottom center transition hidden"  >
           <div class="text">Change this Vans Name:</div>
           <div class="ui action input">
             <input class="ui input" ng-model="vanName">
@@ -58,8 +55,6 @@
         </div>
       </div>
     </div>
-
-
 
     <div class="field">
       <label><i class="calendar icon"></i> Date range</label>
@@ -79,7 +74,7 @@
     <span style="display: block; margin-top: 4px;"></span>
   </div>
 
-
+</div>
 
   <ui-gmap-google-map center="map.center" zoom="map.zoom"
                       options="map.options">

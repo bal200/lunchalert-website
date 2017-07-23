@@ -7,7 +7,7 @@ angular.module('lunchalert-website', [
 .value('ParseConfiguration', {
     /* DEV */
     //applicationId: "uKWkJW0IFFhthG7e3A1NPqh2JhazzKEfZD7d1RXr",
-    //javascriptKey: "gXgY9Kf8wafGGU3WghwqrEWMfbrl7oi7e27om7J6"
+    //javascriptKey: "gXgY9Kf8wafGGU3WghwqrEWMfbrl7oi7e27om7J6",
     /* LIVE */
     applicationId: "MSfWHKif25kvcuMPxAhGBjfd7Aie1xyDe7WN6Myt",
     javascriptKey: "j1RTaGUP0kdj5c8iidSfrXeB7omaODiEijrDdzuC",
@@ -54,7 +54,7 @@ angular.module('lunchalert-website', [
         controller: 'portalCtrl'
       })
       .when('/portal_edit', {
-        templateUrl: 'templates/portal_edit.htm',
+        templateUrl: 'templates/portal.htm',
         controller: 'portalCtrl'
       })
       .when('/portal_register', {

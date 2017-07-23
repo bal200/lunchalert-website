@@ -15,31 +15,55 @@
 
   <p>The date range will filter the Van Arrivals to a certain period, and also filter the Customers
   by their install date.  The dates are inclusive.</p>
+
+
   <div class="ui form">
-    <div class="ui fitted labeled input">
-      <div class="ui label">Swm to act as </div>
-      <input type="text" name="swm" ng-model="swm" ng-keyup="$event.keyCode == 13 && populateVanList()"/>
-    </div>
-    <br/>
-    <div class="three fields">
-      <div class="field">
-      <div class="ui checkbox">
-        <input type="checkbox" name="installations" ng-model="installTick" ng-click="installClick()"/>
-        <label>Show Customers (C)</label>
-      </div></div>
-      <div class="field">
-      <div class="ui checkbox">
-        <input type="checkbox" name="arrival" ng-model="arrivalTick" ng-click="arrivalClick()"/>
-        <label>Show Van Arrivals (V)</label>
-      </div></div>
-      <div class="field">
-        <select class="ui dropdown" ng-model="vanId" ng-change="vanChange()">
-          <option value="">All Vans</option>
-          <option ng-repeat="van in vanList" value="{{van.vanId}}">{{van.name}} - vanId {{van.vanIdCrop}}</option>
-        </select>
+    <div class="field">
+      <div class="ui fitted labeled input">
+        <div class="ui label">Swm to act as </div>
+        <input type="text" name="swm" ng-model="swm" ng-keyup="$event.keyCode == 13 && populateVanList()"/>
       </div>
     </div>
 
+    <div class="three fields">
+      <div class="field">
+        <div class="ui checkbox">
+          <input type="checkbox" name="installations" ng-model="installTick" ng-click="installClick()"/>
+          <label>Show Customers (C)</label>
+        </div>
+      </div>
+      <div class="field">
+      </div>
+      <div class="field">
+      </div>
+    </div>
+
+    <div class="three fields">
+      <div class="field">
+        <div class="ui checkbox">
+          <input type="checkbox" name="arrival" ng-model="arrivalTick" ng-click="arrivalClick()"/>
+          <label>Show Van Arrivals (V)</label>
+        </div>
+      </div>
+      <div class="field">
+        <select class="ui dropdown" ng-model="selectedVan" ng-change="vanChange()">
+          <option value="">All Vans</option>
+          <option ng-repeat="van in vanList" value="{{van.id}}">{{van.name}} - ({{van.vanIdCrop}})</option>
+        </select>
+      </div>
+      <div class="field">
+        <button class="ui basic icon button popup-activator {{editButtonDisabled}}">
+          <i class="edit icon"></i>
+        </button>
+        <div class="ui fluid popup bottom center transition hidden"  >
+          <div class="text">Change this Vans Name:</div>
+          <div class="ui action input">
+            <input class="ui input" ng-model="vanName">
+            <button class="ui button" ng-click="changeVanName()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="field">
       <label><i class="calendar icon"></i> Date range</label>
@@ -56,7 +80,7 @@
       </div>
     </div>
 
-  <span style="display: block; margin-top: 4px;"></span>
+    <span style="display: block; margin-top: 4px;"></span>
   </div>
 
 </div>
