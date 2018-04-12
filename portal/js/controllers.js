@@ -54,8 +54,11 @@ function( $scope, $rootScope, $location ) {
 
 
 /******************************** PORTAL CONTROLLER ************************************************/
-.controller('portalCtrl', ['$scope', '$rootScope', '$location',
-function( $scope, $rootScope, $location ) {
+.controller('portalCtrl', ['$scope', '$rootScope', '$location', 'uiGmapGoogleMapApi',
+function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
+
+  uiGmapGoogleMapApi.then(function(maps){
+  });
 
   $('.button.popup-activator')
     .popup({

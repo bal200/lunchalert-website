@@ -43,6 +43,14 @@ angular.module('lunchalert-website', [
   }
 ])
 
+.config(['uiGmapGoogleMapApiProvider',
+  function(uiGmapGoogleMapApiProvider) {
+    uiGmapGoogleMapApiProvider.configure({
+      key: "AIzaSyDc5J_gV_3_AJVEoxUja0j0OZrzeegeSjU"
+    });
+  }
+])
+
 .run(function ($rootScope, ParseConfiguration) {
 
       Parse.initialize(ParseConfiguration.applicationId, ParseConfiguration.javascriptKey);
