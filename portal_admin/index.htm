@@ -29,6 +29,8 @@
 
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
+    <script src="js/register.controller.js"></script>
+    <script src="js/cards.controller.js"></script>
 
     <link rel="shortcut icon" href="images/icon.png">
 
@@ -58,6 +60,18 @@
 
   }
   .angular-google-map-container { height: 500px; }
+
+  /****** Cards page *******/
+  ul.cards-list {
+    list-style-type: none;
+    padding: 0px;
+  }
+  .cards-list li{
+    margin: 10px 0px;
+    border: #DDD;
+    border-radius: 5px;
+  }
+
   </style>
 
   <script>
@@ -81,7 +95,7 @@
       </a>
       <a href="#/portal" class="item">Maps</a>
       <a href="#/register" class="item">Register Vendor</a>
-      <a href="#/campaign" class="item">Campaigns</a>
+      <a href="#/cards" class="item">Cards</a>
 
     </div>
   </div>

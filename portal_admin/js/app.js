@@ -6,11 +6,11 @@ angular.module('lunchalert-website', [
 
 .value('ParseConfiguration', {
     /* DEV */
-    //applicationId: "uKWkJW0IFFhthG7e3A1NPqh2JhazzKEfZD7d1RXr",
-    //javascriptKey: "gXgY9Kf8wafGGU3WghwqrEWMfbrl7oi7e27om7J6",
+    applicationId: "uKWkJW0IFFhthG7e3A1NPqh2JhazzKEfZD7d1RXr",
+    javascriptKey: "gXgY9Kf8wafGGU3WghwqrEWMfbrl7oi7e27om7J6",
     /* LIVE */
-    applicationId: "MSfWHKif25kvcuMPxAhGBjfd7Aie1xyDe7WN6Myt",
-    javascriptKey: "j1RTaGUP0kdj5c8iidSfrXeB7omaODiEijrDdzuC",
+    //applicationId: "MSfWHKif25kvcuMPxAhGBjfd7Aie1xyDe7WN6Myt",
+    //javascriptKey: "j1RTaGUP0kdj5c8iidSfrXeB7omaODiEijrDdzuC",
 		serverURL:     "https://parseapi.back4app.com/"  /* parse server to connect to */
 })
 
@@ -29,14 +29,15 @@ angular.module('lunchalert-website', [
         templateUrl: 'templates/portal.htm',
         controller: 'portalCtrl'
       })
-      .when('/campaign', {
-        templateUrl: 'templates/campaign.htm',
-        controller: 'portalCtrl'
+      .when('/cards', {
+        templateUrl: 'templates/cards.htm',
+        controller: 'CardsCtrl'
       })
       .when('/register', {
         templateUrl: 'templates/register.htm',
         controller: 'registerCtrl'
       })
+
       .otherwise({
         redirectTo: '/'
       });

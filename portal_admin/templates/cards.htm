@@ -1,0 +1,136 @@
+<div class="ui main container">
+
+  <h2 class="ui header">Edit Cards</h2>
+
+  <div class="ui message">
+    <div class="header">
+      Cards are the boxes on the Home Page in the LunchAlert Customer app
+    </div>
+    <p>These can be your main home card, special offer cards, or important messages to 
+      your customers.</p>
+
+    <p>Cards can either be custom designed cards made by LunchAlert staff, or simple cards that 
+      can be created and edited here.</p>
+  </div>
+
+
+  <br/>
+  <div class="ui clearing">
+    <h3 class="ui left floated header">
+        Available Cards
+    </h3>
+    <p class="ui right floated header">
+      <button class="ui mini basic button">
+          +
+      </button>
+    </p>
+  </div>
+  <br/>
+
+  <div ng-repeat="card in cards" class="ui segments">
+    <div class="ui secondary segment">
+      <!-- Title Row -->
+      <div class="ui transparent input">
+        <input type="text" placeholder="Card Name">
+      </div>
+      <button class="ui mini primary button">
+          Save
+      </button>
+    </div>
+    <div class="ui segment">
+      <!-- First row -->
+      <div class="ui two column divided grid">
+        <div class="twelve wide column">
+          <div class="ui three column grid">
+            <div class="four wide column">
+              <div class="ui toggle checkbox">
+                <input type="checkbox" name="onOff">
+                <label>Off / On</label>
+              </div>
+            </div>
+            <div class="eight wide column">
+            </div>
+            <div class="four wide column">
+              <div class="ui fluid selection dropdown">
+                <input type="hidden" name="type">
+                <i class="dropdown icon"></i>
+                <div class="default text">Custom card</div>
+                <div class="menu">
+                  <div class="item" data-value="0">Custom card</div>
+                  <div class="item" data-value="1">Simple card</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui divider"></div>
+          <!-- Second Row (Schedule) -->
+          <div class="ui four column grid">
+            <div class="four wide column">
+              <div class="ui toggle checkbox">
+                <input type="checkbox" name="onOff">
+                <label>Schedule</label>
+              </div>
+            </div>
+            <div class="five wide column">
+              <ng-datepicker class="ui fluid input" ng-model="fromDate" ng-change="fromDateChange()" placeholder="Date From">
+              </ng-datepicker>
+              8:00am
+            </div>
+            <div class="five wide column">
+              <ng-datepicker class="ui fluid input" ng-model="toDate" ng-change="toDateChange()" placeholder="Date To">
+              </ng-datepicker>
+              5:00pm
+            </div>
+            <div class="two wide column">
+                <div class="ui fluid selection dropdown">
+                  <input type="hidden" name="type">
+                  <i class="dropdown icon"></i>
+                  <div class="default text">-</div>
+                  <div class="menu">
+                    <div class="item" data-value="0">-</div>
+                    <div class="item" data-value="1">WEEKLY</div>
+                    <div class="item" data-value="2">DAILY</div>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="ui divider"></div>
+          <!-- Third Row (Notification) -->
+          <div class="ui three column grid">
+            <div class="four wide column">
+              <div class="ui toggle checkbox">
+                <input type="checkbox" name="onOff">
+                <label>Notification</label>
+              </div>
+            </div>
+            <div class="four wide mini column">
+              Date From above is used
+            </div>
+            <div class="eight wide column">
+                <div class="ui fluid input">
+                  <input type="text" placeholder="Notification message">
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="ui vertical divider"></div>
+        <div class="four wide column" style="text-align:center;">
+            <br/>
+            <i class="huge file alternate outline icon"></i>
+            <br/><br/>
+            <button class="ui mini button"><i class="upload icon"></i>
+              HTML
+            </button>
+            &nbsp;
+            <button class="ui mini button"><i class="save icon"></i>
+              HTML
+            </button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+</div>

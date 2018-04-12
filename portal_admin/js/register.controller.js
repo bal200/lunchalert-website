@@ -1,5 +1,5 @@
 angular
-  .module('RegisterCtrl')
+  .module('pageCtrl')
   .controller('registerCtrl', RegisterController);
 
 RegisterController.$inject = ['$scope', '$location', '$rootScope'];
