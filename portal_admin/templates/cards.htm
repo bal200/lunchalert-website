@@ -2,7 +2,7 @@
 
   <h2 class="ui header">Edit Cards</h2>
 
-  <div class="ui message">
+  <div class="ui info message">
     <div class="header">
       Cards are the boxes on the Home Page in the LunchAlert Customer app
     </div>
@@ -27,14 +27,15 @@
   </div>
   <br/>
 
+  <!-- Each Card -->
   <div ng-repeat="card in cards" class="ui segments">
-    <div class="ui secondary segment">
+    <div class="ui green secondary clearing segment">
       <!-- Title Row -->
-      <div class="ui transparent input">
-        <input type="text" placeholder="Card Name">
+      <div class="ui left floated transparent input">
+        <input type="text" ng-model="card.title" placeholder="Enter a name:">
       </div>
-      <button class="ui mini primary button">
-          Save
+      <button class="ui right floated mini primary button">
+          &nbsp;Save&nbsp;
       </button>
     </div>
     <div class="ui segment">
@@ -44,7 +45,7 @@
           <div class="ui three column grid">
             <div class="four wide column">
               <div class="ui toggle checkbox">
-                <input type="checkbox" name="onOff">
+                <input type="checkbox" ng-model="card.active" name="onOff">
                 <label>Off / On</label>
               </div>
             </div>
@@ -67,23 +68,23 @@
           <div class="ui four column grid">
             <div class="four wide column">
               <div class="ui toggle checkbox">
-                <input type="checkbox" name="onOff">
+                <input type="checkbox" name="onOff" ng-model="card.campaign.active">
                 <label>Schedule</label>
               </div>
             </div>
             <div class="five wide column">
-              <ng-datepicker class="ui fluid input" ng-model="fromDate" ng-change="fromDateChange()" placeholder="Date From">
+              <ng-datepicker class="ui fluid input" ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date From">
               </ng-datepicker>
               8:00am
             </div>
             <div class="five wide column">
-              <ng-datepicker class="ui fluid input" ng-model="toDate" ng-change="toDateChange()" placeholder="Date To">
+              <ng-datepicker class="ui fluid input" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date To">
               </ng-datepicker>
               5:00pm
             </div>
             <div class="two wide column">
                 <div class="ui fluid selection dropdown">
-                  <input type="hidden" name="type">
+                  <input type="hidden" name="type" ng-model="card.campaign.repeat">
                   <i class="dropdown icon"></i>
                   <div class="default text">-</div>
                   <div class="menu">
@@ -108,7 +109,7 @@
             </div>
             <div class="eight wide column">
                 <div class="ui fluid input">
-                  <input type="text" placeholder="Notification message">
+                  <input type="text" ng-model="card.campaign.notiText" placeholder="Notification message">
                 </div>
             </div>
           </div>
@@ -116,12 +117,12 @@
         <div class="ui vertical divider"></div>
         <div class="four wide column" style="text-align:center;">
             <br/>
-            <i class="huge file alternate outline icon"></i>
+            <i ng-show="card.html" class="huge file alternate outline icon"></i>
+            <p ng-hide="card.html" style="color:#BBB;">no card</p>
             <br/><br/>
             <button class="ui mini button"><i class="upload icon"></i>
               HTML
             </button>
-            &nbsp;
             <button class="ui mini button"><i class="save icon"></i>
               HTML
             </button>
