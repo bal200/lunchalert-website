@@ -34,7 +34,7 @@
       <div class="ui left floated transparent input">
         <input type="text" ng-model="card.title" placeholder="Enter a name:">
       </div>
-      <button class="ui right floated mini primary button">
+      <button class="ui right floated mini button" ng-class='(card.touched?"primary":"")'>
           &nbsp;Save&nbsp;
       </button>
     </div>
@@ -63,57 +63,60 @@
               </div>
             </div>
           </div>
-          <div class="ui divider"></div>
+          <div class="ui divider" ng-if="card.campaign.active"></div>
           <!-- Second Row (Schedule) -->
           <div class="ui four column grid">
             <div class="four wide column">
               <div class="ui toggle checkbox">
-                <input type="checkbox" name="onOff" ng-model="card.campaign.active">
+                <input type="checkbox" name="scheduleOnOff" ng-model="card.campaign.active">
                 <label>Schedule</label>
               </div>
             </div>
-            <div class="five wide column">
+
+            <div class="five wide column" ng-if="card.campaign.active">
               <ng-datepicker class="ui fluid input" ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date From">
               </ng-datepicker>
               8:00am
             </div>
-            <div class="five wide column">
+            <div class="five wide column" ng-if="card.campaign.active">
               <ng-datepicker class="ui fluid input" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date To">
               </ng-datepicker>
               5:00pm
             </div>
-            <div class="two wide column">
+            <div class="two wide column" ng-if="card.campaign.active">
                 <div class="ui fluid selection dropdown">
-                  <input type="hidden" name="type" ng-model="card.campaign.repeat">
+                  <input type="hidden" name="repeat" ng-model="card.campaign.repeat">
                   <i class="dropdown icon"></i>
                   <div class="default text">-</div>
                   <div class="menu">
-                    <div class="item" data-value="0">-</div>
-                    <div class="item" data-value="1">WEEKLY</div>
-                    <div class="item" data-value="2">DAILY</div>
+                    <div class="item" data-value="">-</div>
+                    <div class="item" data-value="WEEKLY">WEEKLY</div>
+                    <div class="item" data-value="DAILY">DAILY</div>
                   </div>
                 </div>
             </div>
+
           </div>
-          <div class="ui divider"></div>
+          <div class="ui divider" ng-if="card.campaign.notiOn"></div>
           <!-- Third Row (Notification) -->
-          <div class="ui three column grid">
+          <div class="ui three column grid" ng-if="card.campaign.active">
             <div class="four wide column">
               <div class="ui toggle checkbox">
-                <input type="checkbox" name="onOff">
+                <input type="checkbox" name="notiOnOff" ng-model="card.campaign.notiOn">
                 <label>Notification</label>
               </div>
             </div>
-            <div class="four wide mini column">
+            <div class="four wide mini column" ng-if="card.campaign.notiOn">
               Date From above is used
             </div>
-            <div class="eight wide column">
+            <div class="eight wide column" ng-if="card.campaign.notiOn">
                 <div class="ui fluid input">
                   <input type="text" ng-model="card.campaign.notiText" placeholder="Notification message">
                 </div>
             </div>
           </div>
         </div>
+        <!-- File Column -->
         <div class="ui vertical divider"></div>
         <div class="four wide column" style="text-align:center;">
             <br/>

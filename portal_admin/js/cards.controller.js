@@ -57,8 +57,8 @@ function CardsController($scope, $location, $rootScope) {
         $scope.$apply(function(){
           console.log("Retrieved cards and campaigns for "+swm);
           linkCardsToCampaigns(res.cards, res.campaigns)
-          $scope.cards = res.cards;
-          setParseGettersSetters($scope.cards, res.campaigns)
+          $scope.cards = parseToCardObject($scope.cards, res.cards);
+          //setParseGettersSetters($scope.cards, res.campaigns)
         });
       },
       error: function(err) { console.log("Error retreiving cards and campaigns ("+err.code+") "+err.message); }
@@ -74,6 +74,33 @@ function CardsController($scope, $location, $rootScope) {
       }
     }
   }
+  function parseToCardObject (cardP, cards) {
+    for (var m=0; m<cardP.length; m++) {
+      var card = {
+        id: cardP.id,
+        title: cardP.get('title'),
+        html: cardP.get('html'),
+        active: cardP.get('active'),
+        order: cardP.get('order'),
+        campaign: {
+          id: cardP.campaign.id,
+          comment: cardP.campaign.get('comment'),
+          repeat: cardP.campaign.get('repeat'),
+          startDate: cardP.campaign.get('startDate'),
+          endDate: cardP.campaign.get('endDate'),
+          active: cardP.campaign.get('active'),
+          notiText: cardP.campaign.get('notiText'),
+          notiStatus: cardP.campaign.get('notiStatus'),
+          notiOn: false
+        }
+      };
+      if (card.campaign.notiStatus.toLowerCase()=="wait") {console.log("Wait"); card.campaign.notiOn=true;}
+      if (card.campaign.notiStatus.substring(0,4).toLowerCase()=="sent") card.campaign.notiOn=true;
+      cards.push(card);
+    }
+    return cards;
+  }
+
   function setParseGettersSetters(cards, campaigns) {
     for (var n=0; n<campaigns.length; n++) {
       Object.setPrototypeOf(campaigns[n], Campaign);
