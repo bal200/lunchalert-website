@@ -109,10 +109,10 @@ function( $scope, $rootScope, $location ) {
       loadInstalls();
     }
   };
-  $scope.dateChange = function() {
-      $scope.arrivalChange();
-      $scope.installChange();
-  };
+  //$scope.dateChange = function() {
+  //    $scope.arrivalChange();
+  //    $scope.installChange();
+  //};
   $scope.vanChange = function() {
     if ($scope.selectedVan == "") { /* All Vans selected */
       $scope.vanName = "";
@@ -193,12 +193,12 @@ function( $scope, $rootScope, $location ) {
     //query.equalTo('vanId', vansid);
     /* @Todo: Date range */
     var fromDate=null, toDate=null;
-    if ($scope.fromDate!=null & $scope.fromDate!="") {
+    if ($scope.installFromDate!=null & $scope.installFromDate!="") {
       //alert("scope.fromDate "+$scope.fromDate);
-      fromDate=new Date($scope.fromDate);
+      fromDate=new Date($scope.installFromDate);
     }
-    if ($scope.toDate!=null & $scope.toDate!="") {
-      toDate=new Date($scope.toDate);
+    if ($scope.installToDate!=null & $scope.installToDate!="") {
+      toDate=new Date($scope.installToDate);
       toDate.setHours(23); toDate.setMinutes(59); toDate.setSeconds(59); /* needs to be the end of this day to be inclusive */
     }
 
@@ -275,11 +275,11 @@ function( $scope, $rootScope, $location ) {
     query.equalTo('vendor', usr);
 
     /* Set a Date range */
-    if ($scope.fromDate!=null & $scope.fromDate!="") {
-      query.greaterThan("createdAt", new Date($scope.fromDate));
+    if ($scope.arrivalFromDate!=null & $scope.arrivalFromDate!="") {
+      query.greaterThan("createdAt", new Date($scope.arrivalFromDate));
     }
-    if ($scope.toDate!=null & $scope.toDate!="") {
-      var d=new Date($scope.toDate);
+    if ($scope.arrivalToDate!=null & $scope.arrivalToDate!="") {
+      var d=new Date($scope.arrivalToDate);
       d.setHours(23); d.setMinutes(59); d.setSeconds(59); /* needs to be the end of this day to be inclusive */
       query.lessThan("createdAt", d);
     }
