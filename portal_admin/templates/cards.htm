@@ -4,13 +4,14 @@
 
   <div class="ui info message">
     <div class="header">
-      Cards are the boxes on the Home Page in the LunchAlert Customer app
+      Cards are the boxes of content in the LunchAlert Customer app
     </div>
     <p>These can be your main home card, special offer cards, or important messages to 
       your customers.</p>
 
-    <p>Cards can either be custom designed cards made by LunchAlert staff, or simple cards that 
-      can be created and edited here.</p>
+    <p>Cards can either be custom designed by LunchAlert staff, or simple text cards that 
+      can be created and edited.  
+      Custom cards are written in HTML code and cannot be edited here.</p>
   </div>
 
 
@@ -34,7 +35,8 @@
       <div class="ui left floated transparent input">
         <input type="text" ng-model="card.title" placeholder="Enter a name:">
       </div>
-      <button class="ui right floated mini button" ng-class='(card.touched?"primary":"")'>
+      <button class="ui right floated mini button" ng-class='(card.touched?"primary":"")'
+            ng-click="saveCard(card)">
           &nbsp;Save&nbsp;
       </button>
     </div>
@@ -52,54 +54,45 @@
             <div class="eight wide column">
             </div>
             <div class="four wide column">
-              <div class="ui fluid selection dropdown">
-                <input type="hidden" name="type">
-                <i class="dropdown icon"></i>
-                <div class="default text">Custom card</div>
-                <div class="menu">
-                  <div class="item" data-value="0">Custom card</div>
-                  <div class="item" data-value="1">Simple card</div>
-                </div>
-              </div>
+                <select name="custom" ng-model="card.type" class="ui dropdown">
+                  <option value="">-</option>
+                  <option value="custom">Custom card</option>
+                  <option value="simple">Simple card</option>
+                </select>
             </div>
           </div>
-          <div class="ui divider" ng-if="card.campaign.active"></div>
+          <div class="ui divider" ng-if="card.schedulerOn"></div>
           <!-- Second Row (Schedule) -->
           <div class="ui four column grid">
             <div class="four wide column">
               <div class="ui toggle checkbox">
-                <input type="checkbox" name="scheduleOnOff" ng-model="card.campaign.active">
+                <input type="checkbox" name="scheduleOnOff" ng-model="card.schedulerOn">
                 <label>Schedule</label>
               </div>
             </div>
 
-            <div class="five wide column" ng-if="card.campaign.active">
+            <div class="five wide column" ng-if="card.schedulerOn">
               <ng-datepicker class="ui fluid input" ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date From">
               </ng-datepicker>
 
             </div>
-            <div class="five wide column" ng-if="card.campaign.active">
+            <div class="five wide column" ng-if="card.schedulerOn">
               <ng-datepicker class="ui fluid input" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date To">
               </ng-datepicker>
 
             </div>
-            <div class="two wide column" ng-if="card.campaign.active">
-                <div class="ui fluid selection dropdown">
-                  <input type="hidden" name="repeat" ng-model="card.campaign.repeat">
-                  <i class="dropdown icon"></i>
-                  <div class="default text">-</div>
-                  <div class="menu">
-                    <div class="item" data-value="">-</div>
-                    <div class="item" data-value="WEEKLY">WEEKLY</div>
-                    <div class="item" data-value="DAILY">DAILY</div>
-                  </div>
-                </div>
+            <div class="two wide column" ng-if="card.schedulerOn">
+                <select name="custom" ng-model="card.campaign.repeat" class="ui dropdown">
+                  <option value="">-</option>
+                  <option value="WEEKLY">WEEKLY</option>
+                  <option value="DAILY">DAILY</option>
+                </select>
             </div>
 
           </div>
           <div class="ui divider" ng-if="card.campaign.notiOn"></div>
           <!-- Third Row (Notification) -->
-          <div class="ui three column grid" ng-if="card.campaign.active">
+          <div class="ui three column grid" ng-if="card.schedulerOn">
             <div class="four wide column">
               <div class="ui toggle checkbox">
                 <input type="checkbox" name="notiOnOff" ng-model="card.campaign.notiOn">
