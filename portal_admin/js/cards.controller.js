@@ -7,9 +7,10 @@ function CardsController($scope, $location, $rootScope) {
   
   /*********************** CARD *****************************************/
   var Card = Parse.Object.extend("Card", {
-  },{ create: function (vendor, title) {
+  },{ create: function (vendor, title, order) {
     var card = new Card();
-    card.set("vendor", vendor); card.set("title", title);
+    card.set("vendor", vendor); card.set("title", title); card.set("order", order);
+    card.set("active", false); 
     return card;
   }});
   Card.prototype.__defineGetter__("title", function() {return this.get("title");});
@@ -33,6 +34,7 @@ function CardsController($scope, $location, $rootScope) {
       this.campaign.notiOn = false;
     }
     this.campaign.set("active",val);
+    if (val==false) { this.campaign.notiOn = false; }
   });
 
   /******************** CAMPAIGN ****************************************/
@@ -40,6 +42,7 @@ function CardsController($scope, $location, $rootScope) {
   },{ create: function (vendor, comment, card) {
     var campaign = new Campaign();
     campaign.set("vendor", vendor); campaign.set("comment", comment); campaign.set("card", card);
+    campaign.set("repeat","");
     return campaign;
   }});
   Campaign.prototype.__defineGetter__("comment", function() {return this.get("comment");});
@@ -47,9 +50,9 @@ function CardsController($scope, $location, $rootScope) {
   Campaign.prototype.__defineGetter__("repeat", function() {return this.get("repeat");});
   Campaign.prototype.__defineSetter__("repeat", function(val) {return this.set("repeat",val)});
   Campaign.prototype.__defineGetter__("startDate", function() {return this.get("startDate");});
-  Campaign.prototype.__defineSetter__("startDate", function(val) {return this.set("startDate",val)});
+  Campaign.prototype.__defineSetter__("startDate", function(val) {return this.set("startDate",new Date(val))});
   Campaign.prototype.__defineGetter__("endDate", function() {return this.get("endDate");});
-  Campaign.prototype.__defineSetter__("endDate", function(val) {return this.set("endDate",val)});
+  Campaign.prototype.__defineSetter__("endDate", function(val) {return this.set("endDate",new Date(val))});
   Campaign.prototype.__defineGetter__("active", function() { return this.get("active"); });
   Campaign.prototype.__defineSetter__("active", function(val) { return this.set("active",val) });
   Campaign.prototype.__defineGetter__("notiText", function() {return this.get("notiText");});
@@ -72,22 +75,21 @@ function CardsController($scope, $location, $rootScope) {
   });
   
 
-
   $scope.cards = [];
-  $scope.swm="";
+  $scope.swm=null;
 
   $scope.loadCards = function () {
-    var usrObj = Parse.User.current();
-    var swm = $scope.swm;
-    if ($scope.swm=="") {
-      var swm = usrObj.id;
-    }
+    //var usrObj = Parse.User.current();
+    //var swm = $scope.swm;
+    //if ($scope.swm=="") {
+    //  var swm = usrObj.id;
+    //}
     Parse.Cloud.run("getCardsAndCampaigns", {
-        userId: swm
+        userId: ($scope.swm ? $scope.swm.id : Parse.User.current().id)
     },{
       success: function(res) {
         $scope.$apply(function(){
-          console.log("Retrieved cards and campaigns for "+swm);
+          console.log("Retrieved cards and campaigns");
           linkCardsToCampaigns(res.cards, res.campaigns)
           //$scope.cards = parseToCardObject(res.cards, $scope.cards);
           //setParseGettersSetters($scope.cards, res.campaigns);
@@ -97,11 +99,6 @@ function CardsController($scope, $location, $rootScope) {
       error: function(err) { console.log("Error retreiving cards and campaigns ("+err.code+") "+err.message); }
     });
   };
-
-  $scope.saveCard = function(card) {
-    console.log(card);
-  };
-
   function linkCardsToCampaigns(cards, campaigns) {
     for (var n=0; n<campaigns.length; n++) {
       for (var m=0; m<cards.length; m++) {
@@ -111,7 +108,39 @@ function CardsController($scope, $location, $rootScope) {
       }
     }
   }
-  /* not bused */
+
+  $scope.saveCard = function(card) {
+    console.log(card);
+
+    card.save({
+      success: function(c) {
+        console.log("Saved card "+c.get("title") );
+        if (card.campaign) {
+          card.campaign.save({
+            success: function(campaign) {
+              console.log("Saved campaign "+card.get("title") );    
+              $scope.$apply(function() {
+                //card.saveText="Saved";
+              });
+            }, error: function(e) {console.log("Save Campaign error ("+e.code+") "+e.message);}
+          });
+        }else {
+          $scope.$apply(function() {
+            //card.saveText="Saved";
+          });
+        }
+      }, error: function(e) {console.log("Save Card error ("+e.code+") "+e.message);}
+    });
+
+  };
+
+  $scope.addCard = function() {
+    $scope.cards.push(
+      Card.create(($scope.swm ? $scope.swm : Parse.User.current()), "", 10)
+    );
+  }
+
+  /* not used */
   function parseToCardObject (cardP, cards) {
     for (var m=0; m<cardP.length; m++) {
       var card = {

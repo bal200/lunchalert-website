@@ -8,7 +8,8 @@
     </div>
     <p>These can be your main home card, special offer cards, or important messages to 
       your customers.</p>
-
+    <p>From here you can turn cards on or off, schedule them, and edit simple cards.
+      A push notification can also be sent to customers when the card goes live.</p>
     <p>Cards can either be custom designed by LunchAlert staff, or simple text cards that 
       can be created and edited.  
       Custom cards are written in HTML code and cannot be edited here.</p>
@@ -21,7 +22,7 @@
         Available Cards
     </h3>
     <p class="ui right floated header">
-      <button class="ui mini basic button">
+      <button class="ui mini basic button" ng-click="addCard()">
           +
       </button>
     </p>
@@ -29,24 +30,33 @@
   <br/>
 
   <!-- Each Card -->
-  <div ng-repeat="card in cards" class="ui segments">
-    <div class="ui green secondary clearing segment">
+  <form ng-repeat="card in cards" name="cardForm" class="ui segments">
+    
+    <div class="ui secondary clearing segment">
       <!-- Title Row -->
-      <div class="ui left floated transparent input">
+      <div class="ui left floated transparent left icon input">
         <input type="text" ng-model="card.title" placeholder="Enter a name:">
+        <i class="large outline file icon"></i>
       </div>
-      <button class="ui right floated mini button" ng-class='(card.touched?"primary":"")'
-            ng-click="saveCard(card)">
-          &nbsp;Save&nbsp;
+      <button class="ui right floated mini button" ng-class='(cardForm.$dirty?"primary":"")'
+            type="submit" ng-click="saveCard(card);cardForm.$setPristine()">
+          &nbsp;{{(card.saveText?card.saveText:'Save')}}&nbsp;
       </button>
+      <!-- <div class="ui right floated dropdown">
+        <div class="text">today</div>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <div class="active item" data-text="today">Today</div>
+        </div>
+      </div> -->
     </div>
-    <div class="ui segment">
+    <div class="ui segment" ng-class='(card.active?"green":"")'>
       <!-- First row -->
       <div class="ui two column divided grid">
         <div class="twelve wide column">
           <div class="ui three column grid">
             <div class="four wide column">
-              <div class="ui toggle checkbox">
+              <div class="ui read-only toggle checkbox">
                 <input type="checkbox" ng-model="card.active" name="onOff">
                 <label>Off / On</label>
               </div>
@@ -127,7 +137,7 @@
 
 
     </div>
-  </div>
 
+  </form>
 
 </div>
