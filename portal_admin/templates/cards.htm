@@ -15,6 +15,21 @@
       Custom cards are written in HTML code and cannot be edited here.</p>
   </div>
 
+  
+  <!-- Vendor Search selection Box -->
+
+  <div class="ui dropdown">
+    <input name="vendorInput" type="hidden" ng-model="vendor.vendorInput" 
+        ng-change="vendorPress()">
+    <i class="dropdown icon"></i>
+    <div class="default text">-</div>
+    <div class="menu">
+      <div class="item" data-value="test">Test</div>
+      <div ng-repeat="vendor in vendor.vendorList" class="item" data-value="{{vendor.line}}">
+          {{vendor.businessName}}
+      </div>
+    </div>
+  </div>
 
   <br/>
   <div class="ui clearing">
@@ -38,9 +53,14 @@
         <input type="text" ng-model="card.title" placeholder="Enter a name:">
         <i class="large outline file icon"></i>
       </div>
-      <button class="ui right floated mini button" ng-class='(cardForm.$dirty?"primary":"")'
-            type="submit" ng-click="saveCard(card);cardForm.$setPristine()">
+      
+      <button class="ui right floated  mini button" ng-class='(cardForm.$dirty?"primary":"")'
+            type="submit" ng-click="saveCard(card, cardForm);">
           &nbsp;{{(card.saveText?card.saveText:'Save')}}&nbsp;
+      </button>
+      <span style="float:right;">&nbsp; &nbsp;</span>
+      <button class="ui right floated icon mini button" ng-click="deleteCard(card, cardForm);">
+        <i class="trash icon"></i>
       </button>
       <!-- <div class="ui right floated dropdown">
         <div class="text">today</div>
@@ -49,6 +69,7 @@
           <div class="active item" data-text="today">Today</div>
         </div>
       </div> -->
+  
     </div>
     <div class="ui segment" ng-class='(card.active?"green":"")'>
       <!-- First row -->
@@ -122,22 +143,42 @@
         <!-- File Column -->
         <div class="ui vertical divider"></div>
         <div class="four wide column" style="text-align:center;">
-            <br/>
-            <i ng-show="card.html" class="huge file alternate outline icon"></i>
-            <p ng-hide="card.html" style="color:#BBB;">no card</p>
-            <br/><br/>
-            <button class="ui mini button"><i class="upload icon"></i>
-              HTML
-            </button>
-            <button class="ui mini button"><i class="save icon"></i>
-              HTML
-            </button>
+          <i ng-show="card.html" class="huge file alternate outline icon"></i>
+          <p ng-hide="card.html" style="color:#BBB;">no card</p>
+          <br/><br/>
+          <button class="ui mini icon button" ng-click="editClick(card, cardForm);"><i class="edit icon"></i></button>
+          <button class="ui mini icon button"><i class="upload icon"></i></button>
+          <button class="ui mini icon button"><i class="save icon"></i></button>
         </div>
       </div>
 
-
     </div>
-
   </form>
+
+
+  <form>
+    <div id="edit-modal" class="ui modal">
+        <i class="close icon"></i>
+        <div class="header">
+          Edit HTML for {{edit.title}}
+        </div>
+        <div class="content">
+
+          <div class="ui form">
+            <div class="field">
+              <label>Card HTML:</label>
+              <textarea class="html-edit" rows="30" wrap="hard"
+                ng-model="edit.text"></textarea>
+            </div>
+          </div>
+
+        </div>
+        <div class="actions">
+          <div class="ui button" ng-click="editClose();">Cancel</div>
+          <div class="ui primary button" ng-click="editSave();">Ok</div>
+        </div>
+    </div>
+  </form>
+
 
 </div>

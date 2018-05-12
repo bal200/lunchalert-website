@@ -77,6 +77,51 @@ function CardsController($scope, $location, $rootScope) {
 
   $scope.cards = [];
   $scope.swm=null;
+  $scope.vendor={
+    vendorInput: "",
+    vendorList: []
+  };
+  $scope.edit={
+    card: null, cardForm: null,
+    title:"", text:""
+  };
+  $('.ui.dropdown').dropdown();
+  $('.ui.modal').modal({ detachable: false });
+
+  $scope.editClick = function(card, cardForm) {
+    $scope.edit={
+      card: card,
+      cardForm: cardForm,
+      title: card.title,
+      text: card.html
+    };
+    $('.ui.modal').modal('show');
+  };
+  $scope.editClose = function() {  $('.ui.modal').modal('hide');  };
+  $scope.editSave = function() {
+    $scope.edit.card.html = $scope.edit.text;
+    $('.ui.modal').modal('hide');
+    $scope.edit.cardForm.$setDirty();
+  };
+  
+  $scope.vendorPress = function() {
+    console.log("vendorPress: key pressed");
+    if (true) {
+      /* We want them to have typed at least 3 letters so far */
+      if ($scope.vendor.vendorInput.length >= 3) {
+        console.log("calling findNamedVendors");
+        Parse.Cloud.run("findNamedVendors", {
+          searchText: $scope.vendor.vendorInput
+        },{ success: function(res) {
+          $scope.$apply(function() {
+            $scope.vendor.vendorList = res;
+          });
+        }, error: function(err) {
+          console.log("loadVendors error ("+err.code+") "+err.message);
+        }});
+      }
+    }
+  }
 
   $scope.loadCards = function () {
     //var usrObj = Parse.User.current();
@@ -109,8 +154,8 @@ function CardsController($scope, $location, $rootScope) {
     }
   }
 
-  $scope.saveCard = function(card) {
-    console.log(card);
+  $scope.saveCard = function(card, cardForm) {
+    console.log(cardForm);
 
     card.save({
       success: function(c) {
@@ -121,6 +166,7 @@ function CardsController($scope, $location, $rootScope) {
               console.log("Saved campaign "+card.get("title") );    
               $scope.$apply(function() {
                 //card.saveText="Saved";
+                cardForm.$setPristine();
               });
             }, error: function(e) {console.log("Save Campaign error ("+e.code+") "+e.message);}
           });
