@@ -85,6 +85,9 @@ function CardsController($scope, $location, $rootScope) {
     card: null, cardForm: null,
     title:"", text:""
   };
+  $scope.deleteModal={
+    card:null
+  };
   $('.ui.dropdown').dropdown();
   $('.ui.modal').modal({ detachable: false });
 
@@ -95,12 +98,12 @@ function CardsController($scope, $location, $rootScope) {
       title: card.title,
       text: card.html
     };
-    $('.ui.modal').modal('show');
+    $('#edit-modal').modal('show');
   };
-  $scope.editClose = function() {  $('.ui.modal').modal('hide');  };
+  $scope.editClose = function() {  $('#edit-modal').modal('hide');  };
   $scope.editSave = function() {
     $scope.edit.card.html = $scope.edit.text;
-    $('.ui.modal').modal('hide');
+    $('#edit-modal').modal('hide');
     $scope.edit.cardForm.$setDirty();
   };
   
@@ -123,6 +126,10 @@ function CardsController($scope, $location, $rootScope) {
     }
   }
 
+  $scope.confirmDelete = function(card) {
+    $scope.deleteModal.card=card;
+    $('#confirm-delete-modal').modal('show');
+  }
   $scope.loadCards = function () {
     //var usrObj = Parse.User.current();
     //var swm = $scope.swm;
@@ -155,7 +162,7 @@ function CardsController($scope, $location, $rootScope) {
   }
 
   $scope.saveCard = function(card, cardForm) {
-    console.log(cardForm);
+    console.log(card);
 
     card.save({
       success: function(c) {
@@ -173,13 +180,42 @@ function CardsController($scope, $location, $rootScope) {
         }else {
           $scope.$apply(function() {
             //card.saveText="Saved";
+            cardForm.$setPristine();
           });
         }
       }, error: function(e) {console.log("Save Card error ("+e.code+") "+e.message);}
     });
 
   };
+  $scope.deleteCard = function(card) {
+    var t = card.get("title");
+    var campaign = card.campaign;
+    card.destroy({
+      success: function(c) {
+        console.log("Deleted Card "+t );
+        if (campaign) {
+          campaign.destroy({
+            success: function(ca) {
+              console.log("Deleted campaign ");    
+              $scope.$apply(function() {
+                removeFromArray($scope.cards, card);
+              });
+            }, error: function(e) {console.log("Delete Campaign error ("+e.code+") "+e.message);}
+          });
+        }else{
+          $scope.$apply(function() {
+            removeFromArray($scope.cards, card);
+          });
+        }
+      }, error: function(e) {console.log("Delete Card error ("+e.code+") "+e.message);}
+    });
 
+  };
+  function removeFromArray(array, value) {
+    var idx = array.indexOf(value);
+    if (idx !== -1) { array.splice(idx, 1); }
+    return array;
+  }
   $scope.addCard = function() {
     $scope.cards.push(
       Card.create(($scope.swm ? $scope.swm : Parse.User.current()), "", 10)

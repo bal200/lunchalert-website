@@ -37,7 +37,8 @@
         Available Cards
     </h3>
     <p class="ui right floated header">
-      <button class="ui mini basic button" ng-click="addCard()">
+      <button class="ui mini basic button" ng-click="addCard()" 
+        data-tooltip="Create a new blank card" data-position="top center">
           +
       </button>
     </p>
@@ -59,7 +60,7 @@
           &nbsp;{{(card.saveText?card.saveText:'Save')}}&nbsp;
       </button>
       <span style="float:right;">&nbsp; &nbsp;</span>
-      <button class="ui right floated icon mini button" ng-click="deleteCard(card, cardForm);">
+      <button class="ui right floated icon mini button" ng-click="confirmDelete(card);">
         <i class="trash icon"></i>
       </button>
       <!-- <div class="ui right floated dropdown">
@@ -85,7 +86,7 @@
             <div class="eight wide column">
             </div>
             <div class="four wide column">
-                <select name="custom" ng-model="card.type" class="ui dropdown">
+                <select name="custom" ng-model="card.type" class="ui dropdown fluid">
                   <option value="">-</option>
                   <option value="custom">Custom card</option>
                   <option value="simple">Simple card</option>
@@ -103,17 +104,17 @@
             </div>
 
             <div class="five wide column" ng-if="card.schedulerOn">
-              <ng-datepicker class="ui fluid input" ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date From">
+              <ng-datepicker class="ui input fluid" ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date From">
               </ng-datepicker>
 
             </div>
             <div class="five wide column" ng-if="card.schedulerOn">
-              <ng-datepicker class="ui fluid input" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date To">
+              <ng-datepicker class="ui input fluid" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date To">
               </ng-datepicker>
 
             </div>
             <div class="two wide column" ng-if="card.schedulerOn">
-                <select name="custom" ng-model="card.campaign.repeat" class="ui dropdown">
+                <select name="custom" ng-model="card.campaign.repeat" class="ui dropdown fluid">
                   <option value="">-</option>
                   <option value="WEEKLY">WEEKLY</option>
                   <option value="DAILY">DAILY</option>
@@ -147,8 +148,8 @@
           <p ng-hide="card.html" style="color:#BBB;">no card</p>
           <br/><br/>
           <button class="ui mini icon button" ng-click="editClick(card, cardForm);"><i class="edit icon"></i></button>
-          <button class="ui mini icon button"><i class="upload icon"></i></button>
-          <button class="ui mini icon button"><i class="save icon"></i></button>
+          <!-- <button class="ui mini icon button"><i class="upload icon"></i></button>
+          <button class="ui mini icon button"><i class="download icon"></i></button> -->
         </div>
       </div>
 
@@ -179,6 +180,19 @@
         </div>
     </div>
   </form>
+
+  <div id="confirm-delete-modal" class="ui small modal">
+    <div class="header">Delete card {{deleteModal.card.title}}?</div>
+    <div class="content">
+      <p>Delete this Card, its schedule, and its HTML code from the database?
+        This cannot be undone.
+      </p>
+    </div>
+    <div class="actions">
+      <div class="ui approve negative button" ng-click="deleteCard(deleteModal.card);">Delete</div>
+      <div class="ui cancel button">Close</div>
+    </div>
+  </div>
 
 
 </div>
