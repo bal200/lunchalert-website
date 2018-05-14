@@ -21,7 +21,7 @@ function CardsController($scope, $location, $rootScope) {
   Card.prototype.__defineSetter__("active", function(val) {return this.set("active",val)});
   Card.prototype.__defineGetter__("order", function() {return this.get("order");});
   Card.prototype.__defineSetter__("order", function(val) {return this.set("order",val)});
-  Card.prototype.__defineGetter__("type", function() { return ( (this.get("html"))?"custom":"simple" ); });
+  Card.prototype.__defineGetter__("type", function() { return ( (this.get("html"))?"html":"simple" ); });
   Card.prototype.__defineSetter__("type", function(val) {console.log("@TODO: custom/simple cards")});
 
   Card.prototype.__defineGetter__("schedulerOn", function() {
@@ -76,10 +76,11 @@ function CardsController($scope, $location, $rootScope) {
   
 
   $scope.cards = [];
-  $scope.swm=null;
-  $scope.vendor={
-    vendorInput: "",
-    vendorList: []
+  $scope.swmId=null; /* vendor parse Obj */
+  $scope.vendors={
+    input: "",
+    list: [],
+    loading: false
   };
   $scope.edit={
     card: null, cardForm: null,
@@ -91,6 +92,7 @@ function CardsController($scope, $location, $rootScope) {
   $('.ui.dropdown').dropdown();
   $('.ui.modal').modal({ detachable: false });
 
+  /* HTML Editor Modal */
   $scope.editClick = function(card, cardForm) {
     $scope.edit={
       card: card,
@@ -99,31 +101,38 @@ function CardsController($scope, $location, $rootScope) {
       text: card.html
     };
     $('#edit-modal').modal('show');
-  };
+  }; 
   $scope.editClose = function() {  $('#edit-modal').modal('hide');  };
   $scope.editSave = function() {
     $scope.edit.card.html = $scope.edit.text;
     $('#edit-modal').modal('hide');
     $scope.edit.cardForm.$setDirty();
   };
-  
+
+  /* Vendor Search Dropdown */
   $scope.vendorPress = function() {
-    console.log("vendorPress: key pressed");
     if (true) {
       /* We want them to have typed at least 3 letters so far */
-      if ($scope.vendor.vendorInput.length >= 3) {
+      if ($scope.vendors.input.length >= 3) {
         console.log("calling findNamedVendors");
+        $scope.vendors.loading=true;
         Parse.Cloud.run("findNamedVendors", {
-          searchText: $scope.vendor.vendorInput
+          searchText: $scope.vendors.input
         },{ success: function(res) {
           $scope.$apply(function() {
-            $scope.vendor.vendorList = res;
+            $scope.vendors.list = res; $scope.vendors.loading=false;
           });
         }, error: function(err) {
-          console.log("loadVendors error ("+err.code+") "+err.message);
+          console.log("loadVendors error ("+err.code+") "+err.message); $scope.vendors.loading=false;
         }});
       }
     }
+  }
+  $scope.vendorSelect = function( v ) {
+    $scope.vendors.input = v.businessName;
+    $scope.swmId = v.id;
+    $scope.vendors.list = [];
+    $scope.loadCards();
   }
 
   $scope.confirmDelete = function(card) {
@@ -136,8 +145,9 @@ function CardsController($scope, $location, $rootScope) {
     //if ($scope.swm=="") {
     //  var swm = usrObj.id;
     //}
+    $scope.vendors.loading=true;
     Parse.Cloud.run("getCardsAndCampaigns", {
-        userId: ($scope.swm ? $scope.swm.id : Parse.User.current().id)
+        userId: ($scope.swmId ? $scope.swmId : Parse.User.current().id)
     },{
       success: function(res) {
         $scope.$apply(function(){
@@ -146,9 +156,10 @@ function CardsController($scope, $location, $rootScope) {
           //$scope.cards = parseToCardObject(res.cards, $scope.cards);
           //setParseGettersSetters($scope.cards, res.campaigns);
           $scope.cards = res.cards;
+          $scope.vendors.loading=false;
         });
       },
-      error: function(err) { console.log("Error retreiving cards and campaigns ("+err.code+") "+err.message); }
+      error: function(err) { console.log("Error retreiving cards and campaigns ("+err.code+") "+err.message); $scope.vendors.loading=false; }
     });
   };
   function linkCardsToCampaigns(cards, campaigns) {
@@ -222,43 +233,7 @@ function CardsController($scope, $location, $rootScope) {
     );
   }
 
-  /* not used */
-  function parseToCardObject (cardP, cards) {
-    for (var m=0; m<cardP.length; m++) {
-      var card = {
-        id: cardP.id,
-        title: cardP.get('title'),
-        html: cardP.get('html'),
-        active: cardP.get('active'),
-        order: cardP.get('order'),
-        campaign: {
-          id: cardP.campaign.id,
-          comment: cardP.campaign.get('comment'),
-          repeat: cardP.campaign.get('repeat'),
-          startDate: cardP.campaign.get('startDate'),
-          endDate: cardP.campaign.get('endDate'),
-          active: cardP.campaign.get('active'),
-          notiText: cardP.campaign.get('notiText'),
-          notiStatus: cardP.campaign.get('notiStatus'),
-          notiOn: false
-        }
-      };
-      if (card.campaign.notiStatus.toLowerCase()=="wait") {console.log("Wait"); card.campaign.notiOn=true;}
-      if (card.campaign.notiStatus.substring(0,4).toLowerCase()=="sent") card.campaign.notiOn=true;
-      cards.push(card);
-      console.log(card);
-    }
-    return cards;
-  }
-  /* not used */
-  function setParseGettersSetters(cards, campaigns) {
-    for (var n=0; n<campaigns.length; n++) {
-      Object.setPrototypeOf(campaigns[n], Campaign);
-    }
-    for (var m=0; m<cards.length; m++) {
-      Object.setPrototypeOf(cards[m], Card);
-    }
-  }
+
 
   $scope.loadCards();
 

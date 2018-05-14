@@ -15,33 +15,54 @@
       Custom cards are written in HTML code and cannot be edited here.</p>
   </div>
 
-  
+  <br/>
   <!-- Vendor Search selection Box -->
+  <div class="four wide column">
+    <div class="ui labeled icon input">
+      <div class="ui label">Vendor </div>
+      <input type="text" ng-model="vendors.input" placeholder="" ng-change="vendorPress()">
+      <i class="search icon"></i>
+    </div>
+    <div ng-if="vendors.loading" class="ui active small inline loader"></div>
+  </div>
+  <div class="four wide column">
+    <div class="ui  selection list">
+      <div ng-repeat="vendor in vendors.list" class="item" data-value="{{vendor.line}}">
+        <div class="content" ng-click="vendorSelect(vendor)">
+          <div class="header">{{vendor.businessName}}</div>
+          <div class="description">({{vendor.id}})</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br/>
 
-  <div class="ui dropdown">
-    <input name="vendorInput" type="hidden" ng-model="vendor.vendorInput" 
+<!--
+  <div class="ui fluid search dropdown">
+    <input name="vendorInput" type="text" ng-model="vendors.input" 
         ng-change="vendorPress()">
     <i class="dropdown icon"></i>
     <div class="default text">-</div>
     <div class="menu">
       <div class="item" data-value="test">Test</div>
-      <div ng-repeat="vendor in vendor.vendorList" class="item" data-value="{{vendor.line}}">
+      <div ng-repeat="vendor in vendors.list" class="item" data-value="{{vendor.line}}">
           {{vendor.businessName}}
       </div>
     </div>
-  </div>
+  </div> -->
 
   <br/>
   <div class="ui clearing">
     <h3 class="ui left floated header">
         Available Cards
     </h3>
-    <p class="ui right floated header">
-      <button class="ui mini basic button" ng-click="addCard()" 
-        data-tooltip="Create a new blank card" data-position="top center">
-          +
-      </button>
-    </p>
+    <button class="ui right floated top pointing dropdown mini basic icon button">
+      <i class="plus icon"></i>
+      <div class="menu">
+        <div class="header">Menu</div>
+        <div class="item" ng-click="addCard()">Add Card</div>
+      </div>
+    </button>
   </div>
   <br/>
 
@@ -59,17 +80,10 @@
             type="submit" ng-click="saveCard(card, cardForm);">
           &nbsp;{{(card.saveText?card.saveText:'Save')}}&nbsp;
       </button>
-      <span style="float:right;">&nbsp; &nbsp;</span>
+      <span style="float:right;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
       <button class="ui right floated icon mini button" ng-click="confirmDelete(card);">
-        <i class="trash icon"></i>
+        <i class="trash alternate outline icon"></i>
       </button>
-      <!-- <div class="ui right floated dropdown">
-        <div class="text">today</div>
-        <i class="dropdown icon"></i>
-        <div class="menu">
-          <div class="active item" data-text="today">Today</div>
-        </div>
-      </div> -->
   
     </div>
     <div class="ui segment" ng-class='(card.active?"green":"")'>
@@ -77,18 +91,18 @@
       <div class="ui two column divided grid">
         <div class="twelve wide column">
           <div class="ui three column grid">
-            <div class="four wide column">
-              <div class="ui read-only toggle checkbox">
+            <div class="five wide column">
+              <div class="ui toggle checkbox">
                 <input type="checkbox" ng-model="card.active" name="onOff">
                 <label>Off / On</label>
               </div>
             </div>
-            <div class="eight wide column">
+            <div class="seven wide column">
             </div>
             <div class="four wide column">
                 <select name="custom" ng-model="card.type" class="ui dropdown fluid">
                   <option value="">-</option>
-                  <option value="custom">Custom card</option>
+                  <option value="html">HTML card</option>
                   <option value="simple">Simple card</option>
                 </select>
             </div>
@@ -147,7 +161,9 @@
           <i ng-show="card.html" class="huge file alternate outline icon"></i>
           <p ng-hide="card.html" style="color:#BBB;">no card</p>
           <br/><br/>
-          <button class="ui mini icon button" ng-click="editClick(card, cardForm);"><i class="edit icon"></i></button>
+          <button class="ui mini button" ng-click="editClick(card, cardForm);">
+            <i class="edit icon"></i>&nbsp;Edit
+          </button>
           <!-- <button class="ui mini icon button"><i class="upload icon"></i></button>
           <button class="ui mini icon button"><i class="download icon"></i></button> -->
         </div>
@@ -182,11 +198,10 @@
   </form>
 
   <div id="confirm-delete-modal" class="ui small modal">
-    <div class="header">Delete card {{deleteModal.card.title}}?</div>
+    <div class="header">Delete {{deleteModal.card.title}}?</div>
     <div class="content">
-      <p>Delete this Card, its schedule, and its HTML code from the database?
-        This cannot be undone.
-      </p>
+      <p>Delete this Card, its schedule, and its HTML code from the database?</p>
+      <p>This cannot be undone.</p>
     </div>
     <div class="actions">
       <div class="ui approve negative button" ng-click="deleteCard(deleteModal.card);">Delete</div>
