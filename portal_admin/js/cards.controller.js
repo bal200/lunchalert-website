@@ -229,11 +229,15 @@ function CardsController($scope, $location, $rootScope) {
   }
   $scope.addCard = function() {
     $scope.cards.push(
-      Card.create(($scope.swm ? $scope.swm : Parse.User.current()), "", 10)
+      Card.create(($scope.swmId ? newParseUser($scope.swmId) : Parse.User.current()), "", 10)
     );
   }
 
-
+  function newParseUser(id) {
+    var user = new Parse.User();
+    user.id = id; 
+    return user;
+  }
 
   $scope.loadCards();
 
