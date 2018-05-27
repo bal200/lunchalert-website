@@ -49,8 +49,23 @@ function CardsController($scope, $location, $rootScope) {
   Campaign.prototype.__defineSetter__("comment", function(val) {return this.set("comment",val)});
   Campaign.prototype.__defineGetter__("repeat", function() {return this.get("repeat");});
   Campaign.prototype.__defineSetter__("repeat", function(val) {return this.set("repeat",val)});
-  Campaign.prototype.__defineGetter__("startDate", function() {return this.get("startDate");});
-  Campaign.prototype.__defineSetter__("startDate", function(val) {return this.set("startDate",new Date(val))});
+  Campaign.prototype.__defineGetter__("startDate", function() {
+    console.log("get date");
+    var d=this.get("startDate");
+    console.log(d);
+    //return ""+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+    return "2000-01-01";
+  });
+  Campaign.prototype.__defineSetter__("startDate", function(val) {
+    console.log("set date "+val);
+    return this.set("startDate",new Date(val))
+  });
+  Campaign.prototype.__defineGetter__("startTime", function() {
+    return this.get("startDate");
+  });
+  Campaign.prototype.__defineSetter__("startTime", function(val) {
+    return this.set("startDate",new Date(val))
+  });
   Campaign.prototype.__defineGetter__("endDate", function() {return this.get("endDate");});
   Campaign.prototype.__defineSetter__("endDate", function(val) {return this.set("endDate",new Date(val))});
   Campaign.prototype.__defineGetter__("active", function() { return this.get("active"); });

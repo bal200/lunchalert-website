@@ -118,12 +118,12 @@
             </div>
 
             <div class="five wide column" ng-if="card.schedulerOn">
-              <ng-datepicker class="ui input fluid" ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date From">
+              <ng-datepicker class="ui input fluid" ng-model="card.campaign.startDate" ng-change="fromDateChange(card)" placeholder="Date From">
               </ng-datepicker>
 
             </div>
             <div class="five wide column" ng-if="card.schedulerOn">
-              <ng-datepicker class="ui input fluid" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date To">
+              <ng-datepicker class="ui input fluid" ng-model="card.campaign.endDate" ng-change="toDateChange(card)" placeholder="Date To">
               </ng-datepicker>
 
             </div>
