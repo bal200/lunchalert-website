@@ -50,24 +50,26 @@ function CardsController($scope, $location, $rootScope) {
   Campaign.prototype.__defineGetter__("repeat", function() {return this.get("repeat");});
   Campaign.prototype.__defineSetter__("repeat", function(val) {return this.set("repeat",val)});
   Campaign.prototype.__defineGetter__("startDate", function() {
-    console.log("get date");
     var d=this.get("startDate");
-    console.log(d);
+    console.log("get date "+d);
     //return ""+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-    return "2000-01-01";
+    //return "2000-01-01";
+    return d;
   });
   Campaign.prototype.__defineSetter__("startDate", function(val) {
     console.log("set date "+val);
-    return this.set("startDate",new Date(val))
+    this.setOnlyDate( "startDate", val );
   });
   Campaign.prototype.__defineGetter__("startTime", function() {
-    return this.get("startDate");
+    return this.getOnlyTime("startDate");
   });
   Campaign.prototype.__defineSetter__("startTime", function(val) {
-    return this.set("startDate",new Date(val))
+    this.setOnlyTime("startDate", val);
   });
   Campaign.prototype.__defineGetter__("endDate", function() {return this.get("endDate");});
-  Campaign.prototype.__defineSetter__("endDate", function(val) {return this.set("endDate",new Date(val))});
+  Campaign.prototype.__defineSetter__("endDate", function(val) {
+    this.setOnlyDate( "endDate", val );
+  });
   Campaign.prototype.__defineGetter__("active", function() { return this.get("active"); });
   Campaign.prototype.__defineSetter__("active", function(val) { return this.set("active",val) });
   Campaign.prototype.__defineGetter__("notiText", function() {return this.get("notiText");});
@@ -88,7 +90,28 @@ function CardsController($scope, $location, $rootScope) {
       { this.set("notiStatus","off"); }
     //return false;
   });
-  
+  Campaign.prototype.setOnlyDate = function(parseColumn, dateStr) {
+    var nw = new Date(dateStr);
+    var d=this.get(parseColumn);
+    if (!d) d=new Date();
+    d.setFullYear(nw.getFullYear(), nw.getMonth(), nw.getDate());
+    this.set(parseColumn, d);
+  }
+  Campaign.prototype.setOnlyTime = function(parseColumn, timeStr) {
+    var hours = timeStr.substr(0, timeStr.length-2 );
+    var d=this.get(parseColumn);
+    if (!d) d=new Date();
+    d.setHours(hours, 00, 00, 0);
+    this.set(parseColumn, d);
+  }
+  Campaign.prototype.getOnlyTime = function(parseColumn) {
+    var d=this.get(parseColumn);
+    if (d) {
+      return ""+d.getHours()+"00";
+    }else{
+      return "";
+    }
+  }
 
   $scope.cards = [];
   $scope.swmId=null; /* vendor parse Obj */
@@ -106,6 +129,23 @@ function CardsController($scope, $location, $rootScope) {
   };
   $('.ui.dropdown').dropdown();
   $('.ui.modal').modal({ detachable: false });
+
+  /* Datepicker controls */
+  $scope.fromDateChange = function(card) {
+    
+  };
+  $scope.toDateChange = function(card) {
+    
+  };
+  function populateDatepickers( cards ) {
+    var d;
+    for (var n=0; n<cards.length; n++) {
+      if (cards[n].campaign) {
+        d = cards[n].campaign.get('startDate');
+        cards[n].campaign.startDateBox = "2018-01-01";""+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+      }
+    }
+  }
 
   /* HTML Editor Modal */
   $scope.editClick = function(card, cardForm) {
@@ -171,6 +211,7 @@ function CardsController($scope, $location, $rootScope) {
           //$scope.cards = parseToCardObject(res.cards, $scope.cards);
           //setParseGettersSetters($scope.cards, res.campaigns);
           $scope.cards = res.cards;
+//          populateDatepickers($scope.cards);
           $scope.vendors.loading=false;
         });
       },
@@ -258,3 +299,18 @@ function CardsController($scope, $location, $rootScope) {
 
 
 }
+
+
+
+/*
+Code for previewing cards, possibly:
+
+<iframe id="iframe"></iframe>
+
+var doc = document.getElementById('iframe').contentWindow.document;
+doc.open();
+doc.write('<div style="background-color:red; margin:0px; width:50vw;">Hello</div>');
+doc.close();
+
+
+*/

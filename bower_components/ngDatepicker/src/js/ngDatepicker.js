@@ -132,7 +132,7 @@ angular.module('jkuri.datepicker', [])
 			ngModel.$render = function () {
 				var newValue = ngModel.$viewValue;
 				if (newValue !== undefined) {
-					scope.viewValue = moment(newValue).format(attrs.viewFormat);
+					scope.viewValue = moment(newValue).format(scope.viewFormat);
 					scope.dateValue = newValue;
 				}
 			};
