@@ -1,9 +1,7 @@
-angular
-  .module('pageCtrl')
-  .controller('CardsCtrl', CardsController);
+angular.module('lunchalert-portal')
 
-CardsController.$inject = ['$scope', '$location', '$rootScope'];
-function CardsController($scope, $location, $rootScope) {
+.controller('CardsCtrl', ['$scope', '$location', '$rootScope',
+function($scope, $location, $rootScope) {
   
   /*********************** CARD *****************************************/
   var Card = Parse.Object.extend("Card", {
@@ -67,9 +65,9 @@ function CardsController($scope, $location, $rootScope) {
     this.setOnlyTime("startDate", val);
   });
   Campaign.prototype.__defineGetter__("endDate", function() {return this.get("endDate");});
-  Campaign.prototype.__defineSetter__("endDate", function(val) {
-    this.setOnlyDate( "endDate", val );
-  });
+  Campaign.prototype.__defineSetter__("endDate", function(val) { this.setOnlyDate( "endDate", val ); });
+  Campaign.prototype.__defineGetter__("endTime", function() { return this.getOnlyTime("endDate"); });
+  Campaign.prototype.__defineSetter__("endTime", function(val) { this.setOnlyTime("endDate", val); });
   Campaign.prototype.__defineGetter__("active", function() { return this.get("active"); });
   Campaign.prototype.__defineSetter__("active", function(val) { return this.set("active",val) });
   Campaign.prototype.__defineGetter__("notiText", function() {return this.get("notiText");});
@@ -93,7 +91,7 @@ function CardsController($scope, $location, $rootScope) {
   Campaign.prototype.setOnlyDate = function(parseColumn, dateStr) {
     var nw = new Date(dateStr);
     var d=this.get(parseColumn);
-    if (!d) d=new Date();
+    if (!d) { this.setOnlyTime(parseColumn, (parseColumn=="startDate" ? '800' : '1700') ); d=this.get(parseColumn); }
     d.setFullYear(nw.getFullYear(), nw.getMonth(), nw.getDate());
     this.set(parseColumn, d);
   }
@@ -298,7 +296,7 @@ function CardsController($scope, $location, $rootScope) {
   $scope.loadCards();
 
 
-}
+}]);
 
 
 

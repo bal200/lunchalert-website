@@ -1,26 +1,40 @@
-angular.module('pageCtrl',['jkuri.datepicker'])
-.controller('pageCtrl', ['$scope', '$location', '$rootScope',
+angular.module('lunchalert-portal')
+
+.config(['uiGmapGoogleMapApiProvider',
+function(uiGmapGoogleMapApiProviders) {
+  uiGmapGoogleMapApiProviders.configure({
+    key: "AIzaSyDc5J_gV_3_AJVEoxUja0j0OZrzeegeSjU",  /* key 1 */
+    //key: "AAIzaSyDlLE_yBEJKHSCbGlYkJtadWz2MLwAniIY", /* key 2 */
+    v: '3.20'
+  });
+}])
+
+
+.controller('HomeCtrl', ['$scope', '$location', '$rootScope',
 function($scope, $location, $rootScope) {
 
-  /* Put a fancy menu page here */
+  /* @TODO: Put a fancy menu page here */
 
-  $location.path('/login');
-
-  if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
+  if ($rootScope.isLoggedIn) { /* redirect if not logged in */
+    $location.path('/portal');
+  }else {
     $location.path('/login');
   }
 
 }])
 
 
-.controller('userCtrl', ['$scope', '$rootScope', '$location',
+.controller('UserCtrl', ['$scope', '$rootScope', '$location',
 function( $scope, $rootScope, $location ) {
   $scope.user = {
     username: null,
     password: null
   };
-
   $scope.error = {};
+
+  if ($rootScope.isLoggedIn) { /* redirect if already logged in */
+    $location.path('/portal');
+  }
 
   $scope.login = function() {
     var user = $scope.user;
@@ -54,8 +68,8 @@ function( $scope, $rootScope, $location ) {
 
 
 /******************************** PORTAL CONTROLLER ************************************************/
-.controller('portalCtrl', ['$scope', '$rootScope', '$location',
-function( $scope, $rootScope, $location ) {
+.controller('PortalCtrl', ['$scope', '$rootScope', '$location', 'uiGmapGoogleMapApi',
+function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
 
   $('.button.popup-activator')
     .popup({
@@ -339,6 +353,9 @@ function( $scope, $rootScope, $location ) {
 
   }
 
+  uiGmapGoogleMapApi.then(function(maps) {
+    console.log("uiGmapGoogleMapApi ready");
+  });
 
 }]);
 

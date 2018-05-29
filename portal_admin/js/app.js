@@ -1,7 +1,7 @@
-angular.module('lunchalert-website', [
-    'ngRoute' ,
-    'pageCtrl',
-    'uiGmapgoogle-maps'
+angular.module('lunchalert-portal', [
+    'ngRoute',
+    'uiGmapgoogle-maps',
+    'jkuri.datepicker'
   ])
 
 .value('ParseConfiguration', {
@@ -19,15 +19,15 @@ angular.module('lunchalert-website', [
     $routeProvider
       .when('/', {
         templateUrl: 'templates/home.htm',
-        controller: 'pageCtrl'
+        controller: 'HomeCtrl'
       })
       .when('/login', {
         templateUrl: 'templates/login.htm',
-        controller: 'userCtrl'
+        controller: 'UserCtrl'
       })
       .when('/portal', {
         templateUrl: 'templates/portal.htm',
-        controller: 'portalCtrl'
+        controller: 'PortalCtrl'
       })
       .when('/cards', {
         templateUrl: 'templates/cards.htm',
@@ -35,7 +35,7 @@ angular.module('lunchalert-website', [
       })
       .when('/register', {
         templateUrl: 'templates/register.htm',
-        controller: 'registerCtrl'
+        controller: 'RegisterCtrl'
       })
 
       .otherwise({
@@ -44,13 +44,6 @@ angular.module('lunchalert-website', [
   }
 ])
 
-.config(['uiGmapGoogleMapApiProvider',
-  function(uiGmapGoogleMapApiProvider) {
-    uiGmapGoogleMapApiProvider.configure({
-      key: "AIzaSyDc5J_gV_3_AJVEoxUja0j0OZrzeegeSjU"
-    });
-  }
-])
 
 .run(function ($rootScope, ParseConfiguration) {
 
@@ -67,7 +60,7 @@ angular.module('lunchalert-website', [
 			}
 });
 
-var mapReady=false;
-function initMap(){
-  mapReady=true;
-}
+//var mapReady=false;
+//function initMap(){
+//  mapReady=true;
+//}

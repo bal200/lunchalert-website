@@ -1,7 +1,6 @@
-angular
-  .module('pageCtrl')
-  .controller('registerCtrl', RegisterController);
+angular.module('lunchalert-portal')
 
+.controller('RegisterCtrl', RegisterController);
 RegisterController.$inject = ['$scope', '$location', '$rootScope'];
 function RegisterController($scope, $location, $rootScope) {
   $scope.user = {};

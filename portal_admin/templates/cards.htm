@@ -99,13 +99,13 @@
             </div>
             <div class="seven wide column">
             </div>
-            <div class="four wide column">
+            <!-- <div class="four wide column">
                 <select name="custom" ng-model="card.type" class="ui dropdown fluid">
                   <option value="">-</option>
                   <option value="html">HTML card</option>
                   <option value="simple">Simple card</option>
                 </select>
-            </div>
+            </div> -->
           </div>
           <div class="ui divider" ng-if="card.schedulerOn"></div>
           <!-- Second Row (Schedule) -->
@@ -120,17 +120,23 @@
             <div class="five wide column" ng-if="card.schedulerOn">
               <ng-datepicker class="ui input " ng-model="card.campaign.startDate" ng-change="fromDateChange(card)" placeholder="Date From">
               </ng-datepicker>
-              <select name="time" ng-model="card.campaign.startTime" class="ui dropdown ">
+              <span class="time">{{card.campaign.startTime}}</span>
+              <!-- <select name="time" ng-model="card.campaign.startTime" class="ui dropdown ">
                 <option value="800">8am</option>
                 <option value="900">9am</option>
                 <option value="1500">3pm</option>
                 <option value="1600">4pm</option>
-              </select>
+              </select> -->
             </div>
             <div class="five wide column" ng-if="card.schedulerOn">
               <ng-datepicker class="ui input fluid" ng-model="card.campaign.endDate" ng-change="toDateChange(card)" placeholder="Date To">
               </ng-datepicker>
-
+              <span class="time">{{card.campaign.endTime}}</span>
+              <!-- <select name="time" ng-model="card.campaign.endTime" class="ui dropdown ">
+                <option value="1500">3pm</option>
+                <option value="1600">4pm</option>
+                <option value="1700">5pm</option>
+              </select> -->
             </div>
             <div class="two wide column" ng-if="card.schedulerOn">
                 <select name="custom" ng-model="card.campaign.repeat" class="ui dropdown fluid">
