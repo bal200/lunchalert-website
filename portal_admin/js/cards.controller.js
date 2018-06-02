@@ -49,13 +49,13 @@ function($scope, $location, $rootScope) {
   Campaign.prototype.__defineSetter__("repeat", function(val) {return this.set("repeat",val)});
   Campaign.prototype.__defineGetter__("startDate", function() {
     var d=this.get("startDate");
-    console.log("get date "+d);
+    //console.log("get date "+d);
     //return ""+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
     //return "2000-01-01";
     return d;
   });
   Campaign.prototype.__defineSetter__("startDate", function(val) {
-    console.log("set date "+val);
+    //console.log("set date "+val);
     this.setOnlyDate( "startDate", val );
   });
   Campaign.prototype.__defineGetter__("startTime", function() {
@@ -73,6 +73,9 @@ function($scope, $location, $rootScope) {
 
   Campaign.prototype.__defineGetter__("template", function() { return this.get("template"); });
   Campaign.prototype.__defineSetter__("template", function(val) { return this.set("template",val) });
+
+  Campaign.prototype.__defineGetter__("templateVariables", function() { return this.get("templateVariables"); });
+  Campaign.prototype.__defineSetter__("templateVariables", function(val) { return this.set("templateVariables",val) });
 
   Campaign.prototype.__defineGetter__("notiText", function() {return this.get("notiText");});
   Campaign.prototype.__defineSetter__("notiText", function(val) {return this.set("notiText",val)});
@@ -207,29 +210,45 @@ function($scope, $location, $rootScope) {
           //setParseGettersSetters($scope.cards, res.campaigns);
           $scope.cards = res.cards;
           $scope.vendors.loading=false;
-          sortVariables($scope.cards);
+          initTemplateVariables($scope.cards);
         });
       },
       error: function(err) { console.log("Error retreiving cards and campaigns ("+err.code+") "+err.message); $scope.vendors.loading=false; }
     });
   };
-  function sortVariables(cards) {
-    for (var n=0; n<cards.length; n++) {
-      if (cards[n].campaign && cards[n].campaign.get('templateVariables')) {
-        var v = cards[n].campaign.get('templateVariables');
-        console.log(v);
-      }
-    }
-  }
   function linkCardsToCampaigns(cards, campaigns) {
     for (var n=0; n<campaigns.length; n++) {
       for (var m=0; m<cards.length; m++) {
         if (campaigns[n].get('card').id == cards[m].id) {
           cards[m].campaign = campaigns[n];
-        }
+    } } }
+  }
+
+  /* Take variables array from Template and combine with Values from Campaign */
+  function initTemplateVariables(cards) {
+    for (var n=0; n<cards.length; n++) {
+      var crd = cards[n];
+      if (crd.campaign && crd.campaign.get('templateVariables')) {
+        crd.templateVariables = copyTemplate( crd.campaign.get('templateVariables') );
+        console.log(crd.templateVariables);
       }
     }
   }
+  $scope.applyTemplateVariables = function(card) {
+    card.campaign.set('templateVariables', copyTemplate(card.templateVariables) );
+    console.log(card.templateVariables);
+  }
+  function copyTemplate( from ) {
+    var to = [];
+    for (var m=0; m<from.length; m++) {
+      to[m] = { name: from[m].name,
+                value: from[m].value };
+    }
+    return to;
+  }
+
+  $scope.compileTemplate = function(template, variables, card) {   }
+
 
   $scope.saveCard = function(card, cardForm) {
     console.log(card);

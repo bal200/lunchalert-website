@@ -97,16 +97,13 @@
                 <label>Off / On</label>
               </div>
             </div>
-            <div ng-if="(card.campaign && card.campaign.template)" class="eleven wide column">
-              <div class="ui fluid labeled input">
-                <div class="ui label">Heading</div><input type="text" placeholder="">
+            <div ng-if="(card.templateVariables)" class="eleven wide column">
+
+              <div ng-repeat="varb in card.templateVariables" class="ui fluid labeled input">
+                <div class="ui label">{{varb.name}}</div>
+                <input type="text" ng-model="varb.value" ng-blur="applyTemplateVariables(card)" placeholder="">
               </div>
-              <div class="ui fluid labeled input">
-                <div class="ui label">Sub heading</div><input type="text" placeholder="">
-              </div>
-              <div class="ui fluid labeled input">
-                <div class="ui label">Body text</div><input type="text" placeholder="">
-              </div>
+              <button class="ui mini button" ng-click="process(card);">process</button>
             </div>
             <!-- <div class="four wide column">
                 <select name="custom" ng-model="card.type" class="ui dropdown fluid">
@@ -129,7 +126,7 @@
             <div class="five wide column" ng-if="card.schedulerOn">
               <ng-datepicker class="ui input " ng-model="card.campaign.startDate" ng-change="fromDateChange(card)" placeholder="Date From">
               </ng-datepicker>
-              <span class="time">{{card.campaign.startTime}}</span>
+              <span class="time" ng-dblclick="alert('hi');">{{card.campaign.startTime}}</span>
               <!-- <select name="time" ng-model="card.campaign.startTime" class="ui dropdown ">
                 <option value="08:00">8am</option>
                 <option value="09:00">9am</option>
@@ -140,7 +137,7 @@
             <div class="five wide column" ng-if="card.schedulerOn">
               <ng-datepicker class="ui input fluid" ng-model="card.campaign.endDate" ng-change="toDateChange(card)" placeholder="Date To">
               </ng-datepicker>
-              <span class="time">{{card.campaign.endTime}}</span>
+              <span class="time" ng-dblclick="alert('hi');">{{card.campaign.endTime}}</span>
               <!-- <select name="time" ng-model="card.campaign.endTime" class="ui dropdown ">
                 <option value="15:00">3pm</option>
                 <option value="16:00">4pm</option>
