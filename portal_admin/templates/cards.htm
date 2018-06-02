@@ -72,7 +72,7 @@
     <div class="ui secondary clearing segment">
       <!-- Title Row -->
       <div class="ui left floated transparent left icon input">
-        <input type="text" ng-model="card.title" placeholder="Enter a name:">
+        <input type="text" ng-model="card.title" placeholder="Enter a name:" style="width: 300px;">
         <i class="large outline file icon"></i>
       </div>
       
@@ -97,7 +97,16 @@
                 <label>Off / On</label>
               </div>
             </div>
-            <div class="seven wide column">
+            <div ng-if="(card.campaign && card.campaign.template)" class="eleven wide column">
+              <div class="ui fluid labeled input">
+                <div class="ui label">Heading</div><input type="text" placeholder="">
+              </div>
+              <div class="ui fluid labeled input">
+                <div class="ui label">Sub heading</div><input type="text" placeholder="">
+              </div>
+              <div class="ui fluid labeled input">
+                <div class="ui label">Body text</div><input type="text" placeholder="">
+              </div>
             </div>
             <!-- <div class="four wide column">
                 <select name="custom" ng-model="card.type" class="ui dropdown fluid">
@@ -122,10 +131,10 @@
               </ng-datepicker>
               <span class="time">{{card.campaign.startTime}}</span>
               <!-- <select name="time" ng-model="card.campaign.startTime" class="ui dropdown ">
-                <option value="800">8am</option>
-                <option value="900">9am</option>
-                <option value="1500">3pm</option>
-                <option value="1600">4pm</option>
+                <option value="08:00">8am</option>
+                <option value="09:00">9am</option>
+                <option value="15:00">3pm</option>
+                <option value="16:00">4pm</option>
               </select> -->
             </div>
             <div class="five wide column" ng-if="card.schedulerOn">
@@ -133,9 +142,9 @@
               </ng-datepicker>
               <span class="time">{{card.campaign.endTime}}</span>
               <!-- <select name="time" ng-model="card.campaign.endTime" class="ui dropdown ">
-                <option value="1500">3pm</option>
-                <option value="1600">4pm</option>
-                <option value="1700">5pm</option>
+                <option value="15:00">3pm</option>
+                <option value="16:00">4pm</option>
+                <option value="17:00">5pm</option>
               </select> -->
             </div>
             <div class="two wide column" ng-if="card.schedulerOn">

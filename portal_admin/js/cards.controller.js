@@ -70,6 +70,10 @@ function($scope, $location, $rootScope) {
   Campaign.prototype.__defineSetter__("endTime", function(val) { this.setOnlyTime("endDate", val); });
   Campaign.prototype.__defineGetter__("active", function() { return this.get("active"); });
   Campaign.prototype.__defineSetter__("active", function(val) { return this.set("active",val) });
+
+  Campaign.prototype.__defineGetter__("template", function() { return this.get("template"); });
+  Campaign.prototype.__defineSetter__("template", function(val) { return this.set("template",val) });
+
   Campaign.prototype.__defineGetter__("notiText", function() {return this.get("notiText");});
   Campaign.prototype.__defineSetter__("notiText", function(val) {return this.set("notiText",val)});
   Campaign.prototype.__defineGetter__("notiStatus", function() {return this.get("notiStatus");});
@@ -96,20 +100,22 @@ function($scope, $location, $rootScope) {
     this.set(parseColumn, d);
   }
   Campaign.prototype.setOnlyTime = function(parseColumn, timeStr) {
-    var hours = timeStr.substr(0, timeStr.length-2 );
     var d=this.get(parseColumn);
     if (!d) d=new Date();
-    d.setHours(hours, 00, 00, 0);
+    var hours = timeStr.substr(0, 2 );
+    var mins = timeStr.substr(-2, 2);
+    d.setHours(hours, mins, 00, 0);
     this.set(parseColumn, d);
   }
   Campaign.prototype.getOnlyTime = function(parseColumn) {
     var d=this.get(parseColumn);
     if (d) {
-      return ""+d.getHours()+"00";
+      return zeroPad(d.getHours())+":"+zeroPad(d.getMinutes());
     }else{
       return "";
     }
   }
+  function zeroPad(n) { return (n<10 ? "0"+n : ""+n) }
 
   $scope.cards = [];
   $scope.swmId=null; /* vendor parse Obj */
@@ -135,15 +141,6 @@ function($scope, $location, $rootScope) {
   $scope.toDateChange = function(card) {
     
   };
-  function populateDatepickers( cards ) {
-    var d;
-    for (var n=0; n<cards.length; n++) {
-      if (cards[n].campaign) {
-        d = cards[n].campaign.get('startDate');
-        cards[n].campaign.startDateBox = "2018-01-01";""+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-      }
-    }
-  }
 
   /* HTML Editor Modal */
   $scope.editClick = function(card, cardForm) {
@@ -209,13 +206,21 @@ function($scope, $location, $rootScope) {
           //$scope.cards = parseToCardObject(res.cards, $scope.cards);
           //setParseGettersSetters($scope.cards, res.campaigns);
           $scope.cards = res.cards;
-//          populateDatepickers($scope.cards);
           $scope.vendors.loading=false;
+          sortVariables($scope.cards);
         });
       },
       error: function(err) { console.log("Error retreiving cards and campaigns ("+err.code+") "+err.message); $scope.vendors.loading=false; }
     });
   };
+  function sortVariables(cards) {
+    for (var n=0; n<cards.length; n++) {
+      if (cards[n].campaign && cards[n].campaign.get('templateVariables')) {
+        var v = cards[n].campaign.get('templateVariables');
+        console.log(v);
+      }
+    }
+  }
   function linkCardsToCampaigns(cards, campaigns) {
     for (var n=0; n<campaigns.length; n++) {
       for (var m=0; m<cards.length; m++) {
