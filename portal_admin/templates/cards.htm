@@ -60,7 +60,8 @@
       <i class="plus icon"></i>
       <div class="menu">
         <div class="header">Menu</div>
-        <div class="item" ng-click="addCard()">Add Card</div>
+        <div class="item" ng-click="addTemplateCard()">Add Card</div>
+        <div class="item" ng-click="addCard()">Add Blank Card</div>
       </div>
     </button>
   </div>
@@ -103,7 +104,6 @@
                 <div class="ui label">{{varb.name}}</div>
                 <input type="text" ng-model="varb.value" ng-blur="applyTemplateVariables(card)" placeholder="">
               </div>
-              <button class="ui mini button" ng-click="process(card);">process</button>
             </div>
             <!-- <div class="four wide column">
                 <select name="custom" ng-model="card.type" class="ui dropdown fluid">

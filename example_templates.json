@@ -1,0 +1,18 @@
+
+//CardTemplate variables:
+
+[
+  {"name":"title", "type":"text"},
+  {"name":"subTitle", "type":"text"},
+  {"name":"message", "type":"text"},
+  {"name":"pic1", "type":"image"}
+]
+
+//Campaign Variables:
+
+[
+  {"name":"title", "value":"Free Offer"},
+  {"name":"subTitle", "value":"today only"},
+  {"name":"message", "value":"Get a free cake with your sandwich."},
+  {"name":"pic1", "value":"http://lunchalert.me/img/pic1.jpg"}
+]
