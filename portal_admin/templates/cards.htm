@@ -61,14 +61,14 @@
       <div class="menu">
         <div class="header">Menu</div>
         <div class="item" ng-click="addTemplateCard()">Add Card</div>
-        <div class="item" ng-click="addCard()">Add Blank Card</div>
+        <div class="item" ng-click="addCard()">Add Advanced Card</div>
       </div>
     </button>
   </div>
   <br/>
 
   <!-- Each Card -->
-  <form ng-repeat="card in cards" name="cardForm" class="ui segments">
+  <form ng-repeat="card in cards" name="card.cardForm" class="ui form segments">
     
     <div class="ui secondary clearing segment">
       <!-- Title Row -->
@@ -77,8 +77,8 @@
         <i class="large outline file icon"></i>
       </div>
       
-      <button class="ui right floated  mini button" ng-class='(cardForm.$dirty?"primary":"")'
-            type="submit" ng-click="saveCard(card, cardForm);">
+      <button class="ui right floated  mini button" ng-class='(card.cardForm.$dirty?"primary":"")'
+            type="submit" ng-click="saveCard(card, card.cardForm);">
           &nbsp;{{(card.saveText?card.saveText:'Save')}}&nbsp;
       </button>
       <span style="float:right;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -98,20 +98,16 @@
                 <label>Off / On</label>
               </div>
             </div>
-            <div ng-if="(card.templateVariables)" class="eleven wide column">
 
-              <div ng-repeat="varb in card.templateVariables" class="ui fluid labeled input">
-                <div class="ui label">{{varb.name}}</div>
-                <input type="text" ng-model="varb.value" ng-blur="applyTemplateVariables(card)" placeholder="">
+            <div ng-if="(card.templateVariables)" class="eleven wide column">
+              <div ng-repeat="varb in card.templateVariables" class="inline fields">
+                <div class="sixteen wide field">
+                  <label>{{varb.name}}</label>
+                  <input type="text" ng-model="varb.value" ng-blur="applyTemplateVariables(card)" placeholder="">
+                </div>
               </div>
             </div>
-            <!-- <div class="four wide column">
-                <select name="custom" ng-model="card.type" class="ui dropdown fluid">
-                  <option value="">-</option>
-                  <option value="html">HTML card</option>
-                  <option value="simple">Simple card</option>
-                </select>
-            </div> -->
+            
           </div>
           <div class="ui divider" ng-if="card.schedulerOn"></div>
           <!-- Second Row (Schedule) -->
