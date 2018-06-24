@@ -119,7 +119,9 @@ function($scope, $location, $rootScope) {
     }
   }
   function zeroPad(n) { return (n<10 ? "0"+n : ""+n) }
+  var CardTemplate = Parse.Object.extend("CardTemplate");
 
+  /*******************************************************************************/
   $scope.cards = [];
   $scope.swmId=null; /* vendor parse Obj */
   $scope.vendors={
@@ -223,13 +225,12 @@ function($scope, $location, $rootScope) {
           cards[m].campaign = campaigns[n];
   } } } }
   
+  function getCurrentVendor() {
+    return $scope.swmId ? newParseUser($scope.swmId) : Parse.User.current();
+  }
 
   /* If the Campaign has a Template, move its variable Values to where the form can edit them */
-  function initTemplateVariables(cards) {
-    for (var n=0; n<cards.length; n++) {
-      initTemplateVariable( cards[n] );
-    }
-  }
+  function initTemplateVariables(cards) { for (var n=0; n<cards.length; n++) { initTemplateVariable( cards[n] ) } }
   function initTemplateVariable(card) {
     if (card.campaign && card.campaign.get('templateVariables')) {
       card.templateVariables = copyTemplateVars( card.campaign.get('templateVariables') );
@@ -364,26 +365,45 @@ function($scope, $location, $rootScope) {
   }
 
   $scope.addTemplateCard = function() {
-    var newCard = Card.create(($scope.swmId ? newParseUser($scope.swmId) : Parse.User.current()), "", 10);
+    var newCard = Card.create(getCurrentVendor(), "", 10);
     var newCampaign = Campaign.create(newCard.get("vendor"), "", newCard);
     newCard.campaign = newCampaign;
-    newCard.schedulerOn = false; /* this also causes the campaign to be set to defaults */
+    newCard.schedulerOn = false; /* this also causes the campaign to get set to defaults */
 
     var CardTemplate = Parse.Object.extend("CardTemplate");
-    var templ = new CardTemplate();
-    templ.id = "Pdw3vG6PGm"; /* our hardcoded single template, (for now.) */
-    newCampaign.set('template', templ);
 
-    $scope.cards.push( newCard );
-    templ.fetch({
-      success: function(template) {
-        $scope.$apply(function() {
-          defaultTemplateVariables( newCampaign, template );
-          initTemplateVariable( newCard );
-        });
-        
-      }
+    var query1 = new Parse.Query(CardTemplate);
+    var query2 = new Parse.Query(CardTemplate);
+    query1.equalTo("vendor", getCurrentVendor() );
+    query2.equalTo("vendor", null );
+    var query = Parse.Query.or(query1, query2);
+
+    query.find().then(function(templates) {
+      console.log("got "+templates.length+" templates");
+      var template = chooseTemplate(templates, getCurrentVendor() );
+      newCampaign.set('template', template);
+      $scope.cards.push( newCard );
+      template.fetch({
+        success: function(tmpl) {
+          $scope.$apply(function() {
+            defaultTemplateVariables( newCampaign, tmpl );
+            initTemplateVariable( newCard );
+          }); 
+        }
+      });
     });
+    //.catch(function(e) { console.log("Error finding a CardTemplate ("+e.code+") "+e.message) });
+  }
+  function chooseTemplate(templates, vendor) {
+    var v;
+    for (var n=0; n<templates.length; n++) {
+      v = templates[n].get('vendor');
+      if ( v && v.id == vendor.id )  return templates[n];
+    }
+    for (var n=0; n<templates.length; n++) {
+      v = templates[n].get('vendor');
+      if ( v == null )  return templates[n];
+    }
   }
 
   function newParseUser(id) {
