@@ -1,26 +1,40 @@
-angular.module('pageCtrl',['jkuri.datepicker'])
-.controller('pageCtrl', ['$scope', '$location', '$rootScope',
+angular.module('lunchalert-portal')
+
+.config(['uiGmapGoogleMapApiProvider',
+function(uiGmapGoogleMapApiProviders) {
+  uiGmapGoogleMapApiProviders.configure({
+    key: "AIzaSyDc5J_gV_3_AJVEoxUja0j0OZrzeegeSjU",  /* key 1 */
+    //key: "AAIzaSyDlLE_yBEJKHSCbGlYkJtadWz2MLwAniIY", /* key 2 */
+    v: '3.20'
+  });
+}])
+
+
+.controller('HomeCtrl', ['$scope', '$location', '$rootScope',
 function($scope, $location, $rootScope) {
 
-  /* Put a fancy menu page here */
+  /* @TODO: Put a fancy menu page here */
 
-  $location.path('/login');
-
-  if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
+  if ($rootScope.isLoggedIn) { /* redirect if not logged in */
+    $location.path('/portal');
+  }else {
     $location.path('/login');
   }
 
 }])
 
 
-.controller('userCtrl', ['$scope', '$rootScope', '$location',
+.controller('UserCtrl', ['$scope', '$rootScope', '$location',
 function( $scope, $rootScope, $location ) {
   $scope.user = {
     username: null,
     password: null
   };
-
   $scope.error = {};
+
+  if ($rootScope.isLoggedIn) { /* redirect if already logged in */
+    $location.path('/portal');
+  }
 
   $scope.login = function() {
     var user = $scope.user;
@@ -54,11 +68,8 @@ function( $scope, $rootScope, $location ) {
 
 
 /******************************** PORTAL CONTROLLER ************************************************/
-.controller('portalCtrl', ['$scope', '$rootScope', '$location', 'uiGmapGoogleMapApi',
+.controller('PortalCtrl', ['$scope', '$rootScope', '$location', 'uiGmapGoogleMapApi',
 function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
-
-  uiGmapGoogleMapApi.then(function(maps){
-  });
 
   $('.button.popup-activator')
     .popup({
@@ -69,9 +80,7 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
   if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
     $location.path('/login');
   }
-  $scope.gotoRegisterPage = function() {
-    $location.path('/portal_register');
-  }
+
   $scope.showPopup = false;
   $scope.editButtonDisabled = "disabled"; /* Class to add to edit button to turn it off */
   $scope.swm="";
@@ -112,10 +121,10 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
       loadInstalls();
     }
   };
-  //$scope.dateChange = function() {
-  //    $scope.arrivalChange();
-  //    $scope.installChange();
-  //};
+  $scope.dateChange = function() {
+      $scope.arrivalChange();
+      $scope.installChange();
+  };
   $scope.vanChange = function() {
     if ($scope.selectedVan == "") { /* All Vans selected */
       $scope.vanName = "";
@@ -196,12 +205,12 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
     //query.equalTo('vanId', vansid);
     /* @Todo: Date range */
     var fromDate=null, toDate=null;
-    if ($scope.installFromDate!=null & $scope.installFromDate!="") {
+    if ($scope.fromDate!=null & $scope.fromDate!="") {
       //alert("scope.fromDate "+$scope.fromDate);
-      fromDate=new Date($scope.installFromDate);
+      fromDate=new Date($scope.fromDate);
     }
-    if ($scope.installToDate!=null & $scope.installToDate!="") {
-      toDate=new Date($scope.installToDate);
+    if ($scope.toDate!=null & $scope.toDate!="") {
+      toDate=new Date($scope.toDate);
       toDate.setHours(23); toDate.setMinutes(59); toDate.setSeconds(59); /* needs to be the end of this day to be inclusive */
     }
 
@@ -278,11 +287,11 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
     query.equalTo('vendor', usr);
 
     /* Set a Date range */
-    if ($scope.arrivalFromDate!=null & $scope.arrivalFromDate!="") {
-      query.greaterThan("createdAt", new Date($scope.arrivalFromDate));
+    if ($scope.fromDate!=null & $scope.fromDate!="") {
+      query.greaterThan("createdAt", new Date($scope.fromDate));
     }
-    if ($scope.arrivalToDate!=null & $scope.arrivalToDate!="") {
-      var d=new Date($scope.arrivalToDate);
+    if ($scope.toDate!=null & $scope.toDate!="") {
+      var d=new Date($scope.toDate);
       d.setHours(23); d.setMinutes(59); d.setSeconds(59); /* needs to be the end of this day to be inclusive */
       query.lessThan("createdAt", d);
     }
@@ -344,5 +353,11 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
 
   }
 
+  uiGmapGoogleMapApi.then(function(maps) {
+    console.log("uiGmapGoogleMapApi ready");
+  });
 
 }]);
+
+
+
