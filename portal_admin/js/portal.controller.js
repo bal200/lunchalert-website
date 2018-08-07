@@ -3,8 +3,7 @@ angular.module('lunchalert-portal')
 .config(['uiGmapGoogleMapApiProvider',
 function(uiGmapGoogleMapApiProviders) {
   uiGmapGoogleMapApiProviders.configure({
-    key: "AIzaSyDc5J_gV_3_AJVEoxUja0j0OZrzeegeSjU",  /* key 1 */
-    //key: "AAIzaSyDlLE_yBEJKHSCbGlYkJtadWz2MLwAniIY", /* key 2 */
+    key: "AIzaSyATDW6hk6hgef14ZJcjK7mbETf9MIl9lso",  /* la key */
     v: '3.20'
   });
 }])
