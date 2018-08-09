@@ -37,7 +37,10 @@ angular.module('lunchalert-portal', [
         templateUrl: 'templates/register.htm',
         controller: 'RegisterCtrl'
       })
-
+      .when('/dailyvan', {
+        templateUrl: 'templates/dailyvan.htm',
+        controller: 'DailyVanCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
