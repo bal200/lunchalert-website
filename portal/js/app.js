@@ -41,7 +41,7 @@ angular.module('lunchalert-website', [
 .config(['uiGmapGoogleMapApiProvider',
   function(uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
-      key: "AIzaSyDc5J_gV_3_AJVEoxUja0j0OZrzeegeSjU"
+      key: "AIzaSyATDW6hk6hgef14ZJcjK7mbETf9MIl9lso"
     });
   }
 ])

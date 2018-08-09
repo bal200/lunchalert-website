@@ -3,8 +3,7 @@ angular.module('lunchalert-portal')
 .config(['uiGmapGoogleMapApiProvider',
 function(uiGmapGoogleMapApiProviders) {
   uiGmapGoogleMapApiProviders.configure({
-    key: "AIzaSyDc5J_gV_3_AJVEoxUja0j0OZrzeegeSjU",  /* key 1 */
-    //key: "AAIzaSyDlLE_yBEJKHSCbGlYkJtadWz2MLwAniIY", /* key 2 */
+    key: "AIzaSyATDW6hk6hgef14ZJcjK7mbETf9MIl9lso",  /* la key */
     v: '3.20'
   });
 }])
@@ -205,12 +204,12 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
     //query.equalTo('vanId', vansid);
     /* @Todo: Date range */
     var fromDate=null, toDate=null;
-    if ($scope.fromDate!=null & $scope.fromDate!="") {
+    if ($scope.installFromDate!=null & $scope.installFromDate!="") {
       //alert("scope.fromDate "+$scope.fromDate);
-      fromDate=new Date($scope.fromDate);
+      fromDate=new Date($scope.installFromDate);
     }
-    if ($scope.toDate!=null & $scope.toDate!="") {
-      toDate=new Date($scope.toDate);
+    if ($scope.installToDate!=null & $scope.installToDate!="") {
+      toDate=new Date($scope.installToDate);
       toDate.setHours(23); toDate.setMinutes(59); toDate.setSeconds(59); /* needs to be the end of this day to be inclusive */
     }
 
@@ -287,11 +286,11 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
     query.equalTo('vendor', usr);
 
     /* Set a Date range */
-    if ($scope.fromDate!=null & $scope.fromDate!="") {
-      query.greaterThan("createdAt", new Date($scope.fromDate));
+    if ($scope.arrivalFromDate!=null & $scope.arrivalFromDate!="") {
+      query.greaterThan("createdAt", new Date($scope.arrivalFromDate));
     }
-    if ($scope.toDate!=null & $scope.toDate!="") {
-      var d=new Date($scope.toDate);
+    if ($scope.arrivalToDate!=null & $scope.arrivalToDate!="") {
+      var d=new Date($scope.arrivalToDate);
       d.setHours(23); d.setMinutes(59); d.setSeconds(59); /* needs to be the end of this day to be inclusive */
       query.lessThan("createdAt", d);
     }
