@@ -16,7 +16,7 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
 
   $scope.showPopup = false;
   $scope.editButtonDisabled = "disabled"; /* Class to add to edit button to turn it off */
-  $scope.swm="";
+  $scope.swmId="";
   $scope.map = { center: { latitude: 53.5, longitude: -2.5 },
                  zoom: 9,
                  options: { scaleControl:"true" } };
@@ -24,6 +24,37 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
   $scope.instMarkers=[];
   $scope.arrivalDate = new Date();
   $scope.showArrivalTimes = true;
+  $scope.vendors={
+    input: "",
+    list: [],
+    loading: false
+  };
+  /* Vendor Search Dropdown */
+  $scope.vendorPress = function() {
+    if (true) {
+      /* We want them to have typed at least 3 letters so far */
+      if ($scope.vendors.input.length >= 3) {
+        console.log("calling findNamedVendors");
+        $scope.vendors.loading=true;
+        Parse.Cloud.run("findNamedVendors", {
+          searchText: $scope.vendors.input
+        },{ success: function(res) {
+          $scope.$apply(function() {
+            $scope.vendors.list = res; $scope.vendors.loading=false;
+          });
+        }, error: function(err) {
+          console.log("loadVendors error ("+err.code+") "+err.message); $scope.vendors.loading=false;
+        }});
+      }
+    }
+  }
+  $scope.vendorSelect = function( v ) {
+    $scope.vendors.input = v.businessName;
+    $scope.swmId = v.id;
+    $scope.vendors.list = [];
+    $scope.arrivalChange();
+    $scope.installChange();
+  }
 
   $scope.arrivalClick = function() {
     if ($scope.arrivalTick==true) {
@@ -67,10 +98,8 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
 
   };
   $scope.installChange = function() {
-    if ($scope.installTick==true) {
-      $scope.instMarkers = [];
-      loadInstalls();
-    }
+    $scope.instMarkers = [];
+    loadInstalls();
   };
 
   $scope.vanChange = function() {
@@ -85,12 +114,12 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
 
   $scope.changeVanName = function () {
     var usrObj = Parse.User.current();
-    var swm = $scope.swm;
-    if ($scope.swm=="") {
-      var swm = usrObj.id;
+    var swmId = $scope.swmId;
+    if ($scope.swmId=="") {
+      var swmId = usrObj.id;
     }
     Parse.Cloud.run("editVanName", {
-        userid: swm,
+        userid: swmId,
         van: $scope.vanList[$scope.selectedVan].objId,
         name: $scope.vanName
     },{
@@ -108,13 +137,13 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
   /* Call to populate the Van list */
   $scope.populateVanList = function() {
     var usrObj = Parse.User.current();
-    if ($scope.swm=="") {
-      var swm = usrObj.id;
+    if ($scope.swmId=="") {
+      var swmId = usrObj.id;
     }else{
-      var swm = $scope.swm;
+      var swmId = $scope.swmId;
     }
     Parse.Cloud.run("getVanList", {
-        userid: swm /* */
+        userid: swmId /* */
         //vanId: 0 //$scope.vanId
     },{
       success:function(res) {
@@ -147,10 +176,10 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
     // Get the Customer Installs data from the Parse server
     var query = new Parse.Query(Parse.Installation);
     var usr = Parse.User.current();
-    if ($scope.swm=="") {
-      var swm = usr.id;
+    if ($scope.swmId=="") {
+      var swmId = usr.id;
     }else{
-      var swm = $scope.swm;
+      var swmId = $scope.swmId;
     }
     //query.equalTo('vanId', vansid);
     /* @Todo: Date range */
@@ -165,7 +194,7 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
     }
 
     Parse.Cloud.run("getCustInstalls", {
-        userid: swm, /* The S is put on by the cloud code; can ignore here */
+        userid: swmId, /* The S is put on by the cloud code; can ignore here */
         dateFrom: fromDate, //$scope.dateFrom,
         dateTo: toDate, //$scope.dateTo,
         vanId: 0 //$scope.vanId
@@ -188,7 +217,7 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
                   //console.log(marker);
                   var objectId = marker.model.$parent.imarker.objectId; /* convoluted way, but it works */
                   Parse.Cloud.run("setInstallLocation", {
-                    userid: swm,
+                    userid: swmId,
                     objectId: objectId,
                     lat: marker.getPosition().lat(),
                     lon: marker.getPosition().lng()
@@ -227,11 +256,11 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
     // Get the Arrivals data from the Parse server
     var Arrival = Parse.Object.extend("Arrival");
     var query = new Parse.Query(Arrival);
-    if ($scope.swm=="") {
+    if ($scope.swmId=="") {
       var usr = Parse.User.current();
     }else{
       var usr=new Parse.User();
-      usr.id = $scope.swm;
+      usr.id = $scope.swmId;
     }
 
     query.equalTo('vendor', usr);

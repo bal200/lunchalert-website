@@ -22,6 +22,29 @@
       </div>
     </div>
 
+
+    <!-- Vendor Search selection Box -->
+    <div class="four wide column">
+      <div class="ui labeled icon input">
+        <div class="ui label">Vendor </div>
+        <input type="text" ng-model="vendors.input" placeholder="" ng-change="vendorPress()">
+        <i class="search icon"></i>
+      </div>
+      <div ng-if="vendors.loading" class="ui active small inline loader"></div>
+    </div>
+    <div class="four wide column">
+      <div class="ui  selection list">
+        <div ng-repeat="vendor in vendors.list" class="item" data-value="{{vendor.line}}">
+          <div class="content" ng-click="vendorSelect(vendor)">
+            <div class="header">{{vendor.businessName}}</div>
+            <div class="description">({{vendor.id}})</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br/>
+
+
     <div class="three fields">
       <div class="field">
           Select Van / phone:
