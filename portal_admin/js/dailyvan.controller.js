@@ -23,6 +23,7 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
   $scope.markers=[];
   $scope.instMarkers=[];
   $scope.arrivalDate = new Date();
+  $scope.showArrivalTimes = true;
 
   $scope.arrivalClick = function() {
     if ($scope.arrivalTick==true) {
@@ -47,6 +48,23 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
       $scope.markers = [];
       loadArrivals();
     //}
+  };
+
+  $scope.dayDown = function() {
+    $scope.markers = [];
+    var d=new Date($scope.arrivalDate);
+    d.setDate(d.getDate()-1);
+    $scope.arrivalDate = d;
+    loadArrivals();
+
+  };
+  $scope.dayUp = function() {
+    $scope.markers = [];
+    var d=new Date($scope.arrivalDate);
+    d.setDate(d.getDate()+1);
+    $scope.arrivalDate = d;
+    loadArrivals();
+
   };
   $scope.installChange = function() {
     if ($scope.installTick==true) {

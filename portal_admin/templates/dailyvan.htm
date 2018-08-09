@@ -2,18 +2,17 @@
 <div class="ui main text container">
   <h2 class="ui header">Daily Van Report</h2>
 
-  <p>You can view geographical information about customers and the van rounds here. Use the tick
-  boxes at the top of the map to add your data onto the map.</p>
-  <p>Show Customers will add a Red marker for each time the app has been installed on a phone. The
-  location of each marker shows where this customer is registered to receive alerts.  They will
-  only receive an alert from you when the vendor app presses the send button within 50 meters of
-  this point.</p>
-  <p>Show Van Arrivals puts a blue marker on the map for each time the send button has been pressed
-  in the vendor app.  The location is where we recorded this press. </p>
-
-  <p>The date range will filter the Van Arrivals to a certain period, and also filter the Customers
-  by their install date.  The dates are inclusive.</p>
-
+  <p>
+    Show a days van arrivals on a map.  Choose all your vans or a specific van.
+  </p>
+  <p>The vans / phones are listed by the ID number shown in the corner of the phone app.  
+    You can rename them for your reference with the edit button.
+  </p>
+  <p>(C) marker - A customer has installed the app<br/>
+     (V) marker - A vendor pressed the arrival button.
+  </p>
+  
+  <p>&nbsp;</p>
 
   <div class="ui form">
     <div class="field">
@@ -25,7 +24,7 @@
 
     <div class="three fields">
       <div class="field">
-          Select Van:
+          Select Van / phone:
       </div>
       <div class="field">
         <select class="ui dropdown" ng-model="selectedVan" ng-change="vanChange()">
@@ -65,13 +64,13 @@
       <label><i class="calendar icon"></i> Arrival Date</label>
     </div>
     <div class="two fields">
-      <button class="ui mini basic button" ng-click="dateDown()">&lt; 1 day</button>
+      <button class="ui mini basic button" ng-click="dayDown()">- 1 day</button>
       <div class="field">
             <ng-datepicker ng-model="arrivalDate" ng-change="arrivalChange()" placeholder="Arrival Date">
             </ng-datepicker>
             <!--       <input type="text" id="fromdate" placeholder="From date"/>   -->
       </div>
-      <button class="ui basic button" ng-click="dateUp()">&gt; 1 day</button>
+      <button class="ui mini basic button" ng-click="dayUp()">+ 1 day</button>
     </div>
     <span style="display: block; margin-top: 4px;"></span>
   </div>
@@ -90,21 +89,9 @@
 
   </ui-gmap-google-map>
 
-  <div class="ui checkbox">
-    <input type="checkbox" name="editMode" ng-model="editMode" ng-click="editModeClick()"/>
-    <label>Edit Mode</label>
-  </div>
-  <div class="ui checkbox">
-    <input type="checkbox" name="showArrivalTimes" ng-model="showArrivalTimes" ng-click="arrivalChange()"/>
-    <label>Show Arrival Times</label>
-  </div>
-  <div class="ui checkbox">
-    <input type="checkbox" name="showCustObjectIds" ng-model="showCustObjectIds"
-           ng-click="installChange()"/>
-    <label>Show Customer ObjectIds</label>
-  </div>
 
   <br/>
+  <br/> 
   <br/>
   <button class="ui button" ng-click="logout()">
     Logout
