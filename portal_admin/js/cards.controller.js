@@ -21,6 +21,8 @@ function($scope, $location, $rootScope) {
   Card.prototype.__defineSetter__("order", function(val) {return this.set("order",val)});
   Card.prototype.__defineGetter__("type", function() { return ( (this.get("html"))?"html":"simple" ); });
   Card.prototype.__defineSetter__("type", function(val) {console.log("@TODO: custom/simple cards")});
+  Card.prototype.__defineGetter__("picture", function() {return this.get("picture");});
+  Card.prototype.__defineSetter__("picture", function(val) {return this.set("picture",val)});
 
   Card.prototype.__defineGetter__("schedulerOn", function() {
     if (!this.campaign) { return false; }
@@ -234,26 +236,28 @@ function($scope, $location, $rootScope) {
   function initTemplateVariable(card) {
     if (card.campaign && card.campaign.get('templateVariables')) {
       card.templateVariables = copyTemplateVars( card.campaign.get('templateVariables') );
-      console.log(card.templateVariables);
     }
   }
 
-  /* save the template variables input boxes to the parse object, then call compile */
+  /*
+   * save the template variables input boxes to the parse object, then call compile
+   */
   $scope.applyTemplateVariables = function(card) {
-    console.log("from template");
-    console.log( card.campaign.get('template').get('variables') );
-
     card.campaign.set('templateVariables', copyTemplateVars(card.templateVariables) );
-    console.log("from card");
-    console.log(card.templateVariables);
 
+    // Generate the HTML card from template markup
     compileTemplate(card.campaign.get('template'), card.templateVariables, card);
     card.cardForm.$dirty = true;
   }
+
+  /*
+   * 
+   */
   function copyTemplateVars( from ) {
     var to = [];
     for (var m=0; m<from.length; m++) {
       to[m] = { name: from[m].name,
+                type: from[m].type,
                 value: (from[m].value ? from[m].value : "") };
     }
     return to;
@@ -268,9 +272,19 @@ function($scope, $location, $rootScope) {
     //+ '\n<div class="item item-body"><p>{{message}}</p></div>'
     //+ '\n<div class="item item-divider"><p class="subdued">{{bottom}}</p></div></div>';
     var replacements = {};
+console.log('compiling template');
     for (n=0; n<variables.length; n++) {
+      // Convert image structure in to an embedded image string
+      if (variables[n].name == 'picture' && variables[n].value.filesize > 0) {
+        variables[n].value = 'data:' + variables[n].value.filetype + ';base64,' + variables[n].value.base64;
+      } 
+
       replacements[ variables[n].name ] = variables[n].value;
+
+      // Make variables available in card template
+      card.campaign[variables[n].name] = variables[n].value;
     }
+
     cardTemplate.fetch({
       success: function(ctemplate) {
         /* Use lodash template function to create the card html*/
@@ -287,16 +301,16 @@ function($scope, $location, $rootScope) {
     var to = campaign.get('templateVariables');
     var from = cardTemplate.get('variables');
     if (!to) to = [];
-    console.log(from);
+
     for (n=0; n<from.length; n++) {
       var newName = from[n].name;
       var found=false;
-      console.log(""+n+" "+newName);
       for (m=0; m<to.length; m++) {
         if (to[m].name == newName) {found=true; break;}
       }
       if (found==false) to.push( {
         name: newName,
+        type: from[n].type,
         value: ""
       } );
     }
@@ -304,11 +318,8 @@ function($scope, $location, $rootScope) {
   }
 
   $scope.saveCard = function(card, cardForm) {
-    console.log(card);
-
     card.save({
       success: function(c) {
-        console.log("Saved card "+c.get("title") );
         if (card.campaign) {
           card.campaign.save({
             success: function(campaign) {
@@ -351,8 +362,8 @@ function($scope, $location, $rootScope) {
         }
       }, error: function(e) {console.log("Delete Card error ("+e.code+") "+e.message);}
     });
-
   };
+  
   function removeFromArray(array, value) {
     var idx = array.indexOf(value);
     if (idx !== -1) { array.splice(idx, 1); }

@@ -103,7 +103,9 @@
               <div ng-repeat="varb in card.templateVariables" class="inline fields">
                 <div class="sixteen wide field">
                   <label>{{varb.name}}</label>
-                  <input type="text" ng-model="varb.value" ng-blur="applyTemplateVariables(card)" placeholder="">
+                  {{varb.value.filesize > 0 ? 'Using ' + varb.value.filename + ' or select new image ' : ''}}
+                  <input ng-if="varb.type=='file'" type="{{varb.type}}" ng-model="varb.value" ng-blur="applyTemplateVariables(card)" placeholder="" base-sixty-four-input>
+                  <input ng-if="varb.type!='file'" type="{{varb.type}}" ng-model="varb.value" ng-blur="applyTemplateVariables(card)" placeholder="">
                 </div>
               </div>
             </div>
@@ -171,7 +173,8 @@
         <!-- File Column -->
         <div class="ui vertical divider"></div>
         <div class="four wide column" style="text-align:center;">
-          <i ng-show="card.html" class="huge file alternate outline icon"></i>
+          <i ng-show="card.html" ng-hide="card.templateVariables[4].value.filename" class="huge file alternate outline icon"></i>
+          <img width="100%" ng-show="card.templateVariables[4].value.filename" src="data:{{card.templateVariables[4].value.filetype + ';base64,' + card.templateVariables[4].value.base64}}" />
           <p ng-hide="card.html" style="color:#BBB;">no card</p>
           <br/><br/>
           <button class="ui mini button" ng-click="editClick(card, cardForm);">
