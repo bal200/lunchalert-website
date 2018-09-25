@@ -245,6 +245,8 @@ function($scope, $location, $rootScope) {
   $scope.applyTemplateVariables = function(card) {
     card.campaign.set('templateVariables', copyTemplateVars(card.templateVariables) );
 
+    // FIXME decide what we're doing about the picture variable vs image object data
+
     // Generate the HTML card from template markup
     compileTemplate(card.campaign.get('template'), card.templateVariables, card);
     card.cardForm.$dirty = true;
@@ -256,10 +258,14 @@ function($scope, $location, $rootScope) {
   function copyTemplateVars( from ) {
     var to = [];
     for (var m=0; m<from.length; m++) {
+
+      console.log('copying: ' + from[m].name + ' = '); console.log(from[m].value);
+
       to[m] = { name: from[m].name,
                 type: from[m].type,
                 value: (from[m].value ? from[m].value : "") };
     }
+
     return to;
   }
 
@@ -272,7 +278,7 @@ function($scope, $location, $rootScope) {
     //+ '\n<div class="item item-body"><p>{{message}}</p></div>'
     //+ '\n<div class="item item-divider"><p class="subdued">{{bottom}}</p></div></div>';
     var replacements = {};
-console.log('compiling template');
+    console.log('compiling template');
     for (n=0; n<variables.length; n++) {
       // Convert image structure in to an embedded image string
       if (variables[n].name == 'picture' && variables[n].value.filesize > 0) {
@@ -280,6 +286,7 @@ console.log('compiling template');
       } 
 
       replacements[ variables[n].name ] = variables[n].value;
+      replacements['vendorid'] = card.vendor; // TODO need to find the vendor hash / object ID from somewhere as this doesn't exist!
 
       // Make variables available in card template
       card.campaign[variables[n].name] = variables[n].value;
