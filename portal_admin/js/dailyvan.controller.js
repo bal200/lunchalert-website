@@ -52,6 +52,8 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
     $scope.vendors.input = v.businessName;
     $scope.swmId = v.id;
     $scope.vendors.list = [];
+    
+    $scope.populateVanList();
     $scope.arrivalChange();
     $scope.installChange();
   }
@@ -170,6 +172,7 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
   /* Initialise */
   $scope.populateVanList();
   loadInstalls();
+  loadArrivals();
 
   /***************************** load Installs(), Customers Markers **************************************/
   function loadInstalls() {
