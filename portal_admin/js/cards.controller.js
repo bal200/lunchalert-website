@@ -253,7 +253,7 @@ function($scope, $location, $rootScope) {
   }
 
   /*
-   * 
+   * Make a new array which is a duplicate of some TemplateVariables
    */
   function copyTemplateVars( from ) {
     var to = [];
