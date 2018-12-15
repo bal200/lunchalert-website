@@ -1,8 +1,8 @@
-<p>{{ $ctrl.card.active ? 'true' : 'false' }} - <button ng-click="$ctrl.updateChanges();">update</button></p>
+<p><button ng-click="$ctrl.updateChanges();">update</button></p>
 <div ng-if="(showIframe)">
   <div class="iframe-wrap" width="{{$ctrl.mywidth}}px" height="{{$ctrl.myheight}}px" 
       style="overflow: hidden;">
-    <iframe id="iframeid" src="about:blank" width="{{iwidth}}px" height="{{iheight}}px"
+    <iframe id="{{$ctrl.iframeid}}" src="about:blank" width="{{iwidth}}px" height="{{iheight}}px"
       ng-style="scaleStyle"
       style="
         transform-origin: 0 0;

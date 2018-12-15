@@ -10,8 +10,8 @@ angular.module('lunchalert-portal')
   templateUrl: 'templates/cardpreview.html',
   controller: ['$scope', '$timeout', function($scope, $timeout) {
     
-    this.iframeid="iframeid";
-    $scope.showIframe = (this.card.title == "Bals butties TEST");
+    this.iframeid;
+    $scope.showIframe = true; //(this.card.title == "Bals butties TEST");
     $scope.myscale = 1.0; $scope.scaleStyle={transform: "scale(0.50)"};
     $scope.iwidth = 400; $scope.iheight=600;
     that=this;
@@ -21,25 +21,19 @@ angular.module('lunchalert-portal')
            this.updateChanges();
         }.bind(this), 500);
       }
+      this.iframeid = "iframe-"+this.card.id;
     }.bind(this);
 
     this.$onChanges = function(changesObj) {
       console.log("onchanges");
-      console.log(changesObj);
+      //console.log(changesObj);
       this.updateChanges();
-    }
-    this.$doCheck = function() {
-      console.log("doCheck called");
     }
 
     this.updateChanges=function() {
       this.updateSizes();
-      this.updateIframe("iframeid", this.html);
+      this.updateIframe(this.iframeid, this.html);
     }
-
-    // $scope.updateChanges=function() {
-    //   that.updateChanges();
-    // }
 
     this.updateSizes=function() {
       this.myscale = parseInt(this.mywidth) / $scope.iwidth ;
