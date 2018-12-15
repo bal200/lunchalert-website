@@ -2,34 +2,65 @@ angular.module('lunchalert-portal')
 
 .component('cardpreview', {
   bindings: {
-    card: '='
+    card: '=',
+    html: '<',
+    mywidth: '=',
+    myheight: '='
   },
   templateUrl: 'templates/cardpreview.html',
-  controller: function() {
+  controller: ['$scope', '$timeout', function($scope, $timeout) {
     
     this.iframeid="iframeid";
-    this.showIframe = (this.card.title == "Sandwich Meal Deal");
-
-
+    $scope.showIframe = (this.card.title == "Bals butties TEST");
+    $scope.myscale = 1.0; $scope.scaleStyle={transform: "scale(0.50)"};
+    $scope.iwidth = 400; $scope.iheight=600;
+    that=this;
     this.$onInit = function() {
-      if (this.showIframe) {
-        setTimeout(function() {
-          updateIframe("iframeid", this.card.html);
-        }.bind(this), 1000);
+      if ($scope.showIframe) {
+        $timeout(function() {
+           this.updateChanges();
+        }.bind(this), 500);
       }
+    }.bind(this);
+
+    this.$onChanges = function(changesObj) {
+      console.log("onchanges");
+      console.log(changesObj);
+      this.updateChanges();
+    }
+    this.$doCheck = function() {
+      console.log("doCheck called");
+    }
+
+    this.updateChanges=function() {
+      this.updateSizes();
+      this.updateIframe("iframeid", this.html);
+    }
+
+    // $scope.updateChanges=function() {
+    //   that.updateChanges();
+    // }
+
+    this.updateSizes=function() {
+      this.myscale = parseInt(this.mywidth) / $scope.iwidth ;
+      //console.log("iwidth "+$scope.iwidth);
+      //console.log("mywidth "+this.mywidth);
+      $scope.scaleStyle={'transform': "scale("+this.myscale+")"};
+      //console.log($scope.scaleStyle);
     }
     
-    
-    function updateIframe( iframeid, html ) {
+    this.updateIframe=function( iframeid, html ) {
       var iframe = document.getElementById( iframeid );
-      console.log(iframe);
-      var iframedoc = iframe.document;
-      if (iframe.contentDocument)  iframedoc = iframe.contentDocument;
-      else if (iframe.contentWindow)  iframedoc = iframe.contentWindow.document;
-      if (iframedoc){
-        iframedoc.open();
-        iframedoc.writeln( htmlHead + html + htmlFoot );
-        iframedoc.close();
+      if (iframe) {
+        var iframedoc = iframe.document;
+        if (iframe.contentDocument)  iframedoc = iframe.contentDocument;
+        else if (iframe.contentWindow)  iframedoc = iframe.contentWindow.document;
+        if (iframedoc){
+          console.log("redrawing iframe doc")
+          iframedoc.open();
+          iframedoc.writeln( htmlHead + html + htmlFoot );
+          iframedoc.close();
+        }
       }
     }
     var htmlHead =`
@@ -47,6 +78,6 @@ angular.module('lunchalert-portal')
   </body>
 </html>
     `;
-  }
+  }]
 });
 
