@@ -107,6 +107,8 @@
                   <input name="imagefile" ng-if="varb.type=='file'" type="{{varb.type}}" ng-model="varb.value" on-change="applyTemplateVariables(card)" placeholder="" maxsize="5000" accept="image/*" do-not-parse-if-oversize base-sixty-four-input>
                   <span ng-show="form.imagefile.$error.maxsize">Files must not exceed 5000 KB</span> <!-- TODO define max file size-->
                   <input ng-if="varb.type!='file'" type="{{varb.type}}" ng-model="varb.value" ng-change="applyTemplateVariables(card)" placeholder="">
+
+                  <img ng-show="card.templateVariables[4].value.filename" width="100%" src="data:{{card.templateVariables[4].value.filetype + ';base64,' + card.templateVariables[4].value.base64}}" />
                 </div>
               </div>
             </div>
@@ -174,16 +176,14 @@
         <!-- File Column -->
         <div class="ui vertical divider"></div>
         <div class="four wide column" style="text-align:center;">
-          <i ng-show="card.html" ng-hide="card.templateVariables[4].value.filename" class="huge file alternate outline icon"></i>
-          <img width="100%" ng-show="card.templateVariables[4].value.filename" src="data:{{card.templateVariables[4].value.filetype + ';base64,' + card.templateVariables[4].value.base64}}" />
+          <!-- <i ng-show="card.html" ng-hide="card.templateVariables[4].value.filename" class="huge file alternate outline icon"></i> -->
           <p ng-hide="card.html" style="color:#BBB;">no card</p>
-          <br/><br/>
+          <cardpreview ng-show="card.html" card="card" html="card.html" mywidth="200" myheight="280"></cardpreview>
+          <br/>
           <button class="ui mini button" ng-click="editClick(card, cardForm);">
             <i class="edit icon"></i>&nbsp;HTML
           </button>
-          <!-- <button class="ui mini icon button"><i class="upload icon"></i></button>
-          <button class="ui mini icon button"><i class="download icon"></i></button> -->
-          <cardpreview card="card" html="card.html" mywidth="200" myheight="400"></cardpreview>
+          
         </div>
       </div>
 

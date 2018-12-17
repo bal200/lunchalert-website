@@ -37,6 +37,7 @@ angular.module('lunchalert-portal')
 
     this.updateSizes=function() {
       this.myscale = parseInt(this.mywidth) / $scope.iwidth ;
+      $scope.iheight = this.myheight / this.myscale;
       //console.log("iwidth "+$scope.iwidth);
       //console.log("mywidth "+this.mywidth);
       $scope.scaleStyle={'transform': "scale("+this.myscale+")"};
