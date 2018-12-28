@@ -3,8 +3,6 @@ angular.module('lunchalert-portal')
 .controller('CardsCtrl', ['$scope', '$location', '$rootScope',
 function($scope, $location, $rootScope) {
 
-  var CardTemplate = Parse.Object.extend("CardTemplate");
-
   /*******************************************************************************/
   $scope.cards = [];
   $scope.swmId=null; /* vendor parse Obj */
@@ -20,6 +18,9 @@ function($scope, $location, $rootScope) {
   $scope.deleteModal={
     card:null
   };
+  $scope.templateSelectVendor = null;
+  $scope.showTemplateSelect=0;
+
   $('.ui.dropdown').dropdown();
   $('.ui.modal').modal({ detachable: false });
 
@@ -141,7 +142,7 @@ function($scope, $location, $rootScope) {
     var to = [];
     for (var m=0; m<from.length; m++) {
 
-      console.log('copying: ' + from[m].name + ' = '); console.log(from[m].value);
+      //console.log('copying: ' + from[m].name + ' = '); console.log(from[m].value);
 
       to[m] = { name: from[m].name,
                 type: from[m].type,
@@ -265,6 +266,11 @@ function($scope, $location, $rootScope) {
       Card.create(($scope.swmId ? newParseUser($scope.swmId) : Parse.User.current()), "", 10)
     );
   }
+  $scope.addTemplateCardClick = function() {
+    // this opens up the modal
+    $scope.templateSelectVendor = getCurrentVendor();
+    $scope.showTemplateSelect++;
+  }
 
   $scope.addTemplateCard = function() {
     var newCard = Card.create(getCurrentVendor(), "", 10);
@@ -272,12 +278,12 @@ function($scope, $location, $rootScope) {
     newCard.campaign = newCampaign;
     newCard.schedulerOn = false; /* this also causes the campaign to get set to defaults */
 
-    var CardTemplate = Parse.Object.extend("CardTemplate");
+    //var CardTemplate = Parse.Object.extend("CardTemplate");
 
     var query1 = new Parse.Query(CardTemplate);
     var query2 = new Parse.Query(CardTemplate);
-    query1.equalTo("vendor", getCurrentVendor() );
-    query2.equalTo("vendor", null );
+    query1.equalTo("vendor", getCurrentVendor() ); /* tempates for this vendor  */
+    query2.equalTo("vendor", null );               /* and templates for any vendor */
     var query = Parse.Query.or(query1, query2);
 
     query.find().then(function(templates) {

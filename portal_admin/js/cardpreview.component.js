@@ -11,7 +11,7 @@ angular.module('lunchalert-portal')
   controller: ['$scope', '$timeout', function($scope, $timeout) {
     
     this.iframeid;
-    $scope.showIframe = true; //(this.card.title == "Bals butties TEST");
+    $scope.showIframe = true;
     $scope.myscale = 1.0; $scope.scaleStyle={transform: "scale(0.50)"};
     $scope.iwidth = 400; $scope.iheight=600;
     that=this;

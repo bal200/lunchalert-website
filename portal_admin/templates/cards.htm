@@ -60,7 +60,7 @@
       <i class="plus icon"></i>
       <div class="menu">
         <div class="header">Menu</div>
-        <div class="item" ng-click="addTemplateCard()">Add Card</div>
+        <div class="item" ng-click="addTemplateCardClick()">Add Card</div>
         <div class="item" ng-click="addCard()">Add Advanced Card</div>
       </div>
     </button>
@@ -108,9 +108,9 @@
                   <span ng-show="form.imagefile.$error.maxsize">Files must not exceed 5000 KB</span> <!-- TODO define max file size-->
                   <input ng-if="varb.type!='file'" type="{{varb.type}}" ng-model="varb.value" ng-change="applyTemplateVariables(card)" placeholder="">
 
-                  <img ng-show="card.templateVariables[4].value.filename" width="100%" src="data:{{card.templateVariables[4].value.filetype + ';base64,' + card.templateVariables[4].value.base64}}" />
                 </div>
               </div>
+              <img ng-show="card.templateVariables[4].value.filename" width="100%" src="data:{{card.templateVariables[4].value.filetype + ';base64,' + card.templateVariables[4].value.base64}}" />
             </div>
             
           </div>
@@ -190,6 +190,7 @@
     </div>
   </form>
 
+  <templateselect show="showTemplateSelect" vendor="templateSelectVendor" onSave="addTemplateCard($event)"></templateselect>
 
   <form>
     <div id="edit-modal" class="ui modal">
