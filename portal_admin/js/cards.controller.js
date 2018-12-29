@@ -263,7 +263,7 @@ function($scope, $location, $rootScope) {
   }
   $scope.addCard = function() {
     $scope.cards.push(
-      Card.create(($scope.swmId ? newParseUser($scope.swmId) : Parse.User.current()), "", 10)
+      Card.create(getCurrentVendor(), "", 1)
     );
   }
   $scope.addTemplateCardClick = function() {
@@ -271,8 +271,22 @@ function($scope, $location, $rootScope) {
     $scope.templateSelectVendor = getCurrentVendor();
     $scope.showTemplateSelect++;
   }
+  $scope.addTemplateCard = function( newCard ) {
+    // the modal creates the new card & campaign objects, add them to  
+    $scope.cards.push( newCard );
+    var campaign = newCard.campaign;
+    var template = campaign.get("template");
+    template.fetch({
+      success: function(tmpl) {
+        $scope.$apply(function() {
+          defaultTemplateVariables( campaign, tmpl );
+          initTemplateVariable( newCard );
+        }); 
+      }
+    });
+  }
 
-  $scope.addTemplateCard = function() {
+  $scope.OLDaddTemplateCard = function() {
     var newCard = Card.create(getCurrentVendor(), "", 10);
     var newCampaign = Campaign.create(newCard.get("vendor"), "", newCard);
     newCard.campaign = newCampaign;
@@ -282,7 +296,7 @@ function($scope, $location, $rootScope) {
 
     var query1 = new Parse.Query(CardTemplate);
     var query2 = new Parse.Query(CardTemplate);
-    query1.equalTo("vendor", getCurrentVendor() ); /* tempates for this vendor  */
+    query1.equalTo("vendor", getCurrentVendor() ); /* templates for this vendor  */
     query2.equalTo("vendor", null );               /* and templates for any vendor */
     var query = Parse.Query.or(query1, query2);
 

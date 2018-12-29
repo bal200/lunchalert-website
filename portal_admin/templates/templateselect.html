@@ -8,17 +8,17 @@
 
         <div class="content fixed-height">
               <div class="doubling four column row">
-                <div class="column" ng-repeat="template in templates" ng-click="templateClick(template)">
+                <div class="column" ng-repeat="template in templates">
                   <label>{{template.title}}</label>
                   <cardpreview ng-show="template.html" card="template" html="template.html" 
                                mywidth="200" myheight="280"></cardpreview>
+                  <button class="ui primary button" ng-click="templateClick(template)"">Select</button>
                 </div>
               </div>
         </div>
 
         <div class="actions">
           <div class="ui button" ng-click="closeClick();">Cancel</div>
-          <div class="ui primary button" ng-click="editOk();">Ok</div>
         </div>
     </div>
   </form>

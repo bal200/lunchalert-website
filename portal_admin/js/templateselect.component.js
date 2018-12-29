@@ -30,7 +30,7 @@ angular.module('lunchalert-portal')
     $scope.closeClick = function() {  
       this.show=false;
       $('#template-select-modal').modal('hide');  
-    };
+    }.bind(this);
 
     this.loadTemplates = function() {
       var CardTemplate = Parse.Object.extend("CardTemplate");
@@ -51,25 +51,21 @@ angular.module('lunchalert-portal')
     }
     $scope.templateClick = function(template) {
       console.log("Making a card from template "+template.title);
-        var newCard = Card.create(getCurrentVendor(), "", 10);
-        var newCampaign = Campaign.create(newCard.get("vendor"), "", newCard);
-        newCard.campaign = newCampaign;
-        newCard.schedulerOn = false; /* this also causes the campaign to get set to defaults */
+      /* Build new Card and Campaign objects */
+      var newCard = Card.create(this.vendor, "", 1);
+      var newCampaign = Campaign.create(newCard.get("vendor"), "", newCard);
+      newCard.campaign = newCampaign;
+      newCard.schedulerOn = false; /* this also causes the campaign to get set to defaults */
     
           //var template = chooseTemplate(templates, getCurrentVendor() );
-          newCampaign.set('template', template);
-          /***** */
-          $scope.cards.push( newCard );
-          template.fetch({
-            success: function(tmpl) {
-              $scope.$apply(function() {
-                defaultTemplateVariables( newCampaign, tmpl );
-                initTemplateVariable( newCard );
-              }); 
-            }
-          });
+      newCampaign.set('template', template);
 
-    }
+      this.onSave( { value: newCard } );
+
+      this.show=false;
+      $('#template-select-modal').modal('hide');  
+
+    }.bind(this);
 
     function chooseTemplate(templates, vendor) {
       var v;
