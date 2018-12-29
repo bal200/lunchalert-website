@@ -37,7 +37,7 @@
   </div>
   <br/>
   <br/>
-  
+
   <div class="ui clearing">
     <h3 class="ui left floated header">
         Available Cards
@@ -54,7 +54,7 @@
   <br/>
 
   <!-- Each Card -->
-  <form ng-repeat="card in cards" name="card.cardForm" class="ui form segments">
+  <form ng-repeat="card in cards | orderBy:'order' " name="card.cardForm" class="ui form segments">
     
     <div class="ui secondary clearing segment">
       <!-- Title Row -->

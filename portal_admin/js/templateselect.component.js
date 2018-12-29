@@ -67,18 +67,6 @@ angular.module('lunchalert-portal')
 
     }.bind(this);
 
-    function chooseTemplate(templates, vendor) {
-      var v;
-      for (var n=0; n<templates.length; n++) {
-        v = templates[n].get('vendor');
-        if ( v && v.id == vendor.id )  return templates[n];
-      }
-      for (var n=0; n<templates.length; n++) {
-        v = templates[n].get('vendor');
-        if ( v == null )  return templates[n];
-      }
-    }
-
 
   }]
 });

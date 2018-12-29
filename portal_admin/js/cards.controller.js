@@ -281,53 +281,12 @@ function($scope, $location, $rootScope) {
         $scope.$apply(function() {
           defaultTemplateVariables( campaign, tmpl );
           initTemplateVariable( newCard );
+          $scope.applyTemplateVariables( newCard );
         }); 
       }
     });
   }
-
-  $scope.OLDaddTemplateCard = function() {
-    var newCard = Card.create(getCurrentVendor(), "", 10);
-    var newCampaign = Campaign.create(newCard.get("vendor"), "", newCard);
-    newCard.campaign = newCampaign;
-    newCard.schedulerOn = false; /* this also causes the campaign to get set to defaults */
-
-    //var CardTemplate = Parse.Object.extend("CardTemplate");
-
-    var query1 = new Parse.Query(CardTemplate);
-    var query2 = new Parse.Query(CardTemplate);
-    query1.equalTo("vendor", getCurrentVendor() ); /* templates for this vendor  */
-    query2.equalTo("vendor", null );               /* and templates for any vendor */
-    var query = Parse.Query.or(query1, query2);
-
-    query.find().then(function(templates) {
-      console.log("got "+templates.length+" templates");
-      var template = chooseTemplate(templates, getCurrentVendor() );
-      newCampaign.set('template', template);
-      $scope.cards.push( newCard );
-      template.fetch({
-        success: function(tmpl) {
-          $scope.$apply(function() {
-            defaultTemplateVariables( newCampaign, tmpl );
-            initTemplateVariable( newCard );
-          }); 
-        }
-      });
-    });
-    //.catch(function(e) { console.log("Error finding a CardTemplate ("+e.code+") "+e.message) });
-  }
-  function chooseTemplate(templates, vendor) {
-    var v;
-    for (var n=0; n<templates.length; n++) {
-      v = templates[n].get('vendor');
-      if ( v && v.id == vendor.id )  return templates[n];
-    }
-    for (var n=0; n<templates.length; n++) {
-      v = templates[n].get('vendor');
-      if ( v == null )  return templates[n];
-    }
-  }
-
+  
   function newParseUser(id) {
     var user = new Parse.User();
     user.id = id; 
@@ -339,17 +298,3 @@ function($scope, $location, $rootScope) {
 
 }]);
 
-
-
-/*
-Code for previewing cards, possibly:
-
-<iframe id="iframe"></iframe>
-
-var doc = document.getElementById('iframe').contentWindow.document;
-doc.open();
-doc.write('<div style="background-color:red; margin:0px; width:50vw;">Hello</div>');
-doc.close();
-
-
-*/
