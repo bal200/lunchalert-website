@@ -1,7 +1,8 @@
 angular.module('lunchalert-portal', [
     'ngRoute',
     'uiGmapgoogle-maps',
-    'jkuri.datepicker'
+    'jkuri.datepicker',
+    'naif.base64'
   ])
 
 .value('ParseConfiguration', {
