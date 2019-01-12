@@ -1,7 +1,8 @@
-angular.module('lunchalert-website', [
+angular.module('lunchalert-portal', [
     'ngRoute' ,
-    'pageCtrl',
-    'uiGmapgoogle-maps'
+    'uiGmapgoogle-maps',
+    'jkuri.datepicker',
+    'naif.base64'
   ])
 
 .value('ParseConfiguration', {
@@ -19,18 +20,22 @@ angular.module('lunchalert-website', [
     $routeProvider
       .when('/', {
         templateUrl: 'templates/home.htm',
-        controller: 'pageCtrl'
+        controller: 'HomeCtrl'
       })
       .when('/login', {
         templateUrl: 'templates/login.htm',
-        controller: 'userCtrl'
+        controller: 'UserCtrl'
       })
       .when('/portal', {
         templateUrl: 'templates/portal.htm',
-        controller: 'portalCtrl'
+        controller: 'PortalCtrl'
       })
       .when('/portal_edit', {
         redirectTo: '/portal'
+      })
+      .when('/cards', {
+        templateUrl: 'templates/cards.htm',
+        controller: 'CardsCtrl'
       })
       .otherwise({
         redirectTo: '/'

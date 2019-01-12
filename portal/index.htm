@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="lunchalert-website">
+<html ng-app="lunchalert-portal">
   <head>
     <meta charset="UTF-8">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATDW6hk6hgef14ZJcjK7mbETf9MIl9lso"></script>
@@ -12,7 +12,7 @@
     <script src="../semantic/dist/semantic.min.js"></script>
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="../bower_components/ngDatepicker/src/css/ngDatepicker.css">
+    <link rel="stylesheet" type="text/css" href="../bower_components/ngDatepicker/src/css/ngDatepicker-fix.css">
 <!--
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-route.min.js"></script>
@@ -22,13 +22,21 @@
     <script src="../bower_components/angular-route/angular-route.js"></script>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
-    <script type="text/javascript" src="../bower_components/ngDatepicker/src/js/ngDatepicker.min.js"></script>
+    <script type="text/javascript" src="../bower_components/ngDatepicker/src/js/ngDatepicker-fix.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/angular-base64-upload@0.1.23/dist/angular-base64-upload.min.js"></script>
 
     <script src="../bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
-    <script src="../bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
+    <!-- <script src="../bower_components/angular-google-maps/dist/angular-google-maps.js"></script> -->
+    <script src="../bower_components/angular-google-maps/angular-google-maps2.4.1.min.js"></script>
 
     <script src="js/app.js"></script>
-    <script src="js/controllers.js"></script>
+    <script src="js/portal.controller.js"></script>
+    <script src="js/cards.controller.js"></script>
+    <script src="js/cardpreview.component.js"></script>
+    <script src="js/templateselect.component.js"></script>
+    <script src="js/Card.js"></script>
+    <script src="js/Campaign.js"></script>
+    <script src="js/CardTemplate.js"></script>
 
     <link rel="shortcut icon" href="images/icon.png">
 
@@ -80,6 +88,7 @@
         LunchAlert Portal
       </a>
       <a href="#/portal" class="item">Maps</a>
+      <a href="#/cards" class="item">Cards</a>
 
     </div>
   </div>

@@ -17,26 +17,7 @@
 
   <br/>
   <!-- Vendor Search selection Box -->
-  <div class="four wide column">
-    <div class="ui labeled icon input">
-      <div class="ui label">Vendor </div>
-      <input type="text" ng-model="vendors.input" placeholder="" ng-change="vendorPress()">
-      <i class="search icon"></i>
-    </div>
-    <div ng-if="vendors.loading" class="ui active small inline loader"></div>
-  </div>
-  <div class="four wide column">
-    <div class="ui  selection list">
-      <div ng-repeat="vendor in vendors.list" class="item" data-value="{{vendor.line}}">
-        <div class="content" ng-click="vendorSelect(vendor)">
-          <div class="header">{{vendor.businessName}}</div>
-          <div class="description">({{vendor.id}})</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <br/>
-  <br/>
+  <!-- removed -->
 
   <div class="ui clearing">
     <h3 class="ui left floated header">
@@ -47,7 +28,7 @@
       <div class="menu">
         <div class="header">Menu</div>
         <div class="item" ng-click="addTemplateCardClick()">Add Card</div>
-        <div class="item" ng-click="addCard()">Add Advanced Card</div>
+        <!-- <div class="item" ng-click="addCard()">Add Advanced Card</div> -->
       </div>
     </button>
   </div>
@@ -165,10 +146,10 @@
           <!-- <i ng-show="card.html" ng-hide="card.templateVariables[4].value.filename" class="huge file alternate outline icon"></i> -->
           <p ng-hide="card.html" style="color:#BBB;">no card</p>
           <cardpreview ng-show="card.html" card="card" html="card.html" mywidth="200" myheight="280"></cardpreview>
-          <br/>
-          <button class="ui mini button" ng-click="editClick(card, cardForm);">
+          <!-- <br/> -->
+          <!-- <button class="ui mini button" ng-click="editClick(card, cardForm);">
             <i class="edit icon"></i>&nbsp;HTML
-          </button>
+          </button> -->
           
         </div>
       </div>
