@@ -29,6 +29,10 @@ angular.module('lunchalert-website', [
         templateUrl: 'templates/portal.htm',
         controller: 'portalCtrl'
       })
+      .when('/portal/offers', {
+        templateUrl: 'templates/offers.htm',
+        controller: 'offersCtrl'
+      })
       .when('/portal_edit', {
         redirectTo: '/portal'
       })

@@ -52,6 +52,7 @@ function( $scope, $rootScope, $location ) {
   };
 }])
 
+.controller('offersCtrl', [], function($scope, $rootScope) { })
 
 /******************************** PORTAL CONTROLLER ************************************************/
 .controller('portalCtrl', ['$scope', '$rootScope', '$location', 'uiGmapGoogleMapApi',
