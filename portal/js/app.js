@@ -25,8 +25,8 @@ angular.module('lunchalert-portal', [
         templateUrl: 'templates/login.htm',
         controller: 'userCtrl'
       })
-      .when('/portal', {
-        templateUrl: 'templates/portal.htm',
+      .when('/portal/map', {
+        templateUrl: 'templates/map.htm',
         controller: 'mapCtrl'
       })
       .when('/portal/offers', {
