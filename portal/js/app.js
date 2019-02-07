@@ -1,4 +1,4 @@
-angular.module('lunchalert-website', [
+angular.module('lunchalert-portal', [
     'ngRoute' ,
     'pageCtrl',
     'uiGmapgoogle-maps'
