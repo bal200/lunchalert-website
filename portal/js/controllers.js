@@ -52,7 +52,14 @@ function( $scope, $rootScope, $location ) {
   };
 }])
 
-.controller('offersCtrl', [], function($scope, $rootScope) { })
+.controller('offersCtrl', ['$scope', '$rootScope', '$location',
+  function($scope, $rootScope, $location) {
+    $scope.addCard = function() {
+      $location.path('/portal/offer/edit');
+    }
+
+  }
+])
 
 /******************************** PORTAL CONTROLLER ************************************************/
 .controller('portalCtrl', ['$scope', '$rootScope', '$location', 'uiGmapGoogleMapApi',
