@@ -2,17 +2,20 @@ angular.module('lunchalert-portal')
 
 .controller('offersCtrl', ['$scope', '$rootScope', '$location',
   function($scope, $rootScope, $location) {
+
+    $scope.cards = [];
+    $scope.currentCard = null;
+
     $scope.addCard = function() {
       $location.path('/portal/offer/edit');
     }
 
     $scope.editCard = function(card) {
       // TODO Bal: This needs to pass the specific card entry to the edit wizard form
-      console.log(card);
+      $scope.currentCard = card;
       $location.path('/portal/offer/edit');
     }
 
-    $scope.cards = [];
     $scope.loadCards = function () {
       //$scope.vendors.loading=true;
       Parse.Cloud.run("getCardsAndCampaigns", {
