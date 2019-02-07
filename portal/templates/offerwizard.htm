@@ -36,21 +36,32 @@
   </div>
 
 
-  <div class="ui attached segment">
+  <div class="ui attached segment" ng-if="page==1">
     <div class="ui vertical very padded segment">
       <p>Think of a great catchy line about your offer.</p>
     </div>
     <form class="ui form">
       <div class="field">
-        <label>Title</label>
         <input type="text" name="title" placeholder="Title">
       </div>
     </form>
   </div>
 
+  <div class="ui attached segment" ng-if="page==2">
+      <div class="ui vertical very padded segment">
+        <p>Let people know the conditions of your deal and the price.</p>
+      </div>
+      <form class="ui form">
+        <div class="field">
+          <input type="textarea" name="details" placeholder="Detail">
+        </div>
+      </form>
+    </div>
 
   <div class="ui bottom attached segment">
-    <button class="ui right labeled right floated icon button">
+  </div>
+
+  <button class="ui right labeled right floated icon button">
       <i class="right arrow icon"></i>
       Next
     </button>
@@ -58,6 +69,4 @@
       <i class="left arrow icon"></i>
       Back
     </button>
-  </div>
-
 </div>
