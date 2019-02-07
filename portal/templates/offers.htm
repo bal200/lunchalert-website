@@ -10,7 +10,7 @@
 
     <div class="item" ng-repeat="card in cards | orderBy:'order' ">
       <div class="right floated content">
-        <div class="ui button "><i class="edit icon"></i>Edit</div>
+        <div class="ui button " ng-click="editCard()"><i class="edit icon"></i>Edit</div>
       </div>
       <div class="content">
         {{card.title}}
