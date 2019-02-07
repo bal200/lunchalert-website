@@ -39,6 +39,7 @@
   <div class="ui attached segment" ng-if="page==1">
     <div class="ui vertical very padded segment">
       <p>Think of a great catchy line about your offer.</p>
+      <p>Title: {{currentCard.title}}</p>
     </div>
     <form class="ui form">
       <div class="field">
@@ -61,12 +62,12 @@
   <div class="ui bottom attached segment">
   </div>
 
-  <button class="ui right labeled right floated icon button">
-      <i class="right arrow icon"></i>
-      Next
-    </button>
-    <button class="ui right floated labeled icon button">
-      <i class="left arrow icon"></i>
-      Back
-    </button>
+  <button class="ui right labeled right floated icon button" ng-click="pageNext()">
+    <i class="right arrow icon"></i>
+    Next
+  </button>
+  <button class="ui right floated labeled icon button" ng-click="pageBack()">
+    <i class="left arrow icon"></i>
+    Back
+  </button>
 </div>
