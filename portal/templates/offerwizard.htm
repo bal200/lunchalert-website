@@ -8,27 +8,27 @@
         <div class="title">Offer</div>
       </div>
     </div>
-    <div class=" step" ng-class="{ 'active': page==2 }">
+    <div class="step" ng-class="{ 'active': page==2 }">
       <div class="content">
         <div class="title">Details</div>
       </div>
     </div>
-    <div class=" step" ng-class="{ 'active': page==3 }">
+    <div class="step" ng-class="{ 'active': page==3 }">
       <div class="content">
         <div class="title">Photo</div>
       </div>
     </div>
-    <div class=" step" ng-class="{ 'active': page==4 }">
+    <div class="step" ng-class="{ 'active': page==4 }">
       <div class="content">
         <div class="title">Preview</div>
       </div>
     </div>
-    <div class=" step" ng-class="{ 'active': page==5 }">
+    <div class="step" ng-class="{ 'active': page==5 }">
       <div class="content">
         <div class="title">Date</div>
       </div>
     </div>
-    <div class=" step" ng-class="{ 'active': page==6 }">
+    <div class="step" ng-class="{ 'active': page==6 }">
         <div class="content">
           <div class="title">Publish</div>
         </div>
@@ -49,12 +49,23 @@
   </div>
 
   <div class="ui attached very segment" ng-if="page==2">
+    <div class="ui padded">
+      <p>Let people know the conditions of your deal and the price.</p>
+    </div>
+    <form class="ui form">
+      <div class="field">
+        <textarea name="details" placeholder="Offer Details"/>
+      </div>
+    </form>
+  </div>
+
+  <div class="ui attached very segment" ng-if="page==3">
       <div class="ui padded">
-        <p>Let people know the conditions of your deal and the price.</p>
+        <p>Excite your customers with an eye catching photo of your product offer.</p>
       </div>
       <form class="ui form">
         <div class="field">
-          <textarea name="details" placeholder="Offer Details"/>
+          [INSERT IMAGE FILE FIELD]
         </div>
       </form>
     </div>
