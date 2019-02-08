@@ -36,8 +36,8 @@
   </div>
 
 
-  <div class="ui attached segment" ng-if="page==1">
-    <div class="ui vertical very padded segment">
+  <div class="ui attached very segment" ng-if="page==1">
+    <div class="ui padded">
       <p>Think of a great catchy line about your offer.</p>
       <p>Title: {{currentCard.title}}</p>
     </div>
@@ -48,13 +48,13 @@
     </form>
   </div>
 
-  <div class="ui attached segment" ng-if="page==2">
-      <div class="ui vertical very padded segment">
+  <div class="ui attached very segment" ng-if="page==2">
+      <div class="ui padded">
         <p>Let people know the conditions of your deal and the price.</p>
       </div>
       <form class="ui form">
         <div class="field">
-          <input type="textarea" name="details" placeholder="Detail">
+          <textarea name="details" placeholder="Offer Details"/>
         </div>
       </form>
     </div>
