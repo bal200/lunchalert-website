@@ -35,7 +35,7 @@ angular.module('lunchalert-portal', [
       })
       .when('/portal/offer/edit', {
         templateUrl: 'templates/offerwizard.htm',
-        controller: 'offersCtrl'
+        controller: 'offerWizardCtrl'
       })
       .when('/portal_edit', {
         redirectTo: '/portal'

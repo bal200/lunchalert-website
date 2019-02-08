@@ -5,14 +5,7 @@ angular.module('lunchalert-portal')
 
     $scope.cards = [];
     $scope.currentCard = null;
-    $scope.page = 1;
 
-    $scope.pageNext = function() {
-      if ($scope.page < 5) $scope.page++;
-    }
-    $scope.pageBack = function() {
-      if ($scope.page >1) $scope.page--;
-    }
 
     $scope.addCard = function() {
       $location.path('/portal/offer/edit');
