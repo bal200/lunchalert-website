@@ -39,11 +39,10 @@
   <div class="ui attached very segment" ng-if="page==1">
     <div class="ui padded">
       <p>Think of a great catchy line about your offer.</p>
-      <p>Title: {{currentCard.title}}</p>
     </div>
     <form class="ui form">
       <div class="field">
-        <input type="text" name="title" placeholder="Title">
+        <input type="text" name="title" ng-model="currentCard.title" placeholder="Title">
       </div>
     </form>
   </div>

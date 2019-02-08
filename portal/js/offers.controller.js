@@ -1,20 +1,23 @@
 angular.module('lunchalert-portal')
 
-.controller('offersCtrl', ['$scope', '$rootScope', '$location',
-  function($scope, $rootScope, $location) {
+.controller('offersCtrl', ['$scope', '$rootScope', '$location', //'$state',
+  function($scope, $rootScope, $location /*, $state*/) {
 
     $scope.cards = [];
-    $scope.currentCard = null;
-
+    //$scope.currentCard = null;
+    $rootScope.currentCard = null;
 
     $scope.addCard = function() {
+      $rootScope.currentCard = null;
       $location.path('/portal/offer/edit');
     }
 
     $scope.editCard = function(card) {
       // TODO Bal: This needs to pass the specific card entry to the edit wizard form
-      $scope.currentCard = card;
+      //$scope.currentCard = card;
+      $rootScope.currentCard = card;
       $location.path('/portal/offer/edit');
+      //$state.go('/portal/offer/edit' /*, { card: card }*/ );
     }
 
     $scope.loadCards = function () {

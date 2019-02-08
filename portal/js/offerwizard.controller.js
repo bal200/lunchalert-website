@@ -1,7 +1,7 @@
 angular.module('lunchalert-portal')
 
-.controller('offerWizardCtrl', ['$scope', '$rootScope', '$location',
-  function($scope, $rootScope, $location) {
+.controller('offerWizardCtrl', ['$scope',  '$location', '$rootScope',
+  function($scope,  $location, $rootScope) {
 
     $scope.currentCard = null;
     $scope.page = 1;
@@ -14,13 +14,11 @@ angular.module('lunchalert-portal')
     }
 
 
-    $scope.addCard = function() {
-      
-    }
+
+    $scope.currentCard = $rootScope.currentCard; //$stateParams.card;
 
     if ($scope.currentCard == null) {
-      $scope.currentCard = Card.create(getCurrentVendor(), "HI", 1);
-
+      $scope.currentCard = Card.create(getCurrentVendor(), "", 1);
     }
 
     function getCurrentVendor() {
