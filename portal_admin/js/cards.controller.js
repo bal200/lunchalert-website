@@ -93,8 +93,6 @@ function($scope, $location, $rootScope) {
         $scope.$apply(function(){
           console.log("Retrieved cards and campaigns");
           linkCardsToCampaigns(res.cards, res.campaigns)
-          //$scope.cards = parseToCardObject(res.cards, $scope.cards);
-          //setParseGettersSetters($scope.cards, res.campaigns);
           $scope.cards = res.cards;
           $scope.vendors.loading=false;
           initTemplateVariables($scope.cards);
@@ -123,7 +121,7 @@ function($scope, $location, $rootScope) {
   }
 
   /*
-   * save the template variables input boxes to the parse object, then call compile
+   * move the template variables input boxes to the parse object, then call compile
    */
   $scope.applyTemplateVariables = function(card) {
     card.campaign.set('templateVariables', copyTemplateVars(card.templateVariables) );
@@ -141,9 +139,7 @@ function($scope, $location, $rootScope) {
   function copyTemplateVars( from ) {
     var to = [];
     for (var m=0; m<from.length; m++) {
-
       //console.log('copying: ' + from[m].name + ' = '); console.log(from[m].value);
-
       to[m] = { name: from[m].name,
                 type: from[m].type,
                 value: (from[m].value ? from[m].value : "") };
