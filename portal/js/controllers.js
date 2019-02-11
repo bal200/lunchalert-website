@@ -2,7 +2,6 @@ angular.module('pageCtrl',['jkuri.datepicker'])
 .controller('pageCtrl', ['$scope', '$location', '$rootScope',
 function($scope, $location, $rootScope) {
 
-  /* Put a fancy menu page here */
   $scope.gotoMapPage = function() {
     $location.path('/portal/map');
   }
