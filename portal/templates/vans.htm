@@ -7,27 +7,19 @@
     <tr>
       <th class="sorted ascending">Name</th>
       <th class="">Last Active</th>
-      <th class="">Notes</th>
+      <th class="">VanID</th>
     </tr>
   </thead>
   <tbody>
-  <tr>
-    <td>Van1</td>
-    <td class="negative">3 days ago</td>
-    <td>None</td>
-  </tr><tr>
-    <td>Van2</td>
-    <td>No history</td>
-    <td>None</td>
-  </tr><tr>
-    <td>Van3</td>
-    <td class="positive">Today</td>
-    <td class="warning">?</td>
+  <tr ng-repeat="van in vanList">
+    <td class="{{van.flag}}">{{van.name}}</td>
+    <td class="{{van.flag}}">{{van.active | date:'medium'}}</td>
+    <td class="{{van.flag}}">{{van.vanIdCrop}}</td>
   </tr>
   </tbody>
   <tfoot>
-    <tr><th>3 Drivers</th>
-    <th>2 Active</th>
+    <tr><th>{{vanList.length}} Drivers</th>
+    <th>{{activedrivers}} Active</th>
     <th></th>
   </tr></tfoot>
   </table>
