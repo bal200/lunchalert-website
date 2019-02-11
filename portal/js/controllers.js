@@ -8,6 +8,10 @@ function($scope, $location, $rootScope) {
   $scope.gotoOffersPage = function() {
     $location.path('/portal/offers');
   }
+  $scope.gotoVansPage = function() {
+    $location.path('/portal/vans');
+  }
+  
 
   if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
     $location.path('/login');
