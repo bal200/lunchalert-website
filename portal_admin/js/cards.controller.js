@@ -106,8 +106,8 @@ function($scope, $location, $rootScope) {
     return $scope.swmId ? newParseUser($scope.swmId) : Parse.User.current();
   }
 
-  /*
-   * move the template variables input boxes to the parse object, then call compile
+  /* Called on Changes to the text Inputs event.
+   * Move the template variables input boxes to the parse object, then call compile
    */
   $scope.applyTemplateVariables = function(card) {
     card.campaign.set('templateVariables', copyTemplateVars(card.templateVariables) );
@@ -115,7 +115,7 @@ function($scope, $location, $rootScope) {
     // Generate the HTML card from template markup
     card.compileTemplate(card.campaign.get('template'), card.templateVariables, function(html) {
       $scope.$apply(function() {
-        card.html = html;
+        card.html = html; /* trigger the iFrame to redraw */
       });
     });
     card.cardForm.$dirty = true;
@@ -187,19 +187,9 @@ function($scope, $location, $rootScope) {
   $scope.addTemplateCard = function( newCard ) {
     // the modal creates the new card & campaign objects, add them to  
     $scope.cards.push( newCard );
+    
     newCard.initTemplate(function() {
-      $scope.$apply();
-    });
-    var campaign = newCard.campaign;
-    var template = campaign.get("template");
-    template.fetch({
-      success: function(tmpl) {
-        //$scope.$apply(function() {
-          campaign.defaultTemplateVariables( tmpl );
-          newCard.unpackTemplateVariable( );
-          $scope.applyTemplateVariables( newCard );
-        //}); 
-      }
+      $scope.applyTemplateVariables( newCard );
     });
   }
   
