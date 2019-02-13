@@ -1,0 +1,27 @@
+<div class="ui main text container">
+  <h1 class="ui header">Your Driver Activity</h1>
+  <p>Monitor driver activity on a daily basis using our at a glance status board for your van fleet.</p>
+
+  <table class="ui sortable celled table">
+  <thead>
+    <tr>
+      <th class="">Name</th>
+      <th class="">Last Active</th>
+      <th class="">Van ID</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="van in vanList">
+    <td class="{{van.flag}}">{{van.name}}</td>
+    <td class="{{van.flag}}">{{van.active | date:'medium'}}</td>
+    <td class="{{van.flag}}">{{van.vanIdCrop}}</td>
+  </tr>
+  </tbody>
+  <tfoot>
+    <tr><th>{{vanList.length}} Drivers</th>
+    <th>{{activedrivers}} Active Today</th>
+    <th></th>
+  </tr></tfoot>
+  </table>
+
+</div>
