@@ -36,23 +36,6 @@ angular.module('lunchalert-portal')
       loadTemplate();
     }
 
-    $scope.tVars = { 
-      get title() { 
-        return $scope.card.title; 
-      },
-      set title(val) { 
-        $scope.card.title=val; 
-      },
-      get message() { 
-        //return $scope.card.campaign.templateVariables; 
-      },
-      set message(val) { 
-        //$scope.card.title=val; 
-      }
-    };
-    
-
-
     function getCurrentVendor() {
       return $scope.swmId ? newParseUser($scope.swmId) : Parse.User.current();
     }
