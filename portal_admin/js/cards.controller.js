@@ -125,7 +125,9 @@ function($scope, $location, $rootScope) {
   $scope.saveCard = function(card, cardForm) {
     card.save({
       success: function(c) {
+        console.log("Saved card "+card.get("title") );
         if (card.campaign) {
+          //console.log(card.campaign);
           card.campaign.save({
             success: function(campaign) {
               console.log("Saved campaign "+card.get("title") );    
@@ -143,7 +145,6 @@ function($scope, $location, $rootScope) {
         }
       }, error: function(e) {console.log("Save Card error ("+e.code+") "+e.message);}
     });
-
   };
   $scope.deleteCard = function(card) {
     var t = card.get("title");
@@ -187,7 +188,7 @@ function($scope, $location, $rootScope) {
   $scope.addTemplateCard = function( newCard ) {
     // the modal creates the new card & campaign objects, add them to  
     $scope.cards.push( newCard );
-    
+
     newCard.initTemplate(function() {
       $scope.applyTemplateVariables( newCard );
     });

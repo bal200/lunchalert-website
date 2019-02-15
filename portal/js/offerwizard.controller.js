@@ -13,6 +13,11 @@ angular.module('lunchalert-portal')
       if ($scope.page > 1) $scope.page--;
     }
 
+    var newCard = function() {
+      $scope.card = Card.create(getCurrentVendor(), "", 1);
+      $scope.card.campaign = Campaign.create($scope.card.get("vendor"), "", $scope.card);
+      $scope.card.schedulerOn = false; /* this also causes the campaign to get set to defaults */
+    }
     var loadTemplate = function() {
       var query = new Parse.Query(CardTemplate);
       query.equalTo("vendor", this.vendor );  /* templates for this vendor  */
@@ -25,13 +30,43 @@ angular.module('lunchalert-portal')
         });
       });
     }
+    /* save the card & campaign parse objects */
+    $scope.saveCard = function( callback ) {
+      var card = $scope.card;
+      card.save({
+        success: function(c) {
+          console.log("Saved card "+card.get("title") );  
+          if (card.campaign) {
+            card.campaign.save({
+              success: function(campaign) {
+                console.log("Saved campaign "+card.get("title") );    
+                callback();
+              }, error: function(e) {console.log("Save Campaign error ("+e.code+") "+e.message);}
+            });
+          }else {
+            callback();
+          }
+        }, error: function(e) {console.log("Save Card error ("+e.code+") "+e.message);}
+      });
+    };
+    $scope.finished = function() {
+      $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
+        $scope.card.html = html;
+        $scope.saveCard(function() {
+          $scope.$apply(function() {
+            //cardForm.$setPristine();
+            $location.path('/portal/offers');
+          });
+        });
 
-    $scope.card = $rootScope.card; //$stateParams.card;
+      });
+      
+      
+    }
+    $scope.card = $rootScope.currentCard; //$stateParams.card;
 
     if ($scope.card == null) {
-      $scope.card = Card.create(getCurrentVendor(), "", 1);
-      $scope.card.campaign = Campaign.create($scope.card.get("vendor"), "", $scope.card);
-      $scope.card.schedulerOn = false; /* this also causes the campaign to get set to defaults */
+      newCard();
       //card.campaign.template = template;
       loadTemplate();
     }
