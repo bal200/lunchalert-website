@@ -11,20 +11,16 @@ angular.module('lunchalert-portal')
     
     $('.ui.modal').modal({ detachable: false });
 
-    this.$onInit = function() {
-    };
+    this.$onInit = function() { };
 
     this.$onChanges = function(changesObj) {
-      console.log("onchanges template select");
-      console.log(changesObj);
-      
+      console.log("templateselect: onChanges called.");
       if (this.show) {
         $('#template-select-modal').modal('show');
         this.loadTemplates();
       }else {
         //$('#template-select-modal').modal('hide');
       }
-
     }
 
     $scope.closeClick = function() {  
@@ -32,8 +28,9 @@ angular.module('lunchalert-portal')
       $('#template-select-modal').modal('hide');  
     }.bind(this);
 
+    /* load a list of possible templates that are available for this vendor */
     this.loadTemplates = function() {
-      var CardTemplate = Parse.Object.extend("CardTemplate");
+      //var CardTemplate = Parse.Object.extend("CardTemplate");
   
       var query1 = new Parse.Query(CardTemplate);
       var query2 = new Parse.Query(CardTemplate);
@@ -49,6 +46,7 @@ angular.module('lunchalert-portal')
       });
       //.catch(function(e) { console.log("Error finding a CardTemplate ("+e.code+") "+e.message) });
     }
+    /* click on one of the templates from the list. Generate new card & campaign objects */
     $scope.templateClick = function(template) {
       console.log("Making a card from template "+template.title);
       /* Build new Card and Campaign objects */
@@ -56,10 +54,9 @@ angular.module('lunchalert-portal')
       var newCampaign = Campaign.create(newCard.get("vendor"), "", newCard);
       newCard.campaign = newCampaign;
       newCard.schedulerOn = false; /* this also causes the campaign to get set to defaults */
-    
-          //var template = chooseTemplate(templates, getCurrentVendor() );
       newCampaign.set('template', template);
-
+      
+      /* send the new card back to the calling component */
       this.onSave( { value: newCard } );
 
       this.show=false;

@@ -35,29 +35,30 @@
       </div>
   </div>
 
-  <div class="ui attached very segment" ng-if="page==1">
+
+  <div class="ui attached very segment wizard" ng-if="page==1">
     <div class="ui padded">
       <p>Think of a great catchy line about your offer.</p>
     </div>
     <form class="ui form">
       <div class="field">
-        <input type="text" name="title" ng-model="currentCard.title" placeholder="Title">
+        <input type="text" name="title" ng-model="card.title" placeholder="Title">
       </div>
     </form>
   </div>
 
-  <div class="ui attached very segment" ng-if="page==2">
+  <div class="ui attached very segment wizard" ng-if="page==2">
     <div class="ui padded">
       <p>Let people know the conditions of your deal and the price.</p>
     </div>
     <form class="ui form">
       <div class="field">
-        <textarea name="details" placeholder="Offer Details"/>
+        <textarea name="details" ng-model="card.campaign.message" placeholder="Offer Details"/>
       </div>
     </form>
   </div>
-
-  <div class="ui attached very segment" ng-if="page==3">
+  
+  <div class="ui attached very segment wizard" ng-if="page==3">
     <div class="ui padded">
       <p>Excite your customers with an eye catching photo of your product offer.</p>
     </div>
@@ -68,30 +69,37 @@
     </form>
   </div>
 
-  <div class="ui attached very segment" ng-if="page==4">
+  <div class="ui attached very segment wizard" ng-if="page==4">
     <div class="ui padded">
       <p>We'll send out an offer card to your customers that looks like this. Like what you see?</p>
     </div>
     <form class="ui form">
-      <div class="field">
-        [INSERT IMAGE FILE FIELD]
+      <div class="field"> 
+        <cardpreview  card="card" html="card.html" 
+                     mywidth="360" myheight="280">
+        </cardpreview> 
       </div>
     </form>
   </div>
 
-  <div class="ui attached very segment" ng-if="page==5">
+  <div class="ui attached very segment wizard" ng-if="page==5">
     <div class="ui padded">
       <p>What date should your offer be sent out to customer?</p>
       <p>We send out a notification to everyones phones at 8am on the selected date.</p>
     </div>
     <form class="ui form">
       <div class="field">
-        [INSERT DATE PICKER FIELD]
+          <ng-datepicker class="ui input " ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date From">
+          </ng-datepicker>
+      </div>
+      <div class="field">
+          <ng-datepicker class="ui input fluid" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date To">
+          </ng-datepicker>
       </div>
     </form>
   </div>
 
-  <div class="ui attached very segment" ng-if="page==6">
+  <div class="ui attached very segment wizard" ng-if="page==6">
     <div class="ui padded">
       <p>Do you like what you see?</p>
     </div>
@@ -105,7 +113,11 @@
   <div class="ui bottom attached segment">
   </div>
 
-  <button class="ui right labeled right floated icon primary button" ng-click="pageNext()">
+  <button ng-if="page==6" class="ui right floated primary button" ng-click="finished()">
+      <!-- <i class="left arrow icon"></i> -->
+      Finish
+  </button>
+  <button ng-if="page!=6" class="ui right labeled right floated icon primary button" ng-click="pageNext()">
     <i class="right arrow icon"></i>
     Next
   </button>

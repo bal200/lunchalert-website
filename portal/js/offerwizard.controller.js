@@ -3,28 +3,95 @@ angular.module('lunchalert-portal')
 .controller('offerWizardCtrl', ['$scope',  '$location', '$rootScope',
   function($scope,  $location, $rootScope) {
 
-    $scope.currentCard = null;
+    $scope.card = null;
     $scope.page = 1;
 
     $scope.pageNext = function() {
       if ($scope.page <= 5) $scope.page++;
+      if ($scope.page==4) {
+        $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
+          $scope.$apply(function() {
+            $scope.card.html = html;
+          });
+        });
+      }
     }
     $scope.pageBack = function() {
       if ($scope.page > 1) $scope.page--;
     }
 
+    var newCard = function() {
+      $scope.card = Card.create(getCurrentVendor(), "", 1);
+      $scope.card.campaign = Campaign.create($scope.card.get("vendor"), "", $scope.card);
+      $scope.card.schedulerOn = false; /* this also causes the campaign to get set to defaults */
+      loadTemplate();
+    }
+    var loadTemplate = function() {
+      var query = new Parse.Query(CardTemplate);
+      query.equalTo("vendor", this.vendor );  /* templates for this vendor  */
+
+      query.find().then(function(templates) {
+        //$scope.$apply(function() {
+          console.log("got "+templates.length+" templates");
+          var template = templates[0];
+          $scope.card.campaign.template = template;
+          $scope.card.initTemplate(function() {
+            $scope.$apply();
+          });
+        //});
+      });
+    }
+    /* save the card & campaign parse objects */
+    $scope.saveCard = function( callback ) {
+      var card = $scope.card;
+      card.save({
+        success: function(c) {
+          console.log("Saved card "+card.get("title") );  
+          if (card.campaign) {
+            card.campaign.save({
+              success: function(campaign) {
+                console.log("Saved campaign "+card.get("title") );    
+                callback();
+              }, error: function(e) {console.log("Save Campaign error ("+e.code+") "+e.message);}
+            });
+          }else {
+            callback();
+          }
+        }, error: function(e) {console.log("Save Card error ("+e.code+") "+e.message);}
+      });
+    };
+    $scope.finished = function() {
+      $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
+        $scope.card.html = html;
+        $scope.saveCard(function() {
+          $scope.$apply(function() {
+            //cardForm.$setPristine();
+            $location.path('/portal/offers');
+          });
+        });
+      });
+    }
 
 
-    $scope.currentCard = $rootScope.currentCard; //$stateParams.card;
+    $scope.fromDateChange = function() {
+      console.log("fromDate change");
+      $scope.card.schedulerOn = true;
+    }
+    $scope.toDateChange = function() {
+      console.log("fromDate change");
+    }
 
-    if ($scope.currentCard == null) {
-      $scope.currentCard = Card.create(getCurrentVendor(), "", 1);
+    $scope.card = $rootScope.currentCard; //$stateParams.card;
+
+    if ($scope.card == null) {
+      newCard();
+      //card.campaign.template = template;
+      loadTemplate();
     }
 
     function getCurrentVendor() {
       return $scope.swmId ? newParseUser($scope.swmId) : Parse.User.current();
     }
-
 
   }
 ]);

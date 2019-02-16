@@ -90,13 +90,13 @@
                 <div class="sixteen wide field">
                   <label>{{varb.name}}</label>
                   {{varb.value.filesize > 0 ? 'Using ' + varb.value.filename + ' or select new image ' : ''}}
-                  <input name="imagefile" ng-if="varb.type=='file'" type="{{varb.type}}" ng-model="varb.value" on-change="applyTemplateVariables(card)" placeholder="" maxsize="5000" accept="image/*" do-not-parse-if-oversize base-sixty-four-input>
+                  <input name="imagefile" ng-if="varb.type=='file'" type="{{varb.type}}" ng-model="varb.value" ng-change="applyTemplateVariables(card)" placeholder="" maxsize="5000" accept="image/*" do-not-parse-if-oversize base-sixty-four-input>
                   <span ng-show="form.imagefile.$error.maxsize">Files must not exceed 5000 KB</span> <!-- TODO define max file size-->
                   <input ng-if="varb.type!='file'" type="{{varb.type}}" ng-model="varb.value" ng-change="applyTemplateVariables(card)" placeholder="">
 
                 </div>
               </div>
-              <img ng-show="card.templateVariables[4].value.filename" width="100%" src="data:{{card.templateVariables[4].value.filetype + ';base64,' + card.templateVariables[4].value.base64}}" />
+              <!-- <img ng-show="card.templateVariables[4].value.filename" width="100%" src="data:{{card.templateVariables[4].value.filetype + ';base64,' + card.templateVariables[4].value.base64}}" /> -->
             </div>
             
           </div>

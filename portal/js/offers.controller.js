@@ -28,7 +28,7 @@ angular.module('lunchalert-portal')
         success: function(res) {
           $scope.$apply(function(){
             linkCardsToCampaigns(res.cards, res.campaigns)
-            $scope.cards = res.cards;
+            $rootScope.cards = $scope.cards = res.cards;
             //$scope.vendors.loading=false;
             initTemplateVariables($scope.cards);
           });
@@ -61,7 +61,8 @@ angular.module('lunchalert-portal')
   
       return to;
     }
+    if ($rootScope.cards) { $scope.cards = $rootScope.cards; }
+    else { $scope.loadCards(); }
 
-    $scope.loadCards();
   }
 ]);
