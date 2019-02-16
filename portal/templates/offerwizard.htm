@@ -57,7 +57,7 @@
       </div>
     </form>
   </div>
-
+  
   <div class="ui attached very segment wizard" ng-if="page==3">
     <div class="ui padded">
       <p>Excite your customers with an eye catching photo of your product offer.</p>
@@ -74,8 +74,10 @@
       <p>We'll send out an offer card to your customers that looks like this. Like what you see?</p>
     </div>
     <form class="ui form">
-      <div class="field">
-        [INSERT IMAGE FILE FIELD]
+      <div class="field"> 
+        <cardpreview  card="card" html="card.html" 
+                     mywidth="360" myheight="280">
+        </cardpreview> 
       </div>
     </form>
   </div>
@@ -87,7 +89,12 @@
     </div>
     <form class="ui form">
       <div class="field">
-        [INSERT DATE PICKER FIELD]
+          <ng-datepicker class="ui input " ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date From">
+          </ng-datepicker>
+      </div>
+      <div class="field">
+          <ng-datepicker class="ui input fluid" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date To">
+          </ng-datepicker>
       </div>
     </form>
   </div>

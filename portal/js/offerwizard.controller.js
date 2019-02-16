@@ -8,6 +8,13 @@ angular.module('lunchalert-portal')
 
     $scope.pageNext = function() {
       if ($scope.page <= 5) $scope.page++;
+      if ($scope.page==4) {
+        $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
+          $scope.$apply(function() {
+            $scope.card.html = html;
+          });
+        });
+      }
     }
     $scope.pageBack = function() {
       if ($scope.page > 1) $scope.page--;
@@ -17,17 +24,21 @@ angular.module('lunchalert-portal')
       $scope.card = Card.create(getCurrentVendor(), "", 1);
       $scope.card.campaign = Campaign.create($scope.card.get("vendor"), "", $scope.card);
       $scope.card.schedulerOn = false; /* this also causes the campaign to get set to defaults */
+      loadTemplate();
     }
     var loadTemplate = function() {
       var query = new Parse.Query(CardTemplate);
       query.equalTo("vendor", this.vendor );  /* templates for this vendor  */
 
       query.find().then(function(templates) {
-        $scope.$apply(function() {
+        //$scope.$apply(function() {
           console.log("got "+templates.length+" templates");
           var template = templates[0];
           $scope.card.campaign.template = template;
-        });
+          $scope.card.initTemplate(function() {
+            $scope.$apply();
+          });
+        //});
       });
     }
     /* save the card & campaign parse objects */
@@ -58,11 +69,18 @@ angular.module('lunchalert-portal')
             $location.path('/portal/offers');
           });
         });
-
       });
-      
-      
     }
+
+
+    $scope.fromDateChange = function() {
+      console.log("fromDate change");
+      $scope.card.schedulerOn = true;
+    }
+    $scope.toDateChange = function() {
+      console.log("fromDate change");
+    }
+
     $scope.card = $rootScope.currentCard; //$stateParams.card;
 
     if ($scope.card == null) {
