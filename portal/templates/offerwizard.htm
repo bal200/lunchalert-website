@@ -64,7 +64,15 @@
     </div>
     <form class="ui form">
       <div class="field">
-        [INSERT IMAGE FILE FIELD]
+        <input name="mypic" type="file" ng-model="data.pic" ng-change="base64Change()" 
+               placeholder="" maxsize="5000" 
+               accept="image/*" do-not-parse-if-oversize base-sixty-four-input >
+                  
+      </div>
+      <div ng-if="card.campaign.picture" class="field text-center">
+        <img src="{{card.campaign.picture}}" style="margin:auto; width:40%" alt="">
+        <!-- <img ng-show="card.templateVariables[4].value.filename" width="100%" src="data:{{card.templateVariables[4].value.filetype + ';base64,' + card.templateVariables[4].value.base64}}" /> -->
+
       </div>
     </form>
   </div>
@@ -75,8 +83,7 @@
     </div>
     <form class="ui form">
       <div class="field"> 
-        <cardpreview  card="card" html="card.html" 
-                     mywidth="360" myheight="280">
+        <cardpreview card="card" html="card.html" mywidth="360" myheight="280">
         </cardpreview> 
       </div>
     </form>
@@ -105,7 +112,8 @@
     </div>
     <form class="ui form">
       <div class="field">
-        [SHOW CARD PREVIEW AND READ ONLY VERSION OF ALL CARD FIELDS]
+          <cardpreview card="card" html="card.html" mywidth="360" myheight="280">
+          </cardpreview> 
       </div>
     </form>
   </div>

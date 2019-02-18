@@ -1,7 +1,8 @@
 angular.module('lunchalert-portal', [
     'ngRoute' ,
     'pageCtrl',
-    'uiGmapgoogle-maps'
+    'uiGmapgoogle-maps',
+    'naif.base64'
   ])
 
 .value('ParseConfiguration', {

@@ -110,6 +110,7 @@ function($scope, $location, $rootScope) {
    * Move the template variables input boxes to the parse object, then call compile
    */
   $scope.applyTemplateVariables = function(card) {
+    console.log("apply");
     card.campaign.set('templateVariables', copyTemplateVars(card.templateVariables) );
     // FIXME decide what we're doing about the picture variable vs image object data
     // Generate the HTML card from template markup

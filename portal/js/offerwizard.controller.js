@@ -5,8 +5,10 @@ angular.module('lunchalert-portal')
 
     $scope.card = null;
     $scope.page = 1;
+    $scope.data = {pic:{}};
 
     $scope.pageNext = function() {
+      //console.log($scope.picture);
       if ($scope.page <= 5) $scope.page++;
       if ($scope.page==4) {
         $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
@@ -72,6 +74,17 @@ angular.module('lunchalert-portal')
       });
     }
 
+    $scope.base64Change = function() {
+      console.log("base64Change() "+$scope.data.pic.filetype);
+      //$scope.card.campaign.picture = $scope.picture;
+      $scope.card.campaign.picture = 'data:' + $scope.data.pic.filetype + ';base64,' + $scope.data.pic.base64;
+
+      $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
+        $scope.$apply(function() {
+          $scope.card.html = html;
+        });
+      });
+    }
 
     $scope.fromDateChange = function() {
       console.log("fromDate change");
@@ -82,6 +95,7 @@ angular.module('lunchalert-portal')
     }
 
     $scope.card = $rootScope.currentCard; //$stateParams.card;
+    //if ($scope.card) $scope.picture = $scope.card.campaign.picture; // hack as getters & settings not working with base64 input
 
     if ($scope.card == null) {
       newCard();
