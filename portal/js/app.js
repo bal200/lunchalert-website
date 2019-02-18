@@ -70,6 +70,7 @@ angular.module('lunchalert-portal', [
 			if (currentUser) {
 				$rootScope.user = currentUser;
         $rootScope.isLoggedIn = true;
+        $rootScope.business = currentUser.get("businessName");
 				//$state.go('app.home');
 			}
 });
