@@ -64,12 +64,12 @@ angular.module('lunchalert-portal', [
       Parse.initialize(ParseConfiguration.applicationId, ParseConfiguration.javascriptKey);
       Parse.serverURL = ParseConfiguration.serverURL;
       var currentUser = Parse.User.current();
-			$rootScope.user = null;
+      $rootScope.user = null;
 			$rootScope.isLoggedIn = false;
 
 			if (currentUser) {
 				$rootScope.user = currentUser;
-				$rootScope.isLoggedIn = true;
+        $rootScope.isLoggedIn = true;
 				//$state.go('app.home');
 			}
 });
