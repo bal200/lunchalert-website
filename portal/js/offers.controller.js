@@ -59,6 +59,5 @@ angular.module('lunchalert-portal')
     }
     if ($rootScope.cards) { $scope.cards = $rootScope.cards; }
     else { $scope.loadCards(); }
-
   }
 ]);
