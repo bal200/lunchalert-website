@@ -27,6 +27,7 @@ angular.module('lunchalert-portal')
             $rootScope.cards = $scope.cards = res.cards;
             //$scope.vendors.loading=false;
             initTemplateVariables($scope.cards);
+            console.log($scope.cards);
           });
         },
         error: function(err) { console.log("Error retreiving cards and campaigns ("+err.code+") "+err.message); $scope.vendors.loading=false; }
