@@ -31,7 +31,7 @@ angular.module('lunchalert-portal')
     var loadTemplate = function() {
       var query = new Parse.Query(CardTemplate);
       query.equalTo("vendor", this.vendor );  /* templates for this vendor  */
-
+      /** @TODO: correctly select the best Template  ****/
       query.find().then(function(templates) {
         //$scope.$apply(function() {
           console.log("got "+templates.length+" templates");
