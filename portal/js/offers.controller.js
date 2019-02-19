@@ -14,7 +14,6 @@ angular.module('lunchalert-portal')
 
     $scope.editCard = function(card) {
       // TODO Bal: This needs to pass the specific card entry to the edit wizard form
-      //$scope.currentCard = card;
       $rootScope.currentCard = card;
       $location.path('/portal/offer/edit');
       //$state.go('/portal/offer/edit' /*, { card: card }*/ );
