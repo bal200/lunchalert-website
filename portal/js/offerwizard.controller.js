@@ -69,6 +69,9 @@ angular.module('lunchalert-portal')
         $scope.saveCard(function() {
           $scope.$apply(function() {
             //cardForm.$setPristine();
+            if ( !$rootScope.currentCard ) {
+              $rootScope.cards.push($scope.card);
+            }
             $location.path('/portal/offers');
           });
         });
