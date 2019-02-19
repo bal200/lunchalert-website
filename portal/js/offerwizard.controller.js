@@ -95,8 +95,12 @@ angular.module('lunchalert-portal')
       console.log("fromDate change");
     }
 
-    $scope.cancelEdit = function(card) {
-      $rootScope.currentCard = card;
+    $scope.cancelEdit = function() {
+      $location.path('/portal/offers');
+    }
+
+    $scope.deleteOffer = function(card) {
+      // TODO confirm dialog and delete offer from DB
       $location.path('/portal/offers');
     }
 

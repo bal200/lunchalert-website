@@ -121,9 +121,13 @@
   <div class="ui bottom attached segment">
   </div>
 
-  <button ng-if="page!=6" class="ui left labeled floated icon negative button" ng-click="cancelEdit()">
+  <button ng-if="page!=6" class="ui left labeled floated icon secondary button" ng-click="cancelEdit()">
       <i class="window close outline icon"></i>
       Cancel
+  </button>
+  <button class="ui left labeled floated icon negative button" ng-click="deleteOffer()">
+      <i class="trash icon"></i>
+      Delete
     </button>
   <button ng-if="page==6" class="ui right labeled right floated icon positive button" ng-click="finished()">
       <i class="right check icon"></i>
@@ -133,7 +137,7 @@
     <i class="right arrow icon"></i>
     Next
   </button>
-  <button class="ui right floated labeled icon primary button" ng-click="pageBack()">
+  <button ng-if="page!=1" class="ui right floated labeled icon primary button" ng-click="pageBack()">
     <i class="left arrow icon"></i>
     Back
   </button>
