@@ -60,7 +60,6 @@ angular.module('lunchalert-portal', [
 ])
 
 .run(function ($rootScope, ParseConfiguration) {
-
       Parse.initialize(ParseConfiguration.applicationId, ParseConfiguration.javascriptKey);
       Parse.serverURL = ParseConfiguration.serverURL;
       var currentUser = Parse.User.current();

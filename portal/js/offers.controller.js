@@ -38,7 +38,8 @@ angular.module('lunchalert-portal')
         for (var m=0; m<cards.length; m++) {
           if (campaigns[n].get('card').id == cards[m].id) {
             cards[m].campaign = campaigns[n];
-    } } } }
+    } } }
+    }
 
     function initTemplateVariables(cards) { for (var n=0; n<cards.length; n++) { initTemplateVariable( cards[n] ) } }
     function initTemplateVariable(card) {
