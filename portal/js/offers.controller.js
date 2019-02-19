@@ -4,7 +4,6 @@ angular.module('lunchalert-portal')
   function($scope, $rootScope, $location) {
 
     $scope.cards = [];
-    //$scope.currentCard = null;
     $rootScope.currentCard = null;
 
     $scope.addCard = function() {
@@ -13,10 +12,8 @@ angular.module('lunchalert-portal')
     }
 
     $scope.editCard = function(card) {
-      // TODO Bal: This needs to pass the specific card entry to the edit wizard form
       $rootScope.currentCard = card;
       $location.path('/portal/offer/edit');
-      //$state.go('/portal/offer/edit' /*, { card: card }*/ );
     }
 
     $scope.loadCards = function () {
@@ -62,6 +59,5 @@ angular.module('lunchalert-portal')
     }
     if ($rootScope.cards) { $scope.cards = $rootScope.cards; }
     else { $scope.loadCards(); }
-
   }
 ]);

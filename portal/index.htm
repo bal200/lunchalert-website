@@ -99,6 +99,7 @@
   <a href="#/portal/offers" class="item">Offers</a>
   <a href="#/portal/vans" class="item">Vans</a>
   <div class="right menu">
+    <div class="ui item" ng-if="isLoggedIn=true"><i class="user outline icon"></i>Logged in as {{business}}</div>
     <a class="ui item" ng-click="logout()">
       <i class="sign-out icon"></i>Logout
     </a>
@@ -115,7 +116,6 @@
         </div>
         <div class="five wide column">
           <img src="images/app_store.png">
-
         </div>
 
         <div class="six wide column">

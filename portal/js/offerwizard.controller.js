@@ -62,6 +62,7 @@ angular.module('lunchalert-portal')
         }, error: function(e) {console.log("Save Card error ("+e.code+") "+e.message);}
       });
     };
+
     $scope.finished = function() {
       $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
         $scope.card.html = html;
@@ -92,6 +93,15 @@ angular.module('lunchalert-portal')
     }
     $scope.toDateChange = function() {
       console.log("fromDate change");
+    }
+
+    $scope.cancelEdit = function() {
+      $location.path('/portal/offers');
+    }
+
+    $scope.deleteOffer = function(card) {
+      // TODO confirm dialog and delete offer from DB
+      $location.path('/portal/offers');
     }
 
     $scope.card = $rootScope.currentCard; //$stateParams.card;
