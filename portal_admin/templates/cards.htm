@@ -91,7 +91,7 @@
                   <label>{{varb.name}}</label>
                   {{varb.value.filesize > 0 ? 'Using ' + varb.value.filename + ' or select new image ' : ''}}
                   <input name="imagefile" ng-if="varb.type=='file'" type="{{varb.type}}" 
-                      ng-model="varb.value" ng-change="applyTemplateVariables(card)" placeholder="" 
+                      ng-model="varb.picMeta" ng-change="applyPicture(card,varb)" placeholder="" 
                       maxsize="5000" accept="image/*" do-not-parse-if-oversize base-sixty-four-input>
                   <span ng-show="form.imagefile.$error.maxsize">Files must not exceed 5000 KB</span> <!-- TODO define max file size-->
                   <input ng-if="varb.type!='file'" type="{{varb.type}}" ng-model="varb.value" 
