@@ -125,7 +125,7 @@
       <i class="window close outline icon"></i>
       Cancel
   </button>
-  <button class="ui left labeled floated icon negative button" ng-click="deleteOffer()">
+  <button class="ui left labeled floated icon negative button" ng-click="deleteConfirm()">
       <i class="trash icon"></i>
       Delete
     </button>
@@ -141,4 +141,24 @@
     <i class="left arrow icon"></i>
     Back
   </button>
+</div>
+
+<div class="ui basic modal">
+  <div class="ui icon header">
+    <i class="archive icon"></i>
+    Archive Old Messages
+  </div>
+  <div class="content">
+    <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
+  </div>
+  <div class="actions">
+    <div class="ui red basic cancel inverted button" ng-click="cancelEdit()">
+      <i class="remove icon"></i>
+      No
+    </div>
+    <div class="ui green ok inverted button" ng-click="deleteOffer()">
+      <i class="checkmark icon"></i>
+      Yes
+    </div>
+  </div>
 </div>

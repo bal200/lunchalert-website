@@ -102,8 +102,13 @@ angular.module('lunchalert-portal')
       $location.path('/portal/offers');
     }
 
-    $scope.deleteOffer = function(card) {
-      // TODO confirm dialog and delete offer from DB
+    $scope.deleteConfirm = function() {
+      $('.ui.basic.modal')
+        .modal('show')
+      ;
+    }
+    $scope.deleteOffer = function() {
+      // TODO delete offer from DB
       $location.path('/portal/offers');
     }
 
