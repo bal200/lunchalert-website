@@ -132,6 +132,8 @@ angular.module('lunchalert-portal')
       $location.path('/portal/offers');
     }
 
+    // TODO should we go back to offers list page if $rootScope.cards null?
+
     $scope.card = $rootScope.currentCard; //$stateParams.card;
     //if ($scope.card) $scope.picture = $scope.card.campaign.picture; // hack as getters & settings not working with base64 input
 

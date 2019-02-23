@@ -37,85 +37,131 @@
 
 
   <div class="ui attached very segment wizard" ng-if="page==1">
-    <div class="ui padded">
+    <div class="ui text">
       <p>Think of a great catchy line about your offer.</p>
-    </div>
+    
     <form class="ui form">
       <div class="field">
-        <input type="text" name="title" ng-model="card.title2" placeholder="Title">
+        <input type="text" name="title" ng-model="card.title2" placeholder="What have you got for the customers?">
       </div>
     </form>
+    </div>
+
+    <div class="ui icon message">
+      <i class="question icon"></i>
+      <div class="content">
+        <div class="header">
+          Need some inspiration?
+        </div>
+        <ul>
+          <li>30 Big BUNS for your mouths</li>
+          <li>Wait until you get Marks best bits IN YOUR MOUTH</li>
+        </ul>
+      </div>
+    </div>
+
   </div>
 
   <div class="ui attached very segment wizard" ng-if="page==2">
-    <div class="ui padded">
+    <div class="ui text">
       <p>Let people know the conditions of your deal and the price.</p>
+    
+      <form class="ui form">
+        <div class="field">
+          <textarea name="details" ng-model="card.campaign.message" placeholder="Offer Details"/>
+        </div>
+      </form>
     </div>
-    <form class="ui form">
-      <div class="field">
-        <textarea name="details" ng-model="card.campaign.message" placeholder="Offer Details"/>
+
+    <div class="ui icon message">
+      <i class="question icon"></i>
+      <div class="content">
+        <div class="header">
+          Need some inspiration?
+        </div>
+        <ul>
+          <li>SMASH our Facebook LIKE button whilst in the queue for a free Coke can.</li>
+          <li>Buy any sandwich and pay just 100% of the usual price.</li>
+        </ul>
       </div>
-    </form>
+    </div>
   </div>
   
   <div class="ui attached very segment wizard" ng-if="page==3">
-    <div class="ui padded">
+    <div class="ui text">
       <p>Excite your customers with an eye catching photo of your product offer.</p>
-    </div>
+    
     <form class="ui form">
       <div class="field">
         <input name="mypic" type="file" ng-model="data.pic" ng-change="base64Change()" 
                placeholder="" maxsize="5000" 
                accept="image/*" do-not-parse-if-oversize base-sixty-four-input >
-                  
       </div>
       <div ng-if="card.campaign.picture" class="field text-center">
-        <img src="{{card.campaign.picture}}" style="margin:auto; width:40%" alt="">
+        <img src="{{card.campaign.picture}}" style="margin:auto; width:80%" alt="">
         <!-- <img ng-show="card.templateVariables[4].value.filename" width="100%" src="data:{{card.templateVariables[4].value.filetype + ';base64,' + card.templateVariables[4].value.base64}}" /> -->
 
       </div>
     </form>
+    </div>
+
+    <div class="ui icon message">
+        <i class="camera retro icon"></i>
+        <div class="content">
+          <div class="header">
+            What makes a great photo?
+          </div>
+          <ul>
+            <li>Exotic looking product photos</li>
+            <li>Bright eye catching zebras</li>
+          </ul>
+        </div>
+      </div>
+
   </div>
 
   <div class="ui attached very segment wizard" ng-if="page==4">
     <div class="ui padded">
-      <p>We'll send out an offer card to your customers that looks like this. Like what you see?</p>
+      <p>We'll send out an offer card to your customers using the LunchAlert mobile app. Like what you see?</p>
+    
+      <cardpreview card="card" html="card.html" mywidth="360" myheight="280">
+      </cardpreview>
     </div>
-    <form class="ui form">
-      <div class="field"> 
-        <cardpreview card="card" html="card.html" mywidth="360" myheight="280">
-        </cardpreview> 
-      </div>
-    </form>
   </div>
 
   <div class="ui attached very segment wizard" ng-if="page==5">
-    <div class="ui padded">
+    <div class="ui text">
       <p>What date should your offer be sent out to customer?</p>
-      <p>We send out a notification to everyones phones at 8am on the selected date.</p>
+      <p>We send out a notification to everyones phones at 8AM on
+        the selected date so that they're prepared for your arrival that morning.</p>
+    
+      <form class="ui form">
+        <div class="ui left icon input">
+          <ng-datepicker ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date From"></ng-datepicker>
+          <i class="bell outline icon"></i>
+        </div>
+        <p>Your offer card will remain visible in the LunchAlert app until the specified end date.</p>
+        <div class="field">
+            <i class="bell slash outline icon"></i>
+            <ng-datepicker class="ui input fluid" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date To">
+            </ng-datepicker>
+        </div>
+      </form>
     </div>
-    <form class="ui form">
-      <div class="field">
-          <ng-datepicker class="ui input " ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date From">
-          </ng-datepicker>
-      </div>
-      <div class="field">
-          <ng-datepicker class="ui input fluid" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date To">
-          </ng-datepicker>
-      </div>
-    </form>
   </div>
 
   <div class="ui attached very segment wizard" ng-if="page==6">
-    <div class="ui padded">
-      <p>Do you like what you see?</p>
-    </div>
-    <form class="ui form">
-      <div class="field">
-          <cardpreview card="card" html="card.html" mywidth="360" myheight="280">
-          </cardpreview> 
+      <div class="ui two column doubling stackable grid container">
+        <div class="column">
+          <h2>Happy?</h2>
+          <p>The offer will be published on {{card.date}}</p>
+          <p>A notification will be sent at 8AM on {{card.date}}</p>
+          <p>The offer will remain published until {{card.date}}</p>
+        </div>
+        <div class="column">
+            <cardpreview card="card" html="card.html" mywidth="320" myheight="310"></cardpreview> 
+        </div>
       </div>
-    </form>
   </div>
 
   <div class="ui bottom attached segment">
