@@ -109,6 +109,24 @@ angular.module('lunchalert-portal')
     }
     $scope.deleteOffer = function() {
       // TODO delete offer from DB
+      var card = $scope.card;
+      var t = card.get("title");
+      console.log("Deleted Card "+t );
+      var campaign = card.campaign;
+
+      card.destroy({
+        success: function(c) {
+          if (campaign) {
+            campaign.destroy({
+              success: function(ca) {
+                console.log("Deleted campaign");
+              },
+              error: function(e) {console.log("Delete Campaign error ("+e.code+") "+e.message);}
+            });
+          }
+        }, error: function(e) {console.log("Delete Card error ("+e.code+") "+e.message);}
+      });
+      
       $location.path('/portal/offers');
     }
 
