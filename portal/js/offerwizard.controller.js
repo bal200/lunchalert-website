@@ -116,7 +116,7 @@ angular.module('lunchalert-portal')
     $scope.deleteOffer = function() {
       var campaign = $scope.card.campaign;
 
-      card.destroy({
+      $scope.card.destroy({
         success: function(c) {
           if (campaign) {
             campaign.destroy({

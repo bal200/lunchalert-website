@@ -136,15 +136,12 @@
         the selected date so that they're prepared for your arrival that morning.</p>
     
       <form class="ui form">
-        <div class="ui left icon input">
-          <ng-datepicker ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date From"></ng-datepicker>
-          <i class="bell outline icon"></i>
+        <div class="field">
+          <ng-datepicker class="ui input" ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date to start"></ng-datepicker>
         </div>
         <p>Your offer card will remain visible in the LunchAlert app until the specified end date.</p>
         <div class="field">
-            <i class="bell slash outline icon"></i>
-            <ng-datepicker class="ui input fluid" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date To">
-            </ng-datepicker>
+            <ng-datepicker class="ui input fluid" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date to stop"></ng-datepicker>
         </div>
       </form>
     </div>
@@ -154,9 +151,9 @@
       <div class="ui two column doubling stackable grid container">
         <div class="column">
           <h2>Happy?</h2>
-          <p>The offer will be published on {{card.date}}</p>
-          <p>A notification will be sent at 8AM on {{card.date}}</p>
-          <p>The offer will remain published until {{card.date}}</p>
+          <p>The offer will be published on {{card.campaign.startDate | date: 'dd/M/yy'}}</p>
+          <p>A notification will be sent at 8AM on {{card.campaign.startDate | date: 'dd/M/yy'}}</p>
+          <p>The offer will remain published until {{card.campaign.endDate | date: 'dd/M/yy'}}</p>
         </div>
         <div class="column">
             <cardpreview card="card" html="card.html" mywidth="320" myheight="310"></cardpreview> 
