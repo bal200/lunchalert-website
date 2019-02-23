@@ -107,12 +107,14 @@ angular.module('lunchalert-portal')
         .modal('show')
       ;
     }
+
+    /*
+     * Delete a campaign and card
+     *
+     * * TODO should this live in a lib/classes/* prototype instead?
+     */
     $scope.deleteOffer = function() {
-      // TODO delete offer from DB
-      var card = $scope.card;
-      var t = card.get("title");
-      console.log("Deleted Card "+t );
-      var campaign = card.campaign;
+      var campaign = $scope.card.campaign;
 
       card.destroy({
         success: function(c) {
