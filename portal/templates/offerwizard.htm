@@ -83,7 +83,7 @@
     </div>
     <form class="ui form">
       <div class="field"> 
-        <cardpreview card="card" html="card.html" mywidth="360" myheight="280">
+        <cardpreview card="card" html="card.html" mywidth="300" myheight="280">
         </cardpreview> 
       </div>
     </form>
@@ -91,17 +91,32 @@
 
   <div class="ui attached very segment wizard" ng-if="page==5">
     <div class="ui padded">
-      <p>What date should your offer be sent out to customer?</p>
-      <p>We send out a notification to everyones phones at 8am on the selected date.</p>
+      <p>What date should your offer be sent out to customers?</p>
+      <p>We send out a notification to everyones phones at 8am on the start date,
+        and tapping this will show the extra information in the card.
+      </p>
+      <p></p>
     </div>
     <form class="ui form">
-      <div class="field">
-          <ng-datepicker class="ui input " ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date From">
-          </ng-datepicker>
+      <div class="fields">
+        <div class="field">
+          <label>Start Date</label>
+          <ng-datepicker class="ui input " ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date From"></ng-datepicker>
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <div style="padding:8px;">{{card.campaign.startTime}}</div>
+        </div>
       </div>
-      <div class="field">
-          <ng-datepicker class="ui input fluid" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date To">
-          </ng-datepicker>
+      <div class="fields">
+        <div class="field">
+          <label>Finish Date</label>
+          <ng-datepicker class="ui input fluid" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date To"></ng-datepicker>
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <div style="padding:8px;">{{card.campaign.endTime}}</div>
+        </div>
       </div>
     </form>
   </div>
@@ -111,9 +126,14 @@
       <p>Do you like what you see?</p>
     </div>
     <form class="ui form">
-      <div class="field">
-          <cardpreview card="card" html="card.html" mywidth="360" myheight="280">
-          </cardpreview> 
+      <div class="fields">
+        <div class="field">
+          <div class="div">Send out notifications, and start the offer: {{card.campaign.startDate}} at {{card.campaihn.startTime}}</div>
+        </div>
+        <div class="field">
+            <cardpreview card="card" html="card.html" mywidth="300" myheight="280">
+            </cardpreview> 
+        </div>
       </div>
     </form>
   </div>
