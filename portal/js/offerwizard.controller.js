@@ -115,8 +115,8 @@ angular.module('lunchalert-portal')
      */
     $scope.deleteOffer = function() {
       var campaign = $scope.card.campaign;
-      console.log('delete:');console.log(campaign);
-      console.log($rootScope.cards);
+  
+
 
       $scope.card.destroy({
         success: function(c) {
@@ -130,9 +130,12 @@ angular.module('lunchalert-portal')
           }
         }, error: function(e) {console.log("Delete Card error ("+e.code+") "+e.message);}
       });
-      
-      $scope.loadCards();
 
+      // Remove card from array to force display to update iommediately
+      $rootScope.cards = $rootScope.cards.filter(function( card ) {
+        return card.id !== $scope.card.id;
+      });
+      
       $('.ui.basic.modal')
         .modal('hide')
       ;
