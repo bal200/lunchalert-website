@@ -30,7 +30,11 @@ angular.module('lunchalert-portal')
             console.log($scope.cards);
           });
         },
-        error: function(err) { console.log("Error retreiving cards and campaigns ("+err.code+") "+err.message); $scope.vendors.loading=false; }
+        error: function(err) {
+          console.log("Error retreiving cards and campaigns ("+err.code+") "+err.message);
+          // TODO generates an error: offers.controller.js:33 Uncaught TypeError: Cannot set property 'loading' of undefined
+          $scope.vendors.loading=false;
+        }
       });
     };
 
