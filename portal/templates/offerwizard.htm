@@ -135,15 +135,29 @@
       <p>We send out a notification to everyones phones at 8AM on
         the selected date so that they're prepared for your arrival that morning.</p>
     
-      <form class="ui form">
-        <div class="field">
-          <ng-datepicker class="ui input" ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date to start"></ng-datepicker>
-        </div>
-        <p>Your offer card will remain visible in the LunchAlert app until the specified end date.</p>
-        <div class="field">
-          <ng-datepicker class="ui input" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date to stop"></ng-datepicker>
-        </div>
-      </form>
+        <form class="ui form">
+          <div class="fields">
+            <div class="field">
+              <label>Start Date</label>
+              <ng-datepicker class="ui input " ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date From"></ng-datepicker>
+            </div>
+            <div class="field">
+              <label>&nbsp;</label>
+              <div style="padding:8px;">{{card.campaign.startTime}}</div>
+            </div>
+          </div>
+          <div class="fields">
+            <div class="field">
+              <label>Finish Date</label>
+              <ng-datepicker class="ui input fluid" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date To"></ng-datepicker>
+            </div>
+            <div class="field">
+              <label>&nbsp;</label>
+              <div style="padding:8px;">{{card.campaign.endTime}}</div>
+            </div>
+          </div>
+        </form>
+      
     </div>
   </div>
 
