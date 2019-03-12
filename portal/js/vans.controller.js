@@ -31,6 +31,7 @@ function( $scope, $rootScope, $location, $filter ) {
     success:function(res) {
       $scope.$apply(function () {
         var flag = '';
+        var icon = '';
         $scope.activedrivers = 0;
         for (var i = 0; i < res.length; i++) {
           console.log(res[i]);
@@ -42,11 +43,14 @@ function( $scope, $rootScope, $location, $filter ) {
           );
           if(f < 2) {
             flag = 'positive';
+            icon = 'smile outline';
             $scope.activedrivers++;
           }else if(f <= 3) {
             flag = 'warning';
+            icon = 'meh outline';
           }else {
             flag = 'negative';
+            icon = 'frown outline';
           }
 
           van = {
@@ -58,6 +62,7 @@ function( $scope, $rootScope, $location, $filter ) {
               vendor: res[i].get("vendor"),
               active: res[i].get("updatedAt"),
               flag: flag,
+              icon: icon
           };
           $scope.vanList.push( van );
         }

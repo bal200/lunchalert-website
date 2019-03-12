@@ -102,10 +102,37 @@ angular.module('lunchalert-portal')
       $location.path('/portal/offers');
     }
 
-    $scope.deleteOffer = function(card) {
-      // TODO confirm dialog and delete offer from DB
+    $scope.deleteConfirm = function() {
+      $('.ui.basic.modal')
+        .modal('show')
+      ;
+    }
+
+    /*
+     * Delete a campaign and card
+     *
+     * * TODO should this live in a lib/classes/* prototype instead?
+     */
+    $scope.deleteOffer = function() {
+      var campaign = $scope.card.campaign;
+
+      $scope.card.destroy({
+        success: function(c) {
+          if (campaign) {
+            campaign.destroy({
+              success: function(ca) {
+                console.log("Deleted campaign");
+              },
+              error: function(e) {console.log("Delete Campaign error ("+e.code+") "+e.message);}
+            });
+          }
+        }, error: function(e) {console.log("Delete Card error ("+e.code+") "+e.message);}
+      });
+      
       $location.path('/portal/offers');
     }
+
+    // TODO should we go back to offers list page if $rootScope.cards null?
 
     $scope.card = $rootScope.currentCard; //$stateParams.card;
     //if ($scope.card) $scope.picture = $scope.card.campaign.picture; // hack as getters & settings not working with base64 input
