@@ -48,11 +48,11 @@ angular.module('lunchalert-portal')
       var card = $scope.card;
       card.save({
         success: function(c) {
-          console.log("Saved card "+card.get("title") );  
+          //console.log("Saved card "+card.get("title") );  
           if (card.campaign) {
             card.campaign.save({
               success: function(campaign) {
-                console.log("Saved campaign "+card.get("title") );    
+                //console.log("Saved campaign "+card.get("title") );    
                 callback();
               }, error: function(e) {console.log("Save Campaign error ("+e.code+") "+e.message);}
             });
@@ -79,7 +79,7 @@ angular.module('lunchalert-portal')
     }
 
     $scope.base64Change = function() {
-      console.log("base64Change() "+$scope.data.pic.filetype);
+      //console.log("base64Change() "+$scope.data.pic.filetype);
       //$scope.card.campaign.picture = $scope.picture;
       $scope.card.campaign.picture = 'data:' + $scope.data.pic.filetype + ';base64,' + $scope.data.pic.base64;
 
@@ -115,20 +115,29 @@ angular.module('lunchalert-portal')
      */
     $scope.deleteOffer = function() {
       var campaign = $scope.card.campaign;
-
+  
       $scope.card.destroy({
         success: function(c) {
           if (campaign) {
             campaign.destroy({
               success: function(ca) {
-                console.log("Deleted campaign");
+                //console.log("Deleted campaign");
               },
               error: function(e) {console.log("Delete Campaign error ("+e.code+") "+e.message);}
             });
           }
         }, error: function(e) {console.log("Delete Card error ("+e.code+") "+e.message);}
       });
+
+      // Remove card from array to force display to update iommediately
+      $rootScope.cards = $rootScope.cards.filter(function( card ) {
+        return card.id !== $scope.card.id;
+      });
       
+      $('.ui.basic.modal')
+        .modal('hide')
+      ;
+
       $location.path('/portal/offers');
     }
 
@@ -146,6 +155,5 @@ angular.module('lunchalert-portal')
     function getCurrentVendor() {
       return $scope.swmId ? newParseUser($scope.swmId) : Parse.User.current();
     }
-
   }
 ]);
