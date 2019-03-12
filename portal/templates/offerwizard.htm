@@ -148,17 +148,20 @@
   </div>
 
   <div class="ui attached very segment wizard" ng-if="page==6">
-      <div class="ui two column doubling stackable grid container">
-        <div class="column">
+    <form class="ui form">
+      <div class="fields">
+        <div class="field">
           <h2>Happy?</h2>
           <p>The offer will be published on {{card.campaign.startDate | date: 'dd/M/yy'}}</p>
-          <p>A notification will be sent at 8AM on {{card.campaign.startDate | date: 'dd/M/yy'}}</p>
-          <p>The offer will remain published until {{card.campaign.endDate | date: 'dd/M/yy'}}</p>
+          <p>A notification will be sent at {{card.campaign.startTime}} on {{card.campaign.startDate | date: 'dd/M/yy'}}</p>
+          <p>The offer will remain published until the end of {{card.campaign.endDate | date: 'dd/M/yy'}}</p>
         </div>
-        <div class="column">
-            <cardpreview card="card" html="card.html" mywidth="320" myheight="310"></cardpreview> 
+        <div class="field">
+          <cardpreview card="card" html="card.html" mywidth="300" myheight="400"></cardpreview> 
         </div>
       </div>
+    </form>
+
   </div>
 
   <div class="ui bottom attached segment">
