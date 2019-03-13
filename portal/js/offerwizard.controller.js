@@ -92,10 +92,34 @@ angular.module('lunchalert-portal')
 
     $scope.fromDateChange = function() {
       console.log("fromDate change");
-      $scope.card.schedulerOn = true;
+      $scope.dateError="";
+      if ($scope.card.campaign.endDate)  {
+        if ($scope.card.campaign.startDate > $scope.card.campaign.endDate) {
+          $scope.card.campaign.startDate = $scope.card.campaign.endDate;
+          $scope.dateError = "Start date must be before the finish date";
+        }
+        enableSchedulerAndNoti();
+      }
     }
     $scope.toDateChange = function() {
-      console.log("fromDate change");
+      console.log("toDate change");
+      $scope.dateError="";
+      if ($scope.card.campaign.startDate) {
+        if ($scope.card.campaign.startDate > $scope.card.campaign.endDate) {
+          $scope.card.campaign.endDate = $scope.card.campaign.startDate;
+          $scope.dateError = "Finish date must be after the start date";
+        }
+        enableSchedulerAndNoti();
+      }
+    }
+
+    var enableSchedulerAndNoti = function() {
+      $scope.card.campaign.notiOn = true;
+      if (!$scope.card.campaign.notiText) {
+        var v = getCurrentVendor();
+        $scope.card.campaign.notiText = "New offer today"; // + v
+      }
+      $scope.card.schedulerOn = true;
     }
 
     $scope.cancelEdit = function() {
