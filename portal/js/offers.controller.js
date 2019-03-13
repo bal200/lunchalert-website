@@ -5,6 +5,7 @@ angular.module('lunchalert-portal')
 
     $scope.cards = [];
     $rootScope.currentCard = null;
+    $scope.loading=false;
 
     $scope.addCard = function() {
       $rootScope.currentCard = null;
@@ -17,7 +18,7 @@ angular.module('lunchalert-portal')
     }
 
     $scope.loadCards = function () {
-      //$scope.vendors.loading=true;
+      $scope.loading=true;
       Parse.Cloud.run("getCardsAndCampaigns", {
           userId: ($scope.swmId ? $scope.swmId : Parse.User.current().id)
       },{
@@ -27,13 +28,14 @@ angular.module('lunchalert-portal')
             $rootScope.cards = $scope.cards = res.cards;
             //$scope.vendors.loading=false;
             initTemplateVariables($scope.cards);
+            $scope.loading=false;
             console.log($scope.cards);
           });
         },
         error: function(err) {
           console.log("Error retreiving cards and campaigns ("+err.code+") "+err.message);
           // TODO generates an error: offers.controller.js:33 Uncaught TypeError: Cannot set property 'loading' of undefined
-          $scope.vendors.loading=false;
+          $scope.loading=false;
         }
       });
     };

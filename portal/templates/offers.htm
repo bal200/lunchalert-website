@@ -8,7 +8,9 @@
     <i class="file  icon"></i>Add a new offer
   </button>
   <div class="ui divided items">
-
+    <div style="text-align: center">
+      <div ng-if="loading" class="ui active small inline loader"></div>
+    </div>
     <div class="item" ng-repeat="card in cards | orderBy:'order' ">
         <div class="image">
           <img src="{{card.campaign.picture}}">
