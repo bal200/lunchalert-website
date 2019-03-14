@@ -8,7 +8,6 @@ angular.module('lunchalert-portal')
     $scope.data = {pic:{}};
 
     $scope.pageNext = function() {
-      //console.log($scope.picture);
       if ($scope.page <= 5) $scope.page++;
       if ($scope.page==4) {
         $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
@@ -35,9 +34,7 @@ angular.module('lunchalert-portal')
       var query = Parse.Query.or(query1, query2);
       query.equalTo("default", true ); 
       query.find().then(function(templates) {
-          //console.log("got "+templates.length+" templates");
           var template = pickTheDefaultTemplate( templates );
-          console.log("chose template "+template.get('title') );
           $scope.card.campaign.template = template;
           $scope.card.initTemplate(function() {
             $scope.$apply();
@@ -58,11 +55,9 @@ angular.module('lunchalert-portal')
       var card = $scope.card;
       card.save({
         success: function(c) {
-          //console.log("Saved card "+card.get("title") );  
           if (card.campaign) {
             card.campaign.save({
               success: function(campaign) {
-                //console.log("Saved campaign "+card.get("title") );    
                 callback();
               }, error: function(e) {console.log("Save Campaign error ("+e.code+") "+e.message);}
             });
@@ -89,7 +84,6 @@ angular.module('lunchalert-portal')
     }
 
     $scope.base64Change = function() {
-      //console.log("base64Change() "+$scope.data.pic.filetype);
       //$scope.card.campaign.picture = $scope.picture;
       $scope.card.campaign.picture = 'data:' + $scope.data.pic.filetype + ';base64,' + $scope.data.pic.base64;
 
@@ -101,7 +95,6 @@ angular.module('lunchalert-portal')
     }
 
     $scope.fromDateChange = function() {
-      console.log("fromDate change");
       $scope.dateError="";
       if ($scope.card.campaign.endDate)  {
         if ($scope.card.campaign.startDate > $scope.card.campaign.endDate) {
@@ -112,7 +105,6 @@ angular.module('lunchalert-portal')
       }
     }
     $scope.toDateChange = function() {
-      console.log("toDate change");
       $scope.dateError="";
       if ($scope.card.campaign.startDate) {
         if ($scope.card.campaign.startDate > $scope.card.campaign.endDate) {
@@ -156,7 +148,6 @@ angular.module('lunchalert-portal')
           if (campaign) {
             campaign.destroy({
               success: function(ca) {
-                //console.log("Deleted campaign");
               },
               error: function(e) {console.log("Delete Campaign error ("+e.code+") "+e.message);}
             });
