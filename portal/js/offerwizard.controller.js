@@ -35,7 +35,7 @@ angular.module('lunchalert-portal')
       query.find().then(function(templates) {
         //$scope.$apply(function() {
           console.log("got "+templates.length+" templates");
-          var template = templates[0];
+          var template = pickTheDefaultTemplate( templates );
           $scope.card.campaign.template = template;
           $scope.card.initTemplate(function() {
             $scope.$apply();
@@ -43,6 +43,11 @@ angular.module('lunchalert-portal')
         //});
       });
     }
+    var pickTheDefaultTemplate = function(templates) {
+      /* @TODO: pick the right template */
+      return templates[0];
+    }
+    
     /* save the card & campaign parse objects */
     $scope.saveCard = function( callback ) {
       var card = $scope.card;
@@ -115,10 +120,11 @@ angular.module('lunchalert-portal')
 
     var enableSchedulerAndNoti = function() {
       $scope.card.campaign.notiOn = true;
-      if (!$scope.card.campaign.notiText) {
-        var v = getCurrentVendor();
-        $scope.card.campaign.notiText = "New offer today"; // + v
-      }
+      //if (!$scope.card.campaign.notiText) {
+      var name = getCurrentVendor().get('businessName');
+      //$scope.card.campaign.notiText = "Tap here for "+name+"'s offer";
+      $scope.card.campaign.notiText = "New "+name+" offer today";
+      //}
       $scope.card.schedulerOn = true;
     }
 
