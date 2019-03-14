@@ -26,28 +26,33 @@ angular.module('lunchalert-portal')
       $scope.card = Card.create(getCurrentVendor(), "", 1);
       $scope.card.campaign = Campaign.create($scope.card.get("vendor"), "", $scope.card);
       $scope.card.schedulerOn = false; /* this also causes the campaign to get set to defaults */
-      loadTemplate();
     }
     var loadTemplate = function() {
-      var query = new Parse.Query(CardTemplate);
-      query.equalTo("vendor", this.vendor );  /* templates for this vendor  */
-      /** @TODO: correctly select the best Template  ****/
+      var query1 = new Parse.Query(CardTemplate);
+      var query2 = new Parse.Query(CardTemplate);
+      query1.equalTo("vendor", getCurrentVendor() );  /* templates for this vendor  */
+      query2.equalTo("vendor", null );         /* OR templates for ANY vendor */
+      var query = Parse.Query.or(query1, query2);
+      query.equalTo("default", true ); 
       query.find().then(function(templates) {
-        //$scope.$apply(function() {
-          console.log("got "+templates.length+" templates");
+          //console.log("got "+templates.length+" templates");
           var template = pickTheDefaultTemplate( templates );
+          console.log("chose template "+template.get('title') );
           $scope.card.campaign.template = template;
           $scope.card.initTemplate(function() {
             $scope.$apply();
           });
-        //});
       });
     }
     var pickTheDefaultTemplate = function(templates) {
-      /* @TODO: pick the right template */
-      return templates[0];
+      for (var t of templates) {
+        if (t.get('vendor') && t.get('vendor').id == getCurrentVendor().id ) return t;
+      }
+      for (var t of templates) {
+        if (t.get('vendor') == null ) return t;
+      }
     }
-    
+
     /* save the card & campaign parse objects */
     $scope.saveCard = function( callback ) {
       var card = $scope.card;
