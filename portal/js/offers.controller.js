@@ -29,7 +29,6 @@ angular.module('lunchalert-portal')
             //$scope.vendors.loading=false;
             initTemplateVariables($scope.cards);
             $scope.loading=false;
-            console.log($scope.cards);
           });
         },
         error: function(err) {
