@@ -34,7 +34,6 @@ function( $scope, $rootScope, $location, $filter ) {
         var icon = '';
         $scope.activedrivers = 0;
         for (var i = 0; i < res.length; i++) {
-          console.log(res[i]);
 
           /* Work out status flag based on date */
           f = $scope.differenceInDays(
