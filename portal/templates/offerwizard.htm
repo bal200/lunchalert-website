@@ -38,7 +38,7 @@
   <form name="formObj">
     <div class="ui attached very segment wizard" ng-show="page==1">
       <div class="ui text">
-        <p>Think of a great catchy line about your offer.</p>
+        <p>Think of a great catchy line about your offer. This needs to draw your customer in so think catchy, clear, simple, and appealing.</p>
       
       <div class="ui form">
         <div class="field">
@@ -54,8 +54,9 @@
             Need some inspiration?
           </div>
           <ul>
-            <li>30 Big BUNS for your mouths</li>
-            <li>Wait until you get Marks best bits IN YOUR MOUTH</li>
+            <li>Superb meal deal</li>
+            <li>Free drink or Chocolate bar with purchase</li>
+            <li>One off special, if you miss it you will regret it</li>
           </ul>
         </div>
       </div>
@@ -64,7 +65,9 @@
 
     <div class="ui attached very segment wizard" ng-show="page==2">
       <div class="ui text">
-        <p>Let people know the conditions of your deal and the price.</p>
+        <p>Let people know tell people the nuts and bolts of the deal.</p>
+        <p>Be as descriptive as possible but also appealing as possible. Think about M&S and Sainsbury's adverts its got to be persuasive enough to make you want to jump in the car and go get it.</p>         
+        <p>Would you buy this offer? Is it original, new, something others are not doing? Test it on strangers, will they put their money where their mouth is and buy it? (family, friends, staff will worry about hurting your feelings saying is not good)</p>
       
         <div class="ui form">
           <div class="field">
@@ -80,8 +83,9 @@
             Need some inspiration?
           </div>
           <ul>
-            <li>SMASH our Facebook LIKE button whilst in the queue for a free Coke can.</li>
-            <li>Buy any sandwich and pay just 100% of the usual price.</li>
+            <li>Succulent roast pork with fresh sage and onion stuffing, organic apple sauce on a home made granary bun.</li>
+            <li>Try our amazing moist and tasty sandwiches made fresh today.</li>
+            <li>Sandwiches that shouldn't work but do. Todays challenge is to try one of our random sandwiches if you really hate it we will give u a free one tomorrow.</li>
           </ul>
         </div>
       </div>
@@ -90,7 +94,7 @@
     <div class="ui attached very segment wizard" ng-show="page==3">
       <div class="ui text">
         <p>Excite your customers with an eye catching photo of your product offer.</p>
-      
+        <p>Remember the most important thing about photos is that it portrays your company image. Is anyone going to buy something when your photo looks like a dogs dinner (besides to feed to the dog)?</p>
       <div class="ui form">
         <div class="field">
           <input name="mypic" type="file" ng-model="data.pic" ng-change="base64Change()" 
@@ -111,9 +115,13 @@
             <div class="header">
               What makes a great photo?
             </div>
+            <p>So many companies let them selves down with bad images. Follow these simple rules to make sure you photo draws people in to buy.</p>
             <ul>
-              <li>Exotic looking product photos</li>
-              <li>Bright eye catching zebras</li>
+              <li>Remove everything from the background use a cloth draped over something so the food is centre stage. If you do use a background make sure it not got negative things like washing up, badly dressed staff etc.
+                <li>What is the food displayed in? If it doesn't look good enough to serve to the Queen then its not good enough for the photo. Get the silver service wedding plates out.</li>
+                <li>How is the food displayed? If its thrown on the plate without any care and attention to detail then its not for the photo. Again would you serve it to the Queens corgis never mind the Queen that way if not start again.</li>
+                <li>Does it make everyones mouth water like a pavlogs dog if not why not and try again.</li>
+                <li>If photos of your food don't look appertising, or are blurry or a bit dark, you're missing an oppotunity to sell your product.</li>
             </ul>
           </div>
         </div>
@@ -122,7 +130,7 @@
 
     <div class="ui attached very segment wizard" ng-if="page==4">
       <div class="ui padded">
-        <p>We'll send out an offer card to your customers using the LunchAlert mobile app. Like what you see?</p>
+        <p>We'll send out an offer card to your customers using the LunchAlert mobile app. DO you like what you see?</p>
       
         <cardpreview card="card" html="card.html" mywidth="300" myheight="380">
         </cardpreview>
@@ -169,7 +177,7 @@
             <h2>Happy?</h2>
             <p>The offer will be published on {{card.campaign.startDate | date: 'dd/MM/yy'}}</p>
             <p>A notification will be sent at {{card.campaign.startTime}} on {{card.campaign.startDate | date: 'dd/MM/yy'}}</p>
-            <p>The offer will remain published until the end of {{card.campaign.endDate | date: 'dd/MM/yy'}}</p>
+            <p>The offer will remain published until the end of {{card.campaign.endDate | date: 'dd/MM/yy'}} until {{card.campaign.endTime}}</p>
           </div>
           <div class="field">
             <cardpreview card="card" html="card.html" mywidth="300" myheight="440"></cardpreview> 
