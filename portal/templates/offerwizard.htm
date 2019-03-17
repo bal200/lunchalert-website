@@ -65,7 +65,7 @@
 
     <div class="ui attached very segment wizard" ng-show="page==2">
       <div class="ui text">
-        <p>Let people know tell people the nuts and bolts of the deal.</p>
+        <p>Let people know about your offer, tell them nuts and bolts of the deal.</p>
         <p>Be as descriptive as possible but also appealing as possible. Think about M&S and Sainsbury's adverts its got to be persuasive enough to make you want to jump in the car and go get it.</p>         
         <p>Would you buy this offer? Is it original, new, something others are not doing? Test it on strangers, will they put their money where their mouth is and buy it? (family, friends, staff will worry about hurting your feelings saying is not good)</p>
       
@@ -177,7 +177,7 @@
             <h2>Happy?</h2>
             <p>The offer will be published on {{card.campaign.startDate | date: 'dd/MM/yy'}}</p>
             <p>A notification will be sent at {{card.campaign.startTime}} on {{card.campaign.startDate | date: 'dd/MM/yy'}}</p>
-            <p>The offer will remain published until the end of {{card.campaign.endDate | date: 'dd/MM/yy'}} until {{card.campaign.endTime}}</p>
+            <p>The offer will remain published until {{card.campaign.endTime}} on {{card.campaign.endDate | date: 'dd/MM/yy'}}</p>
           </div>
           <div class="field">
             <cardpreview card="card" html="card.html" mywidth="300" myheight="440"></cardpreview> 
