@@ -7,6 +7,10 @@ angular.module('lunchalert-portal')
     $rootScope.currentCard = null;
     $scope.loading=false;
 
+    if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
+      $location.path('/login');
+    }
+    
     $scope.addCard = function() {
       $rootScope.currentCard = null;
       $location.path('/portal/offer/edit');

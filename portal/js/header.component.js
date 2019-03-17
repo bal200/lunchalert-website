@@ -8,8 +8,12 @@ angular.module('lunchalert-portal')
   templateUrl: 'templates/header.htm',
   controller: ['$scope', '$rootScope', '$location', function($scope, $rootScope, $location) {
     
+    if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
+      $location.path('/login');
+    }
+
     this.$onInit = function() {
-      $scope.business = $rootScope.user.get('businessName');
+      if ($rootScope.user)  $scope.business = $rootScope.user.get('businessName');
     };
 console.log("header controller");
 
@@ -18,10 +22,12 @@ console.log("header controller");
     }
 
     $scope.logout = function() {
+      console.log("logout()");
+
       Parse.User.logOut();
       $rootScope.user = null;
       $rootScope.isLoggedIn = false;
-      $location.path('/');
+      $location.path('/login');
     };
 
 

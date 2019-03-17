@@ -7,6 +7,9 @@ function( $scope, $rootScope, $location, $filter ) {
   var swm = usrObj.id;
   var vendorObj = $scope.swmId ? newParseUser($scope.swmId) : Parse.User.current();
 
+  if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
+    $location.path('/login');
+  }
 
   /* Work out the difference in days between two dates */
   $scope.differenceInDays = function(firstdate, seconddate) {
