@@ -39,6 +39,8 @@
     <script src="js/offerWizard.controller.js"></script>
     
     <script src="../lib/cardpreview.component.js"></script>
+    <script src="js/header.component.js"></script>
+
 
     <script src="../lib/Classes/Card.js"></script>
     <script src="../lib/Classes/Campaign.js"></script>
@@ -60,44 +62,31 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NN777WT"
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-<div class="ui secondary pointing menu">
-  <a href="#/portal/home" class="header item">
-    <img class="logo" src="images/lunchalerticon.png">
-    LunchAlert Portal
-  </a>
-  <a href="#/portal/map" class="item">Maps</a>
-  <a href="#/portal/offers" class="item">Offers</a>
-  <a href="#/portal/vans" class="item">Vans</a>
-  <div class="right menu">
-    <div class="ui item" ng-if="isLoggedIn=true"><i class="user outline icon"></i>Logged in as {{business}}</div>
-    <a class="ui item" ng-click="logout()">
-      <i class="sign out icon"></i>Logout
-    </a>
+
+
+<div ng-view autoscroll="true"></div>
+
+<div class="ui inverted vertical footer segment">
+  <div class="ui center aligned container">
+    <div class="ui stackable inverted divided grid">
+      <div class="five wide column">
+        <img src="images/play_store.png" style="line-height: 1.4;">
+      </div>
+      <div class="five wide column">
+        <img src="images/app_store.png">
+      </div>
+      <div class="six wide column">
+        <p class="vcenter">&copy; 2019 Solutionising Limited</p>
+      </div>
+    </div>
+    <div class="ui inverted section divider"></div>
+    <img src="images/lunchalerticon.png" class="ui centered mini image">
+    <div class="ui horizontal inverted small divided link list">
+      <a class="item" href="http://lunchalert.me/">Main Website</a>
+      <a class="item" href="/portal.htm">Portal</a>
+    </div>
   </div>
 </div>
 
-<div ng-view autoscroll="true"></div>
-  <div class="ui inverted vertical footer segment">
-    <div class="ui center aligned container">
-      <div class="ui stackable inverted divided grid">
-        <div class="five wide column">
-          <img src="images/play_store.png" style="line-height: 1.4;">
-        </div>
-        <div class="five wide column">
-          <img src="images/app_store.png">
-        </div>
-        <div class="six wide column">
-          <p class="vcenter">&copy; 2019 Solutionising Limited</p>
-        </div>
-      </div>
-      <div class="ui inverted section divider"></div>
-      <img src="images/lunchalerticon.png" class="ui centered mini image">
-      <div class="ui horizontal inverted small divided link list">
-        <a class="item" href="http://lunchalert.me/">Main Website</a>
-        <a class="item" href="/portal.htm">Portal</a>
-      </div>
-    </div>
-  </div>
-
-  </body>
+</body>
 </html>

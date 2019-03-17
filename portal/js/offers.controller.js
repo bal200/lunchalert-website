@@ -1,6 +1,6 @@
 angular.module('lunchalert-portal')
 
-.controller('offersCtrl', ['$scope', '$rootScope', '$location', 
+.controller('offersCtrl', ['$scope', '$rootScope', '$location',
   function($scope, $rootScope, $location) {
 
     $scope.cards = [];
