@@ -72,7 +72,7 @@
       
         <div class="ui form">
           <div class="field">
-            <textarea name="details" ng-model="card.campaign.message" placeholder="Offer Details" required />
+            <textarea name="details" ng-model="card.campaign.message" placeholder="Offer Details"/>
           </div>
         </div>
       </div>
@@ -148,7 +148,7 @@
             <div class="fields">
               <div class="field">
                 <label>Start Date</label>
-                <ng-datepicker name="startDate" required class="ui input " ng-model="card.campaign.startDate" ng-change="fromDateChange()" placeholder="Date From"></ng-datepicker>
+                <ng-datepicker name="startDate" class="ui input " ng-model="card.campaign.startDate" ng-change="fromDateChange()" locale="en" placeholder="Date From"></ng-datepicker>
               </div>
               <div class="field">
                 <label>&nbsp;</label>
@@ -158,7 +158,7 @@
             <div class="fields">
               <div class="field">
                 <label>Finish Date</label>
-                <ng-datepicker name="endDate" required class="ui input fluid" ng-model="card.campaign.endDate" ng-change="toDateChange()" placeholder="Date To"></ng-datepicker>
+                <ng-datepicker name="endDate" required class="ui input fluid" ng-model="card.campaign.endDate" ng-change="toDateChange()" locale="en" placeholder="Date To"></ng-datepicker>
               </div>
               <div class="field">
                 <label>&nbsp;</label>
