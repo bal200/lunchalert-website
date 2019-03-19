@@ -95,11 +95,14 @@
     <div class="ui attached very segment wizard" ng-show="page==3">
       <div class="ui text">
         <p>Excite your customers with an eye catching photo of your product offer.</p>
-        <p>Remember the most important thing about photos is that it portrays your company image. Is anyone going to buy something when your photo looks like a dogs dinner (besides to feed to the dog)?</p>
+        <p>Remember the most important thing about photos is that it portrays your company image. 
+          Is anyone going to buy something when your photo looks like a dogs dinner (besides to 
+          feed to the dog)?</p>
+          <p style="font-size: 80%;">Maximum image size 110Kb</p>
       <div class="ui form">
         <div class="field">
           <input name="mypic" type="file" ng-model="data.pic" ng-change="base64Change()" 
-                placeholder="" maxsize="5000" 
+                placeholder="" maxsize="110" 
                 accept="image/*" do-not-parse-if-oversize base-sixty-four-input >
         </div>
         <div ng-if="card.campaign.picture" class="field text-center">
