@@ -203,7 +203,7 @@
         Delete
       </button>
     <button ng-if="page==6" type="submit" class="ui right labeled right floated icon positive button" 
-            ng-class="{'disabled' : formObj.$invalid}" ng-click="finished()">
+            ng-class="{'disabled' : formObj.$invalid || finishDisabled}" ng-click="finished()">
         <i class="right check icon"></i>
         Finish
     </button>

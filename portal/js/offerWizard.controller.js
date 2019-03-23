@@ -6,6 +6,7 @@ angular.module('lunchalert-portal')
     $scope.card = null;
     $scope.page = 1;
     $scope.data = {pic:{}};
+    $scope.finishDisabled=false;
 
     $scope.pageNext = function() {
       if ($scope.page <= 5) $scope.page++;
@@ -75,6 +76,7 @@ angular.module('lunchalert-portal')
     };
 
     $scope.finished = function() {
+      $scope.finishDisabled=true;
       if ($scope.card.campaign.get('template')) {
         $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
           $scope.card.html = html;
@@ -83,6 +85,7 @@ angular.module('lunchalert-portal')
               if ( !$rootScope.currentCard ) {
                 $rootScope.cards.push($scope.card);
               }
+              $scope.finishDisabled=false;
               $location.path('/portal/offers');
             });
           });
@@ -90,6 +93,7 @@ angular.module('lunchalert-portal')
       }else{
         $scope.saveCard(function() {
           $scope.$apply(function() {
+            $scope.finishDisabled=false;
             $location.path('/portal/offers');
           });
         });
@@ -99,12 +103,13 @@ angular.module('lunchalert-portal')
     $scope.base64Change = function() {
       //$scope.card.campaign.picture = $scope.picture;
       $scope.card.campaign.picture = 'data:' + $scope.data.pic.filetype + ';base64,' + $scope.data.pic.base64;
-
-      $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
-        $scope.$apply(function() {
-          $scope.card.html = html;
+      if ($scope.card.campaign.get('template')) {
+        $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
+          $scope.$apply(function() {
+            $scope.card.html = html;
+          });
         });
-      });
+      }
     }
 
     $scope.fromDateChange = function() {
