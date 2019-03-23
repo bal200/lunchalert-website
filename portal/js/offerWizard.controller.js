@@ -11,7 +11,7 @@ angular.module('lunchalert-portal')
     $scope.pageNext = function() {
       if ($scope.page <= 5) $scope.page++;
       if ($scope.page==4) {
-        if ($scope.card.campaign && $scope.card.campaign.get('template')) {
+        if (isTemplated) {
           $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
             $scope.$apply(function() {
               $scope.card.html = html;
@@ -77,7 +77,7 @@ angular.module('lunchalert-portal')
 
     $scope.finished = function() {
       $scope.finishDisabled=true;
-      if ($scope.card.campaign.get('template')) {
+      if (isTemplated) {
         $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
           $scope.card.html = html;
           $scope.saveCard(function() {
@@ -86,6 +86,7 @@ angular.module('lunchalert-portal')
                 $rootScope.cards.push($scope.card);
               }
               $scope.finishDisabled=false;
+              notifyUs();
               $location.path('/portal/offers');
             });
           });
@@ -94,16 +95,29 @@ angular.module('lunchalert-portal')
         $scope.saveCard(function() {
           $scope.$apply(function() {
             $scope.finishDisabled=false;
+            notifyUs();
             $location.path('/portal/offers');
           });
         });
       }
     }
 
+    var notifyUs = function() {
+      Parse.Cloud.run("notifyUs", {
+        message: "Offer card saved by " + $rootScope.user.get('businessName') 
+          + " called " + $scope.card.title
+      },{ success: function(res) {
+        /*  */
+      }, error: function(err) {
+        console.log("notify error ("+err.code+") "+err.message);
+      }});
+
+    }
+
     $scope.base64Change = function() {
       //$scope.card.campaign.picture = $scope.picture;
       $scope.card.campaign.picture = 'data:' + $scope.data.pic.filetype + ';base64,' + $scope.data.pic.base64;
-      if ($scope.card.campaign.get('template')) {
+      if (isTemplated) {
         $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
           $scope.$apply(function() {
             $scope.card.html = html;
@@ -202,5 +216,10 @@ angular.module('lunchalert-portal')
     function getCurrentVendor() {
       return $scope.swmId ? newParseUser($scope.swmId) : Parse.User.current();
     }
+    function isTemplated() {
+      if ($scope.card.campaign && $scope.card.campaign.get('template')) return true;
+      else return false;
+    }
+    
   }
 ]);
