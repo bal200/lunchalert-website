@@ -1,10 +1,7 @@
 angular.module('lunchalert-portal')
 
 .component('portalheader', {
-  bindings: {
-    //vendor: '<',
-    //onSave: '&'
-  },
+  bindings: {},
   templateUrl: 'templates/header.htm',
   controller: ['$scope', '$rootScope', '$location', function($scope, $rootScope, $location) {
     
@@ -15,10 +12,8 @@ angular.module('lunchalert-portal')
     this.$onInit = function() {
       if ($rootScope.user)  $scope.business = $rootScope.user.get('businessName');
     };
-console.log("header controller");
 
     this.$onChanges = function(changesObj) {
-      console.log("header: onChanges.");
     }
 
     $scope.logout = function() {

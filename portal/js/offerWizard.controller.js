@@ -6,15 +6,18 @@ angular.module('lunchalert-portal')
     $scope.card = null;
     $scope.page = 1;
     $scope.data = {pic:{}};
+    $scope.finishDisabled=false;
 
     $scope.pageNext = function() {
       if ($scope.page <= 5) $scope.page++;
       if ($scope.page==4) {
-        $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
-          $scope.$apply(function() {
-            $scope.card.html = html;
+        if (isTemplated) {
+          $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
+            $scope.$apply(function() {
+              $scope.card.html = html;
+            });
           });
-        });
+        }
       }
     }
     $scope.pageBack = function() {
@@ -23,9 +26,13 @@ angular.module('lunchalert-portal')
 
     var newCard = function() {
       $scope.card = Card.create(getCurrentVendor(), "", 1);
+      createCampaign();
+    }
+    var createCampaign = function() {
       $scope.card.campaign = Campaign.create($scope.card.get("vendor"), "", $scope.card);
       $scope.card.schedulerOn = false; /* this also causes the campaign to get set to defaults */
     }
+
     var loadTemplate = function() {
       var query1 = new Parse.Query(CardTemplate);
       var query2 = new Parse.Query(CardTemplate);
@@ -69,29 +76,54 @@ angular.module('lunchalert-portal')
     };
 
     $scope.finished = function() {
-      $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
-        $scope.card.html = html;
+      $scope.finishDisabled=true;
+      if (isTemplated) {
+        $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
+          $scope.card.html = html;
+          $scope.saveCard(function() {
+            $scope.$apply(function() {
+              if ( !$rootScope.currentCard ) {
+                $rootScope.cards.push($scope.card);
+              }
+              $scope.finishDisabled=false;
+              notifyUs();
+              $location.path('/portal/offers');
+            });
+          });
+        });
+      }else{
         $scope.saveCard(function() {
           $scope.$apply(function() {
-            //cardForm.$setPristine();
-            if ( !$rootScope.currentCard ) {
-              $rootScope.cards.push($scope.card);
-            }
+            $scope.finishDisabled=false;
+            notifyUs();
             $location.path('/portal/offers');
           });
         });
-      });
+      }
+    }
+
+    var notifyUs = function() {
+      Parse.Cloud.run("notifyUs", {
+        message: "Offer card saved by " + $rootScope.user.get('businessName') 
+          + " called " + $scope.card.title
+      },{ success: function(res) {
+        /*  */
+      }, error: function(err) {
+        console.log("notify error ("+err.code+") "+err.message);
+      }});
+
     }
 
     $scope.base64Change = function() {
       //$scope.card.campaign.picture = $scope.picture;
       $scope.card.campaign.picture = 'data:' + $scope.data.pic.filetype + ';base64,' + $scope.data.pic.base64;
-
-      $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
-        $scope.$apply(function() {
-          $scope.card.html = html;
+      if (isTemplated) {
+        $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
+          $scope.$apply(function() {
+            $scope.card.html = html;
+          });
         });
-      });
+      }
     }
 
     $scope.fromDateChange = function() {
@@ -170,16 +202,24 @@ angular.module('lunchalert-portal')
     // TODO should we go back to offers list page if $rootScope.cards null?
 
     $scope.card = $rootScope.currentCard; //$stateParams.card;
+    
     //if ($scope.card) $scope.picture = $scope.card.campaign.picture; // hack as getters & settings not working with base64 input
 
     if ($scope.card == null) {
       newCard();
-      //card.campaign.template = template;
       loadTemplate();
+    }
+    if ($scope.card.campaign == null) {
+      createCampaign();
     }
 
     function getCurrentVendor() {
       return $scope.swmId ? newParseUser($scope.swmId) : Parse.User.current();
     }
+    function isTemplated() {
+      if ($scope.card.campaign && $scope.card.campaign.get('template')) return true;
+      else return false;
+    }
+    
   }
 ]);
