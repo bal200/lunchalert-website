@@ -11,7 +11,7 @@ angular.module('lunchalert-portal')
     $scope.pageNext = function() {
       if ($scope.page <= 5) $scope.page++;
       if ($scope.page==4) {
-        if (isTemplated) {
+        if (isTemplated()) {
           $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
             $scope.$apply(function() {
               $scope.card.html = html;
@@ -77,7 +77,7 @@ angular.module('lunchalert-portal')
 
     $scope.finished = function() {
       $scope.finishDisabled=true;
-      if (isTemplated) {
+      if (isTemplated()) {
         $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
           $scope.card.html = html;
           $scope.saveCard(function() {
@@ -107,6 +107,7 @@ angular.module('lunchalert-portal')
         message: "Offer card saved by " + $rootScope.user.get('businessName') 
           + " called " + $scope.card.title
       },{ success: function(res) {
+        console.log("notify sent");
         /*  */
       }, error: function(err) {
         console.log("notify error ("+err.code+") "+err.message);
@@ -117,7 +118,7 @@ angular.module('lunchalert-portal')
     $scope.base64Change = function() {
       //$scope.card.campaign.picture = $scope.picture;
       $scope.card.campaign.picture = 'data:' + $scope.data.pic.filetype + ';base64,' + $scope.data.pic.base64;
-      if (isTemplated) {
+      if (isTemplated()) {
         $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
           $scope.$apply(function() {
             $scope.card.html = html;
