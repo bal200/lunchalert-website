@@ -49,7 +49,11 @@
   .contact input {
     width: 100%;
   }
-  
+  #comment-field {
+    display: none;
+  }
+
+
   .float-box {
     /* float: right; */
     /* border: solid 2px;
@@ -96,8 +100,4 @@
   .clearfix {
     overflow: auto;
   }
-
-
-
-
 
