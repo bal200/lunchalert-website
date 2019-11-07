@@ -203,7 +203,7 @@
       <input type="hidden" name="COMPLETE_URL" value="http://lunchalert.me/thanks.htm">
       <input type="hidden" name="DEVELOPER" value="FALSE"/>
       <div class="field">
-        <label>Your Name</label>
+        <label for="firstNameId">Your Name</label>
         <div class="two fields">
           <div class="field">
             <input id="firstNameId" type="text" name="FIRST_NAME" placeholder="First Name">
@@ -215,11 +215,11 @@
       </div>
       <input id="comment-field" type="text" name="COMMENT" />
       <div class="field">
-        <label>Your Company</label>
+        <label for="organisationId">Your Company</label>
         <input id="organisationId" type="text" name="ORGANISATION_NAME" placeholder="Company">
       </div>
       <div class="field">
-        <label>Your Contact Details</label>
+        <label for="phoneId">Your Contact Details</label>
         <div class="two fields">
           <div class="field">
             <input id="phoneId" type="text" name="PHONE[WORK]" placeholder="Phone">
@@ -230,11 +230,10 @@
         </div>
       </div>
       <div class="field">
-        <label>Message</label>
+        <label for="noteId">Message</label>
         <textarea id="noteId" name="NOTE" rows="5"></textarea>
       </div>
       <input class="ui blue submit button" type="submit" value="Send Message"/>
-
     </form>
 
     <div class="ui bottom attached positive message">
