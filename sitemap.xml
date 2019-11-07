@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"> 
 <url>
-  <loc>http://lunchalert.me/</loc>
+  <loc>https://www.lunchalert.me/</loc>
   <changefreq>yearly</changefreq>
 </url>
 <url>
-  <loc>http://lunchalert.me/portal.htm</loc>
+  <loc>https://www.lunchalert.me/portal.htm</loc>
   <changefreq>yearly</changefreq>
 </url>
 <url>
-  <loc>http://lunchalert.me/privacy.htm</loc>
+  <loc>https://www.lunchalert.me/privacy.htm</loc>
   <changefreq>yearly</changefreq>
 </url>
 </urlset>
