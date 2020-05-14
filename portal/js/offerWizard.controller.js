@@ -7,10 +7,11 @@ angular.module('lunchalert-portal')
     $scope.page = 1;
     $scope.data = {pic:{}};
     $scope.finishDisabled=false;
+    $scope.businessName = getCurrentVendor().get('businessName');
 
     $scope.pageNext = function() {
-      if ($scope.page <= 5) $scope.page++;
-      if ($scope.page==4) {
+      if ($scope.page <= 6) $scope.page++;
+      if ($scope.page==5) {
         if (isTemplated()) {
           $scope.card.compileTemplate($scope.card.campaign.get('template'), $scope.card.campaign.templateVariables, function(html) {
             $scope.$apply(function() {
@@ -150,12 +151,19 @@ angular.module('lunchalert-portal')
 
     var enableSchedulerAndNoti = function() {
       $scope.card.campaign.notiOn = true;
-      //if (!$scope.card.campaign.notiText) {
-      var name = getCurrentVendor().get('businessName');
-      //$scope.card.campaign.notiText = "Tap here for "+name+"'s offer";
-      $scope.card.campaign.notiText = "New "+name+" offer today";
-      //}
+      if (!$scope.card.campaign.notiText) {
+        $scope.card.campaign.notiText = "New "+$scope.businessName+" offer today";
+      }
       $scope.card.schedulerOn = true;
+    }
+
+    $scope.setNotification = function( choice ) {
+      switch (choice) {
+        case 1: $scope.card.campaign.notiText = "New "+$scope.businessName+" offer today"; break;
+        case 2: $scope.card.campaign.notiText = "Update from "+$scope.businessName+""; break;
+        case 3: $scope.card.campaign.notiText = "New offer today"; break;
+        case 4: $scope.card.campaign.notiText = "New "+$scope.businessName+" menu today"; break;
+      }
     }
 
     $scope.cancelEdit = function() {

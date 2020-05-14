@@ -3,7 +3,7 @@
 <div class="ui main text container">
   <h1 class="ui header">Your Offer</h1>
 
-  <div class="ui six top attached steps" style="margin-bottom: 0px;">
+  <div class="ui seven top attached steps" style="margin-bottom: 0px;">
     <div class="step" ng-class="{ 'active': page==1 }">
       <div class="content">
         <div class="title">Offer</div>
@@ -21,15 +21,20 @@
     </div>
     <div class="step" ng-class="{ 'active': page==4 }">
       <div class="content">
-        <div class="title">Preview</div>
+        <div class="title">Notification</div>
       </div>
-    </div>
+    </div>    
     <div class="step" ng-class="{ 'active': page==5 }">
+        <div class="content">
+          <div class="title">Preview</div>
+        </div>
+      </div>
+    <div class="step" ng-class="{ 'active': page==6 }">
       <div class="content">
         <div class="title">Date</div>
       </div>
     </div>
-    <div class="step" ng-class="{ 'active': page==6 }">
+    <div class="step" ng-class="{ 'active': page==7 }">
         <div class="content">
           <div class="title">Publish</div>
         </div>
@@ -39,11 +44,12 @@
   <form name="formObj">
     <div class="ui attached very segment wizard" ng-show="page==1">
       <div class="ui text">
-        <p>Think of a great catchy line about your offer. This needs to draw your customer in so think catchy, clear, simple, and appealing.</p>
+        <p>Think of a great catchy line about your offer. This needs to draw your customer in so think 
+          catchy, clear, simple, and appealing.</p>
       
       <div class="ui form">
         <div class="field">
-          <input type="text" name="title" ng-model="card.title2" placeholder="What have you got for the customers?" required>
+          <input type="text" name="title" ng-model="card.title2" placeholder="Offer Title" required>
         </div>
       </div>
       </div>
@@ -134,18 +140,55 @@
 
     <div class="ui attached very segment wizard" ng-if="page==4">
       <div class="ui padded">
-        <p>We'll send out an offer card to your customers using the LunchAlert mobile app. Do you like what you see?</p>
+        <p>Notification</p>
+        <p>Choose the push notification sent out when the card is published.</p>
+        <p>Choice: "{{card.campaign.notiText}}"</p>
+        <div class="ui form">
+          <div class="grouped fields">
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" name="example2" value="1" ng-click="setNotification(1)">
+                <label>New {{businessName}} offer today</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" name="example2" value="2" ng-click="setNotification(2)">
+                <label>Update from {{businessName}}</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" name="example2" value="3" ng-click="setNotification(3)">
+                <label>New offer today</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" name="example2" value="4" ng-click="setNotification(4)">
+                <label>New {{businessName}} menu today</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="ui attached very segment wizard" ng-if="page==5">
+      <div class="ui padded">
+        <p>Here is how the card will look in the mobile app:</p>
       
-        <cardpreview card="card" html="card.html" mywidth="300" myheight="380">
-        </cardpreview>
+        <cardpreview card="card" html="card.html" mywidth="300" myheight="380"></cardpreview>
+
       </div>
     </div>
 
-    <div class="ui attached very segment wizard" ng-show="page==5">
+    <div class="ui attached very segment wizard" ng-show="page==6">
       <div class="ui text">
-        <p>What date should your offer be sent out to customer?</p>
+        <p>What date should your offer be sent out to customers?</p>
         <p>We send out a notification to everyones phones at 8AM on
           the selected date so that they're prepared for your arrival that morning.</p>
+          <p>The card will continue to stay displayed in the app until the finish date.</p>
       
           <div class="ui form">
             <div class="fields">
@@ -174,14 +217,15 @@
       </div>
     </div>
 
-    <div class="ui attached very segment wizard" ng-if="page==6">
+    <div class="ui attached very segment wizard" ng-if="page==7">
       <div class="ui form">
         <div class="fields">
           <div class="field">
             <h2>Happy?</h2>
             <p>The offer will be published on {{card.campaign.startDate | date: 'dd/MM/yy'}}</p>
-            <p>A notification will be sent at {{card.campaign.startTime}} on {{card.campaign.startDate | date: 'dd/MM/yy'}}</p>
-            <p>The offer will remain published until {{card.campaign.endTime}} on {{card.campaign.endDate | date: 'dd/MM/yy'}}</p>
+            <p>A push notification will be sent at {{card.campaign.startTime}} on {{card.campaign.startDate | date: 'dd/MM/yy'}}</p>
+            <p>The notification will say "{{card.campaign.notiText}}"</p>
+            <p>The offer card will remain published until {{card.campaign.endTime}} on {{card.campaign.endDate | date: 'dd/MM/yy'}}</p>
           </div>
           <div class="field">
             <cardpreview card="card" html="card.html" mywidth="300" myheight="440"></cardpreview> 
@@ -194,7 +238,7 @@
     <div class="ui bottom attached segment">
     </div>
 
-    <button ng-if="page!=6" class="ui left labeled floated icon secondary button" ng-click="cancelEdit()">
+    <button ng-if="page!=7" class="ui left labeled floated icon secondary button" ng-click="cancelEdit()">
         <i class="window close outline icon"></i>
         Cancel
     </button>
@@ -202,12 +246,12 @@
         <i class="trash icon"></i>
         Delete
       </button>
-    <button ng-if="page==6" type="submit" class="ui right labeled right floated icon positive button" 
+    <button ng-if="page==7" type="submit" class="ui right labeled right floated icon positive button" 
             ng-class="{'disabled' : formObj.$invalid || finishDisabled}" ng-click="finished()">
         <i class="right check icon"></i>
         Finish
     </button>
-    <button ng-if="page!=6" class="ui right labeled right floated icon positive button" ng-click="pageNext()">
+    <button ng-if="page!=7" class="ui right labeled right floated icon positive button" ng-click="pageNext()">
       <i class="right arrow icon"></i>
       Next
     </button>
