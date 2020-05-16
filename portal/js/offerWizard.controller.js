@@ -20,6 +20,9 @@ angular.module('lunchalert-portal')
           });
         }
       }
+      if ($scope.page==4) {
+        enableSchedulerAndSetNoti();
+      }
     }
     $scope.pageBack = function() {
       if ($scope.page > 1) $scope.page--;
@@ -135,7 +138,7 @@ angular.module('lunchalert-portal')
           $scope.card.campaign.startDate = $scope.card.campaign.endDate;
           $scope.dateError = "Start date must be before the finish date";
         }
-        enableSchedulerAndNoti();
+        enableScheduler();
       }
     }
     $scope.toDateChange = function() {
@@ -145,24 +148,34 @@ angular.module('lunchalert-portal')
           $scope.card.campaign.endDate = $scope.card.campaign.startDate;
           $scope.dateError = "Finish date must be after the start date";
         }
-        enableSchedulerAndNoti();
+        enableScheduler();
       }
     }
 
-    var enableSchedulerAndNoti = function() {
+    var enableScheduler = function() {
+      $scope.card.schedulerOn = true;
+      //$scope.card.campaign.notiOn = true;
+      //if (!$scope.card.campaign.notiText) {
+      //  $scope.card.campaign.notiText = "New "+$scope.businessName+" offer today";
+      //}
+      
+    }
+    var enableSchedulerAndSetNoti = function() {
+      $scope.card.schedulerOn = true;
       $scope.card.campaign.notiOn = true;
       if (!$scope.card.campaign.notiText) {
-        $scope.card.campaign.notiText = "New "+$scope.businessName+" offer today";
+        $scope.setNotification(1);
       }
-      $scope.card.schedulerOn = true;
+      
     }
 
     $scope.setNotification = function( choice ) {
+      $scope.card.campaign.notiOn = true;
       switch (choice) {
         case 1: $scope.card.campaign.notiText = "New "+$scope.businessName+" offer today"; break;
         case 2: $scope.card.campaign.notiText = "Update from "+$scope.businessName+""; break;
-        case 3: $scope.card.campaign.notiText = "New offer today"; break;
-        case 4: $scope.card.campaign.notiText = "New "+$scope.businessName+" menu today"; break;
+        //case 3: $scope.card.campaign.notiText = "New offer today"; break;
+        //case 4: $scope.card.campaign.notiText = "New "+$scope.businessName+" menu today"; break;
       }
     }
 
