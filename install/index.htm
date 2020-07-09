@@ -6,27 +6,11 @@
 		content="0; url=http://m.appqr.mobi/appqr?qr=1&
 androidmarket=https://play.google.com/store/apps/details?id=me.lunchalert.lunchalert
 &appstore=https://itunes.apple.com/us/app/lunchalert/id1016665853?mt=8&ls=1"> -->
-<script>
-	if (/mac/i.test(navigator.platform)) {
-		/* iphone */
-		window.location.href = "https://apps.apple.com/gb/app/lunchalert/id1016665853";
-	}
-	else if (/linux/i.test(navigator.platform)) {
-		/* android */
-		window.location.href = "https://play.google.com/store/apps/details?id=me.lunchalert.lunchalert";
-	}
-	else {
-		/* anything else */
-		var str = "Your platform is: "+navigator.platform;
-		console.log(str);
-		document.getElementById('output').innerHTML = str;
-	}
-</script>
 </head>
 
 <body>
 	<p>We're redirecting you to the app store</p>
-	<div id="output"></div>
+	<p id="output"></p>
 	<div class="column">
 		<p>
 			<a href="https://play.google.com/store/apps/details?id=me.lunchalert.lunchalert">
@@ -38,4 +22,21 @@ androidmarket=https://play.google.com/store/apps/details?id=me.lunchalert.luncha
 		</p>
 	</div>
 </body>
+
+<script>
+	if (/mac/i.test(navigator.platform)) {
+		/* iphone */
+		window.location.href = "https://apps.apple.com/gb/app/lunchalert/id1016665853";
+	}
+	else if (/linux/i.test(navigator.platform)) {
+		/* android */
+		window.location.href = "https://play.google.com/store/apps/details?id=me.lunchalert.lunchalert";
+	}
+	else {
+		/* anything else */ 
+		console.log("Your platform is: "+navigator.platform);
+		document.getElementById('output').innerHTML = "Your platform is: "+navigator.platform;
+
+	}
+</script>
 </html>
