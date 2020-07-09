@@ -25,6 +25,7 @@ androidmarket=https://play.google.com/store/apps/details?id=me.lunchalert.luncha
 
 <script>
 	if (/mac/i.test(navigator.platform) ||
+			/iPad/i.test(navigator.platform) ||
 			/iPhone/i.test(navigator.platform) ) {
 		/* iphone */
 		window.location.href = "https://apps.apple.com/gb/app/lunchalert/id1016665853";
@@ -37,7 +38,6 @@ androidmarket=https://play.google.com/store/apps/details?id=me.lunchalert.luncha
 		/* anything else */ 
 		console.log("Your platform is: "+navigator.platform);
 		document.getElementById('output').innerHTML = "Your platform is: "+navigator.platform;
-
 	}
 </script>
 </html>
