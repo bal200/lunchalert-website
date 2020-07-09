@@ -10,7 +10,6 @@ androidmarket=https://play.google.com/store/apps/details?id=me.lunchalert.luncha
 
 <body>
 	<p>We're redirecting you to the app store</p>
-	<p id="output"></p>
 	<div class="column">
 		<p>
 			<a href="https://play.google.com/store/apps/details?id=me.lunchalert.lunchalert">
@@ -21,10 +20,12 @@ androidmarket=https://play.google.com/store/apps/details?id=me.lunchalert.luncha
 			<img src="../images/app_store.png" alt="Download from the Apple iOS AppStore"/></a>
 		</p>
 	</div>
+	<p id="output" style="font-size:80%; color: #ccc"></p>
 </body>
 
 <script>
-	if (/mac/i.test(navigator.platform)) {
+	if (/mac/i.test(navigator.platform) ||
+			/iPhone/i.test(navigator.platform) ) {
 		/* iphone */
 		window.location.href = "https://apps.apple.com/gb/app/lunchalert/id1016665853";
 	}
