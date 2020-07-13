@@ -17,6 +17,36 @@
 
   <div class="ui form">
 
+    <div class="field">
+      <label><i class="calendar icon"></i> Customer Date range</label>
+    </div>
+    <div class="two fields">
+      <div class="field">
+            <ng-datepicker ng-model="installFromDate" ng-change="installChange()" placeholder="Date From">
+            </ng-datepicker>
+            <!--       <input type="text" id="fromdate" placeholder="From date"/>   -->
+      </div>
+      <div class="field">
+            <ng-datepicker ng-model="installToDate" ng-change="installChange()" placeholder="Date To">
+            </ng-datepicker>
+      </div>
+    </div>
+
+    <div class="field">
+      <label><i class="calendar icon"></i> Arrival Date range</label>
+    </div>
+    <div class="two fields">
+      <div class="field">
+            <ng-datepicker ng-model="arrivalFromDate" ng-change="arrivalChange()" placeholder="Arrival Date From">
+            </ng-datepicker>
+            <!--       <input type="text" id="fromdate" placeholder="From date"/>   -->
+      </div>
+      <div class="field">
+            <ng-datepicker ng-model="arrivalToDate" ng-change="arrivalChange()" placeholder="Arrival Date To">
+            </ng-datepicker>
+      </div>
+    </div>
+
     <div class="three fields">
       <div class="field">
         <div class="ui checkbox">
@@ -54,36 +84,6 @@
             <button class="ui button" ng-click="changeVanName()">Save</button>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="field">
-      <label><i class="calendar icon"></i> Customer Date range</label>
-    </div>
-    <div class="two fields">
-      <div class="field">
-            <ng-datepicker ng-model="installFromDate" ng-change="installChange()" placeholder="Date From">
-            </ng-datepicker>
-            <!--       <input type="text" id="fromdate" placeholder="From date"/>   -->
-      </div>
-      <div class="field">
-            <ng-datepicker ng-model="installToDate" ng-change="installChange()" placeholder="Date To">
-            </ng-datepicker>
-      </div>
-    </div>
-
-    <div class="field">
-      <label><i class="calendar icon"></i> Arrival Date range</label>
-    </div>
-    <div class="two fields">
-      <div class="field">
-            <ng-datepicker ng-model="arrivalFromDate" ng-change="arrivalChange()" placeholder="Arrival Date From">
-            </ng-datepicker>
-            <!--       <input type="text" id="fromdate" placeholder="From date"/>   -->
-      </div>
-      <div class="field">
-            <ng-datepicker ng-model="arrivalToDate" ng-change="arrivalChange()" placeholder="Arrival Date To">
-            </ng-datepicker>
       </div>
     </div>
 
