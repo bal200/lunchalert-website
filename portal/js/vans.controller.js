@@ -10,6 +10,21 @@ function( $scope, $rootScope, $location, $filter ) {
   if ($rootScope.isLoggedIn==false) { /* redirect if not logged in */
     $location.path('/login');
   }
+  $scope.archiveVan = function(van, $event) {
+    $event.stopPropagation();
+    van.archive = true;
+    van.parseObject.set("archive", true);
+    van.parseObject.save()
+    .then(result => {
+      console.log("archive success", result);
+      var index = $scope.vanList.indexOf(van);
+      if (index > -1) $scope.vanList.splice(index, 1);
+      $scope.$apply();
+    })
+    // .catch(error => {
+    //   console.log("archive error", error);
+    // });
+  }
 
   /* Work out the difference in days between two dates */
   $scope.differenceInDays = function(firstdate, seconddate) {
@@ -37,37 +52,41 @@ function( $scope, $rootScope, $location, $filter ) {
         var icon = '';
         $scope.activedrivers = 0;
         for (var i = 0; i < res.length; i++) {
+          if (res[i].get("archive")!==true) {
+            /* Work out status flag based on date */
+            f = $scope.differenceInDays(
+              $filter('date')(res[i].get("updatedAt"), "dd/MM/yyyy"),
+              $filter('date')(new Date, "dd/MM/yyyy")
+            );
+            if(f < 2) {
+              flag = 'positive';
+              icon = 'smile outline';
+              $scope.activedrivers++;
+            }else if(f <= 3) {
+              flag = 'warning';
+              icon = 'meh outline';
+            }else {
+              flag = 'negative';
+              icon = 'frown outline';
+            }
 
-          /* Work out status flag based on date */
-          f = $scope.differenceInDays(
-            $filter('date')(res[i].get("updatedAt"), "dd/MM/yyyy"),
-            $filter('date')(new Date, "dd/MM/yyyy")
-          );
-          if(f < 2) {
-            flag = 'positive';
-            icon = 'smile outline';
-            $scope.activedrivers++;
-          }else if(f <= 3) {
-            flag = 'warning';
-            icon = 'meh outline';
-          }else {
-            flag = 'negative';
-            icon = 'frown outline';
+            van = {
+                id: i,
+                objId: res[i].id,
+                vanId: res[i].get("vanId"),
+                vanIdCrop: res[i].get("vanId").substr(0,5),
+                name: res[i].get("name"),
+                vendor: res[i].get("vendor"),
+                active: res[i].get("updatedAt"),
+                archive: res[i].get("archive"),
+                flag: flag,
+                icon: icon,
+                parseObject: res[i]
+            };
+            $scope.vanList.push( van );
           }
-
-          van = {
-              id: i,
-              objId: res[i].id,
-              vanId: res[i].get("vanId"),
-              vanIdCrop: res[i].get("vanId").substr(0,5),
-              name: res[i].get("name"),
-              vendor: res[i].get("vendor"),
-              active: res[i].get("updatedAt"),
-              flag: flag,
-              icon: icon
-          };
-          $scope.vanList.push( van );
         }
+
       });
     },
     error: function(err) { alert("get Vans error: "+err.code+" "+err.message); }
