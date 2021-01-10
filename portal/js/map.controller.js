@@ -244,20 +244,19 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
 
     query.find({
       success: function(res) {
-        //alert("Successfully retrieved " + res.length + " arrival records.");
+        console.log("Successfully retrieved " + res.length + " arrivals.");
         $scope.$apply(function () {
           for (var i = 0; i < res.length; i++) {
             var object = res[i];
             var loc = object.get('location');
-            //alert("at: "+dateFormat(date(object.createdAt), "dd-mmm-yy hh:MM"));
             var marker = {
                   id: i,
                   coords: {latitude: loc.latitude,
                           longitude: loc.longitude},
                   options: {
-                    /* label: "V", */
+                    //label: "V",
                     //labelContent: formatDate(new Date(object.createdAt)),
-                    icon: "../markers/blue_MarkerV.png"
+                    icon: getMarketIcon(object), //"../markers/blue_MarkerV.png"
                   }
             };
             if ($scope.showArrivalTimes == true) {
@@ -268,10 +267,28 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
           }
         });
         console.log("Got "+res.length+" arrivals results.");
-        //$scope.$apply();
       },
       error: function(err) { alert("get arrivals error: "+err.code+" "+err.message); }
     });
+  }
+  
+  var markerColours = ["blue", "brown", "darkgreen", "green", "orange", "paleblue", "pink", "purple", "red", "yellow"];
+  /**
+   * Build the marker url for a particular coloured icon marker with a letter on.
+   *
+   * @param {number} arrival the arrival object.
+   * @return {string} url to the marker icon image.
+   */
+  function getMarketIcon(arrival) {
+    var vanNumber = $scope.vanList.findIndex( v => {
+      return v.vanId == arrival.get('vanId')
+    }) ;
+    if (vanNumber==-1) vanNumber=25; /* if on van registered, go with Z marker */
+
+    var colour = markerColours[ vanNumber % 10 ];
+    var letter = String.fromCharCode((vanNumber%26) +65);
+
+    return "../markers/" +colour+ "_Marker" +letter+ ".png";
   }
 
   function digit2(n){ return n > 9 ? ""+n : "0"+n }
