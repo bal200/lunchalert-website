@@ -272,7 +272,8 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
     });
   }
   
-  var markerColours = ["blue", "brown", "darkgreen", "green", "orange", "paleblue", "pink", "purple", "red", "yellow"];
+  var markerColours = ["blue", "brown", "darkgreen", "green", "orange", "pink", "purple", "red", "yellow"];
+  /* "paleblue" removed as its too light */
   /**
    * Build the marker url for a particular coloured icon marker with a letter on.
    *
