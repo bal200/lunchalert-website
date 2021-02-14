@@ -1,7 +1,6 @@
-import Van from './class/Van';
-
 //import {parse} from 'parse'
 let Parse = require('parse')
+import Van from './class/Van';
 
 export type Install = {
 	id: number,
@@ -17,6 +16,9 @@ export type Vendor = {
 	line: number,
 	tagLine?: string,
 }
+export const ParseCardTemplate = Parse.Object.extend("CardTemplate");
+export const ParseCard = Parse.Object.extend("Card");
+export const ParseCampaign = Parse.Object.extend("Campaign");
 
 const ParseConfiguration = {
 	/* DEV */
@@ -34,7 +36,7 @@ class ParseServiceClass {
 	public isAdmin:boolean = false
 	
 	/* The Selected User to act as, if we're in Admin mode. Otherwise the logged in user. */
-	public swm:any = {}
+	public swm:Parse.Object
 	public swmId: string =''
 	public swmName:string = ''
 
@@ -134,6 +136,29 @@ class ParseServiceClass {
 			
 		}
 	}
+
+	async loadVendorsTemplate( vendor: Parse.Object ) {
+		var query1 = new Parse.Query(ParseCardTemplate);
+		var query2 = new Parse.Query(ParseCardTemplate);
+		query1.equalTo("vendor", vendor );  /* templates for this vendor  */
+		query2.equalTo("vendor", null );    /* OR templates for ANY vendor */
+		var query:Parse.Query = Parse.Query.or(query1, query2);
+		query.equalTo("default", true ); 
+		const templates = await query.find();
+		var template = this.pickTheDefaultTemplate(templates, vendor);
+		return template;
+	}
+	//$scope.card.initTemplate(function() {
+
+	/* Look through an array of templates for this vendors default, else the global default */
+	pickTheDefaultTemplate(templates: Parse.Object[], vendor: Parse.Object) {
+		for (var t of templates) {
+		  if (t.get('vendor') && t.get('vendor').id == vendor.id ) return t;
+		}
+		for (var t of templates) {
+		  if (t.get('vendor') == null ) return t;
+		}
+	 }
 }
 
 const ParseService = new ParseServiceClass();

@@ -5,6 +5,7 @@ import LoginPage from '../views/Login.vue'
 import MapPage from '../views/Map.vue'
 import VansPage from '../views/Vans.vue'
 import CardsPage from '../views/CardsPage.vue'
+import CardWizardPage from '../views/CardWizardPage.vue'
 import ProfilePage from '../views/Profile.vue'
 
 Vue.use(VueRouter)
@@ -30,6 +31,10 @@ const routes: Array<RouteConfig> = [
 		path: '/cards',
 		name: 'Cards',
 		component: CardsPage,
+	},{
+		path: '/card/:id',
+		name: 'CardWizardPage',
+		component: CardWizardPage,
 	},{
 		path: '/vans',
 		name: 'Vans',

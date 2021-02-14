@@ -1,12 +1,16 @@
 <template>
+<div>
 	<div v-if="showIframe" class="iframe-wrap" :style="wrapStyle">
 		<iframe ref="iframeRef" src="about:blank" :width="iWidth +'px'" :height="iHeight +'px'"
 			:style="iframeStyle"
-			style="
-				transform-origin: 0 0;
-			">
+			:srcdoc="getIframeSrcdoc">
 		</iframe>
+		<div v-if="clickable" @click="onClick"
+			style="position:absolute; height:100%; width:100%; bottom:0; right:0; background:'0000';"></div>
+		
 	</div>
+	<!-- <p>{{html.substring(0,15)}}</p> -->
+</div>
 </template>
 
 <script lang="ts">
@@ -15,19 +19,22 @@ import ParseService, { Vendor } from '@/parse-service';
 import Card from '@/class/Card';
 
 @Component
-export default class CardPreview extends Vue {
+export default class CardRender extends Vue {
 	@Prop() myWidth!: number
 	@Prop() myHeight!: number
-	@Prop() card!: Card
+	//@Prop() card!: Card
 	@Prop() html!: string
 	@Prop({default: true}) scrollbar!: boolean
+	@Prop({default:false}) clickable!: boolean
 
 	publicPath = process.env.BASE_URL || ""
 	showIframe = true
 	iWidth: number = 375  /* Pixel width of the example phone to replicate */
 
-	mounted() {
-		this.updateIframe( this.html );
+	updated() {
+		// Vue.nextTick( () => {
+		// 	this.updateIframe( this.html );
+		// });
 	}
 
 	get iframeStyle() {
@@ -38,34 +45,44 @@ export default class CardPreview extends Vue {
 	}
 	get wrapStyle() {
 		return {
+			margin: 'auto',
 			width: this.myWidth +'px',
 			height: this.myHeight +'px', 
 			maxHeight: this.myHeight +'px',
+			position: 'relative',
 		}
 	}
 	get iHeight() {
-      return this.myHeight / this.myScale;
+		return this.myHeight / this.myScale;
 	}
 	get myScale() {
 		return this.myWidth / this.iWidth ;
 	}
+	onClick() {
+		console.log("Card render click")
+		this.$emit('click')
+	}
 
-	@Watch('html')
+	//@Watch('html')
 	updateIframe( html:string ) {
-      let iframe = this.$refs.iframeRef as HTMLIFrameElement
-      if (iframe) {
+		let iframe = this.$refs.iframeRef as HTMLIFrameElement
+		if (iframe) {
 			// @ts-ignore
-      	var iframedoc = iframe.document;
-      	if (iframe.contentDocument)  iframedoc = iframe.contentDocument;
-      	else if (iframe.contentWindow)  iframedoc = iframe.contentWindow.document;
-      	if (iframedoc){
-      		console.log("redrawing iframe doc")
-      		iframedoc.open();
-      		//iframedoc.writeln( this.htmlHead + html + this.htmlFoot );
-      		iframedoc.writeln( this.buildCardHtml(html, this.publicPath, this.scrollbar) );
-      		iframedoc.close();
-      	}
-   	}
+			var iframedoc = iframe.document;
+			if (iframe.contentDocument)  iframedoc = iframe.contentDocument;
+			else if (iframe.contentWindow)  iframedoc = iframe.contentWindow.document;
+			if (iframedoc){
+				console.log("redrawing iframe doc")
+				iframedoc.open();
+				//iframedoc.writeln( this.htmlHead + html + this.htmlFoot );
+				iframedoc.writeln( this.buildCardHtml(html, this.publicPath, this.scrollbar) );
+				iframedoc.close();
+			}
+		}
+	}
+
+	get getIframeSrcdoc() {
+		return this.buildCardHtml(this.html, this.publicPath, this.scrollbar);
 	}
 	
 	buildCardHtml( html:string, publicPath:string, scrollbar: boolean) {
