@@ -240,11 +240,21 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
     //var d = new Date(document.getElementById('fromdate').value)
     //alert ("from date "+ d.getDate()+" "+ d.getMonth()+" "+ d.getFullYear() );
 
+    var singleMode=false
+    if ($scope.arrivalToDate && $scope.arrivalToDate == $scope.arrivalFromDate && $scope.selectedVan) {
+      singleMode=true
+    }
+
     query.limit(1000);  /* default is 100, but we need as many results as we can */
 
     query.find({
       success: function(res) {
         console.log("Successfully retrieved " + res.length + " arrivals.");
+        if (singleMode) {
+          res.sort( function(a,b) {
+            return a.get('createdAt') < b.get('createdAt') ? 1 : -1
+          });
+        }
         $scope.$apply(function () {
           for (var i = 0; i < res.length; i++) {
             var object = res[i];
@@ -256,7 +266,7 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
                   options: {
                     //label: "V",
                     //labelContent: formatDate(new Date(object.createdAt)),
-                    icon: getMarketIcon(object), //"../markers/blue_MarkerV.png"
+                    icon: singleMode ? getMarkerIconSingle(object,i) : getMarkerIcon(object), 
                   }
             };
             if ($scope.showArrivalTimes == true) {
@@ -280,7 +290,7 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
    * @param {number} arrival the arrival object.
    * @return {string} url to the marker icon image.
    */
-  function getMarketIcon(arrival) {
+  function getMarkerIcon(arrival) {
     var vanNumber = $scope.vanList.findIndex( v => {
       return v.vanId == arrival.get('vanId')
     }) ;
@@ -288,9 +298,23 @@ function( $scope, $rootScope, $location, uiGmapGoogleMapApi ) {
 
     var colour = markerColours[ vanNumber % 10 ];
     var letter = String.fromCharCode((vanNumber%26) +65);
+    
+    //example built string: "../markers/blue_MarkerV.png"
+    return "../markers/" +colour+ "_Marker" +letter+ ".png";
+  }
+
+  function getMarkerIconSingle(arrival, pos) {
+    var vanNumber = $scope.vanList.findIndex( v => {
+      return v.vanId == arrival.get('vanId')
+    }) ;
+    if (vanNumber==-1) vanNumber=25; 
+
+    var colour = markerColours[ vanNumber % 10 ];
+    var letter = String.fromCharCode((pos%26) +65);
 
     return "../markers/" +colour+ "_Marker" +letter+ ".png";
   }
+
 
   function digit2(n){ return n > 9 ? ""+n : "0"+n }
 
